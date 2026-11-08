@@ -1,0 +1,3802 @@
+[
+  {
+    "id": "prod-ecoflow-river-2",
+    "title": "EcoFlow River 2 Portable Power Station (256Wh / 300W)",
+    "brand": "EcoFlow",
+    "rating": 4.9,
+    "reviewsCount": 420,
+    "category": "Load-Shedding & Power",
+    "model": "RIVER2-256",
+    "keywords": [
+      "EcoFlow",
+      "Load-Shedding & Power",
+      "RIVER2-256",
+      "EcoFlow"
+    ],
+    "image": "images/ps5-slim.png",
+    "specs": {
+      "Capacity": "256Wh LiFePO4",
+      "Output": "300W (X-Boost 600W)",
+      "Recharge": "0-100% in 60 mins",
+      "Warranty": "5-Year Manufacturer"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 4499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery (Over R650)",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock (Takealot CPT & JHB)",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 4299,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery by Amazon",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 4699,
+        "shippingFee": 70,
+        "shippingNote": "Standard Delivery R70",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "Available in Store & Online",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 4799,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery for orders above R450",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Hirschs",
+        "itemPrice": 4999,
+        "shippingFee": 95,
+        "shippingNote": "Delivery R95 | Free Collection",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock at Hirsch's Warehouse",
+        "affiliateUrl": "https://www.hirschs.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 4499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Standard Courier Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock (Ready to dispatch)",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-ecoflow-river-2-max",
+    "title": "EcoFlow River 2 Max Portable Power Station (512Wh / 500W)",
+    "brand": "EcoFlow",
+    "rating": 4.9,
+    "reviewsCount": 315,
+    "category": "Load-Shedding & Power",
+    "model": "RIVER2MAX-512",
+    "keywords": [
+      "EcoFlow",
+      "Load-Shedding & Power",
+      "RIVER2MAX-512",
+      "EcoFlow"
+    ],
+    "image": "images/ps5-slim.png",
+    "specs": {
+      "Capacity": "512Wh LiFePO4",
+      "Output": "500W (Surge 1000W)",
+      "Recharge": "60 mins Fast Charge",
+      "Warranty": "5-Year Manufacturer"
+    },
+    "stores": [
+      {
+        "name": "Amazon SA",
+        "itemPrice": 7999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery by Amazon",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Takealot",
+        "itemPrice": 8299,
+        "shippingFee": 0,
+        "shippingNote": "FREE Express Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 8499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery | Store Pickup",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 8499,
+        "shippingFee": 70,
+        "shippingNote": "Standard Courier R70",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "Available Online Only",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "Hirschs",
+        "itemPrice": 8999,
+        "shippingFee": 95,
+        "shippingNote": "Delivery R95 | Free Collection",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hirschs.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 8199,
+        "shippingFee": 0,
+        "shippingNote": "FREE Standard Courier Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock (Ready to dispatch)",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-ecoflow-delta-2",
+    "title": "EcoFlow Delta 2 Portable Power Station (1024Wh / 1800W)",
+    "brand": "EcoFlow",
+    "rating": 4.9,
+    "reviewsCount": 540,
+    "category": "Load-Shedding & Power",
+    "model": "DELTA2-1024",
+    "keywords": [
+      "EcoFlow",
+      "Load-Shedding & Power",
+      "DELTA2-1024",
+      "EcoFlow"
+    ],
+    "image": "images/ps5-slim.png",
+    "specs": {
+      "Capacity": "1024Wh LiFePO4",
+      "Output": "1800W AC (Surge 2700W)",
+      "Expansion": "Expandable up to 3kWh",
+      "Warranty": "5-Year Manufacturer"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 14999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Heavy Courier Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 14499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery by Amazon",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 15999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery Nationwide",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 15499,
+        "shippingFee": 95,
+        "shippingNote": "Courier R95 | Free Store Pickup",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "Available in Store",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "Hirschs",
+        "itemPrice": 16499,
+        "shippingFee": 150,
+        "shippingNote": "Fragile Courier Freight R150",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hirschs.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 14899,
+        "shippingFee": 0,
+        "shippingNote": "FREE Standard Courier Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-bluetti-eb3a",
+    "title": "Bluetti EB3A 600W Portable Power Station (268Wh)",
+    "brand": "Bluetti",
+    "rating": 4.7,
+    "reviewsCount": 188,
+    "category": "Load-Shedding & Power",
+    "model": "EB3A-268",
+    "keywords": [
+      "Bluetti",
+      "Load-Shedding & Power",
+      "EB3A-268",
+      "Bluetti"
+    ],
+    "image": "images/ps5-slim.png",
+    "specs": {
+      "Capacity": "268Wh LiFePO4",
+      "Inverter": "600W Pure Sine Wave",
+      "App Control": "Bluetooth Smart App",
+      "Warranty": "2-Year Official ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 4299,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery over R650",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 3999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 4499,
+        "shippingFee": 70,
+        "shippingNote": "Standard Delivery R70",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "Available in Store",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 4699,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 4199,
+        "shippingFee": 0,
+        "shippingNote": "FREE Standard Courier Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-gizzu-30w-mini-ups",
+    "title": "Gizzu 30W Mini DC UPS for Wi-Fi Routers & Fibre ONT",
+    "brand": "Gizzu",
+    "rating": 4.8,
+    "reviewsCount": 890,
+    "category": "Load-Shedding & Power",
+    "model": "GUP30W",
+    "keywords": [
+      "Gizzu",
+      "Load-Shedding & Power",
+      "GUP30W",
+      "Gizzu"
+    ],
+    "image": "images/ps5-slim.png",
+    "specs": {
+      "Battery": "32Wh High-Capacity Li-Ion",
+      "Output": "DC 5V/9V/12V & POE",
+      "Run Time": "Up to 4 Hours Wi-Fi Backup",
+      "Warranty": "1-Year Official ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 799,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery (Over R650)",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock (Takealot Hub)",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 749,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery over R500",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 849,
+        "shippingFee": 70,
+        "shippingNote": "Standard Delivery R70",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 899,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery above R450",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 789,
+        "shippingFee": 0,
+        "shippingNote": "FREE Standard Courier Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-gizzu-60w-mini-ups",
+    "title": "Gizzu 60W Dual-Voltage Mini DC UPS for Router & CCTV",
+    "brand": "Gizzu",
+    "rating": 4.8,
+    "reviewsCount": 512,
+    "category": "Load-Shedding & Power",
+    "model": "GUP60W",
+    "keywords": [
+      "Gizzu",
+      "Load-Shedding & Power",
+      "GUP60W",
+      "Gizzu"
+    ],
+    "image": "images/ps5-slim.png",
+    "specs": {
+      "Battery": "64Wh Lithium-Ion",
+      "Output": "Dual DC 9V/12V, USB 5V, POE",
+      "Run Time": "Up to 6 Hours Multi-Device",
+      "Warranty": "1-Year Official ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 1199,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 1099,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 1299,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 1249,
+        "shippingFee": 70,
+        "shippingNote": "Standard Delivery R70",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 1149,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-magneto-rechargeable-led",
+    "title": "Magneto 1200 Lumen Rechargeable Emergency LED Lantern",
+    "brand": "Magneto",
+    "rating": 4.7,
+    "reviewsCount": 670,
+    "category": "Load-Shedding & Power",
+    "model": "DBL218",
+    "keywords": [
+      "Magneto",
+      "Load-Shedding & Power",
+      "DBL218",
+      "Magneto"
+    ],
+    "image": "images/ps5-slim.png",
+    "specs": {
+      "Brightness": "1200 Lumens Ultra-Bright",
+      "Battery": "Up to 10 Hours Runtime",
+      "Charging": "Solar input & AC cable",
+      "Warranty": "1-Year Tevo ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 349,
+        "shippingFee": 70,
+        "shippingNote": "Standard Delivery R70",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 329,
+        "shippingFee": 70,
+        "shippingNote": "Standard Delivery R70",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 369,
+        "shippingFee": 70,
+        "shippingNote": "Standard Delivery R70",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 399,
+        "shippingFee": 70,
+        "shippingNote": "Standard Delivery R70",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Hirschs",
+        "itemPrice": 399,
+        "shippingFee": 95,
+        "shippingNote": "Delivery R95 | Free Collection",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hirschs.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 339,
+        "shippingFee": 75,
+        "shippingNote": "Standard Courier R75",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-ps5-slim",
+    "title": "Sony PlayStation 5 Slim Digital Edition (1TB SSD)",
+    "brand": "Sony",
+    "rating": 4.8,
+    "reviewsCount": 342,
+    "category": "Gaming Consoles",
+    "model": "CFI-2000B01",
+    "keywords": [
+      "Sony",
+      "Gaming Consoles",
+      "CFI-2000B01",
+      "Sony"
+    ],
+    "image": "images/ps5-slim.png",
+    "specs": {
+      "Storage": "1TB Custom NVMe SSD",
+      "Resolution": "4K 120Hz / 8K Support",
+      "Audio": "Tempest 3D AudioTech",
+      "Warranty": "1-Year Official Sony ZA"
+    },
+    "stores": [
+      {
+        "name": "Amazon SA",
+        "itemPrice": 11499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Next-Day Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock (Amazon Fulfillment JHB)",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Takealot",
+        "itemPrice": 11499,
+        "shippingFee": 70,
+        "shippingNote": "Standard Delivery R70 or Free over R650",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock (Takealot CPT & JHB)",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 11999,
+        "shippingFee": 95,
+        "shippingNote": "Standard Delivery R95",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "Available in 18 Makro Stores",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 12499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery for orders above R450",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": false,
+        "stockText": "Limited Stock in Sandton",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Hirschs",
+        "itemPrice": 13299,
+        "shippingFee": 150,
+        "shippingNote": "Fragile Courier Freight R150",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": false,
+        "stockText": "Backorder / Pre-order",
+        "affiliateUrl": "https://www.hirschs.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 12499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Standard Courier Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock (Warehouse JHB)",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-ps5-slim-disc",
+    "title": "Sony PlayStation 5 Slim Disc Edition (1TB SSD)",
+    "brand": "Sony",
+    "rating": 4.9,
+    "reviewsCount": 612,
+    "category": "Gaming Consoles",
+    "model": "CFI-2000A01",
+    "keywords": [
+      "Sony",
+      "Gaming Consoles",
+      "CFI-2000A01",
+      "Sony"
+    ],
+    "image": "images/ps5-slim.png",
+    "specs": {
+      "Storage": "1TB Custom NVMe SSD",
+      "Drive": "Ultra HD Blu-ray Disc Drive",
+      "Resolution": "4K 120Hz Ray Tracing",
+      "Warranty": "1-Year Sony ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 12999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Express Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 12799,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery by Amazon",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 13499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock Nationwide",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 13499,
+        "shippingFee": 95,
+        "shippingNote": "Standard Delivery R95",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "Hirschs",
+        "itemPrice": 13999,
+        "shippingFee": 150,
+        "shippingNote": "Courier Freight R150",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hirschs.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 13199,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-xbox-series-x",
+    "title": "Microsoft Xbox Series X 1TB Console",
+    "brand": "Microsoft",
+    "rating": 4.8,
+    "reviewsCount": 278,
+    "category": "Gaming Consoles",
+    "model": "RRT-00010",
+    "keywords": [
+      "Microsoft",
+      "Gaming Consoles",
+      "RRT-00010",
+      "Microsoft"
+    ],
+    "image": "images/ps5-slim.png",
+    "specs": {
+      "Processor": "12 Teraflops AMD RDNA 2",
+      "Storage": "1TB Custom NVMe SSD",
+      "Drive": "4K Ultra HD Blu-ray",
+      "Warranty": "1-Year Microsoft ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 11999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 11899,
+        "shippingFee": 0,
+        "shippingNote": "FREE Next-Day Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 12499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 12299,
+        "shippingFee": 95,
+        "shippingNote": "Standard Delivery R95",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 12199,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-xbox-series-s",
+    "title": "Microsoft Xbox Series S 512GB All-Digital Console",
+    "brand": "Microsoft",
+    "rating": 4.7,
+    "reviewsCount": 389,
+    "category": "Gaming Consoles",
+    "model": "RRS-00010",
+    "keywords": [
+      "Microsoft",
+      "Gaming Consoles",
+      "RRS-00010",
+      "Microsoft"
+    ],
+    "image": "images/ps5-slim.png",
+    "specs": {
+      "Performance": "1440p Gaming up to 120FPS",
+      "Storage": "512GB Custom NVMe SSD",
+      "Design": "All-Digital Compact",
+      "Warranty": "1-Year Microsoft ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 6999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 6799,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery by Amazon",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 7299,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 7199,
+        "shippingFee": 70,
+        "shippingNote": "Standard Delivery R70",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 6899,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-nintendo-switch-oled",
+    "title": "Nintendo Switch OLED Model with White Joy-Con",
+    "brand": "Nintendo",
+    "rating": 4.8,
+    "reviewsCount": 295,
+    "category": "Gaming Consoles",
+    "model": "HEG-S-KAAAA",
+    "keywords": [
+      "Nintendo",
+      "Gaming Consoles",
+      "HEG-S-KAAAA",
+      "Nintendo"
+    ],
+    "image": "images/ps5-slim.png",
+    "specs": {
+      "Screen": "7-inch Vibrant OLED Screen",
+      "Storage": "64GB Internal Storage",
+      "Audio": "Enhanced Onboard Audio",
+      "Warranty": "1-Year Core Gaming ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 7999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 7799,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 8499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 8299,
+        "shippingFee": 70,
+        "shippingNote": "Standard Delivery R70",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 7899,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-dualsense-controller",
+    "title": "PlayStation DualSense Wireless Controller - Midnight Black",
+    "brand": "Sony",
+    "rating": 4.9,
+    "reviewsCount": 810,
+    "category": "Gaming Consoles",
+    "model": "CFI-ZCT1W",
+    "keywords": [
+      "Sony",
+      "Gaming Consoles",
+      "CFI-ZCT1W",
+      "PlayStation"
+    ],
+    "image": "images/ps5-slim.png",
+    "specs": {
+      "Feedback": "Haptic Feedback & Adaptive Triggers",
+      "Connectivity": "Bluetooth / USB-C",
+      "Battery": "Built-in Rechargeable",
+      "Warranty": "1-Year Sony ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 1399,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery over R650",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 1299,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 1499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 1449,
+        "shippingFee": 70,
+        "shippingNote": "Standard Delivery R70",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 1349,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-xbox-controller",
+    "title": "Xbox Wireless Controller - Robot White",
+    "brand": "Microsoft",
+    "rating": 4.8,
+    "reviewsCount": 420,
+    "category": "Gaming Consoles",
+    "model": "QAS-00002",
+    "keywords": [
+      "Microsoft",
+      "Gaming Consoles",
+      "QAS-00002",
+      "Xbox"
+    ],
+    "image": "images/ps5-slim.png",
+    "specs": {
+      "Compatibility": "Xbox Series X/S, Xbox One, PC, Android, iOS",
+      "Textured Grip": "Triggers and Bumpers",
+      "Port": "USB-C & 3.5mm Jack",
+      "Warranty": "1-Year Microsoft ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 1299,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery over R650",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 1199,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 1399,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 1349,
+        "shippingFee": 70,
+        "shippingNote": "Standard Delivery R70",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 1249,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-iphone-15",
+    "title": "Apple iPhone 15 128GB - Black (5G)",
+    "brand": "Apple",
+    "rating": 4.9,
+    "reviewsCount": 518,
+    "category": "Smartphones",
+    "model": "MTP03AA/A",
+    "keywords": [
+      "Apple",
+      "Smartphones",
+      "MTP03AA/A",
+      "Apple"
+    ],
+    "image": "images/iphone-15.png",
+    "specs": {
+      "Display": "6.1-inch Super Retina XDR",
+      "Chip": "A16 Bionic Hexa-core",
+      "Camera": "48MP Main with 2x Telephoto",
+      "Warranty": "1-Year Official Apple ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 15999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery (Exceeds R650 threshold)",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock (Takealot Hub)",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 16199,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery by Amazon",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 16999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery | Same Day Store Pickup",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "Available In-Store Nationwide",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 17499,
+        "shippingFee": 95,
+        "shippingNote": "Standard Secure Courier R95",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": false,
+        "stockText": "Online Only",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 18999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Standard Courier Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock (Ready to dispatch)",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-iphone-15-pro",
+    "title": "Apple iPhone 15 Pro 128GB - Natural Titanium (5G)",
+    "brand": "Apple",
+    "rating": 4.9,
+    "reviewsCount": 410,
+    "category": "Smartphones",
+    "model": "MTUX3AA/A",
+    "keywords": [
+      "Apple",
+      "Smartphones",
+      "MTUX3AA/A",
+      "Apple"
+    ],
+    "image": "images/iphone-15.png",
+    "specs": {
+      "Design": "Grade 5 Titanium with Action Button",
+      "Chip": "A17 Pro with 6-core GPU",
+      "Display": "120Hz ProMotion Super Retina XDR",
+      "Warranty": "1-Year Apple ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 21999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Express Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 21799,
+        "shippingFee": 0,
+        "shippingNote": "FREE Next-Day Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 22999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 22499,
+        "shippingFee": 95,
+        "shippingNote": "Courier R95",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 22199,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-iphone-16",
+    "title": "Apple iPhone 16 128GB - Black (5G)",
+    "brand": "Apple",
+    "rating": 4.9,
+    "reviewsCount": 230,
+    "category": "Smartphones",
+    "model": "MYEC3AA/A",
+    "keywords": [
+      "Apple",
+      "Smartphones",
+      "MYEC3AA/A",
+      "Apple"
+    ],
+    "image": "images/iphone-15.png",
+    "specs": {
+      "Chip": "A18 Chip with Apple Intelligence",
+      "Controls": "Camera Control & Action Button",
+      "Camera": "48MP Fusion 2x Telephoto",
+      "Warranty": "1-Year Apple ZA"
+    },
+    "stores": [
+      {
+        "name": "Incredible",
+        "itemPrice": 20999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Takealot",
+        "itemPrice": 20999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 20799,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 21499,
+        "shippingFee": 95,
+        "shippingNote": "Courier R95",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 20999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-samsung-galaxy-s24",
+    "title": "Samsung Galaxy S24 5G (256GB / 8GB RAM) - Onyx Black",
+    "brand": "Samsung",
+    "rating": 4.8,
+    "reviewsCount": 380,
+    "category": "Smartphones",
+    "model": "SM-S921B",
+    "keywords": [
+      "Samsung",
+      "Smartphones",
+      "SM-S921B",
+      "Samsung"
+    ],
+    "image": "images/iphone-15.png",
+    "specs": {
+      "Display": "6.2-inch Dynamic AMOLED 2X 120Hz",
+      "AI Features": "Galaxy AI Live Translate & Circle to Search",
+      "Camera": "50MP Triple ProVisual Engine",
+      "Warranty": "2-Year Samsung ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 17999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 17499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery by Amazon",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 18999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 18499,
+        "shippingFee": 95,
+        "shippingNote": "Courier R95",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 17899,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-samsung-galaxy-a55",
+    "title": "Samsung Galaxy A55 5G (128GB / 8GB RAM) - Awesome Navy",
+    "brand": "Samsung",
+    "rating": 4.7,
+    "reviewsCount": 612,
+    "category": "Smartphones",
+    "model": "SM-A556E",
+    "keywords": [
+      "Samsung",
+      "Smartphones",
+      "SM-A556E",
+      "Samsung"
+    ],
+    "image": "images/iphone-15.png",
+    "specs": {
+      "Display": "6.6-inch Super AMOLED 120Hz",
+      "Build": "Metal Frame & Gorilla Glass Victus+",
+      "Battery": "5000mAh with 25W Fast Charge",
+      "Warranty": "2-Year Samsung ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 7999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 7699,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 8499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 8199,
+        "shippingFee": 70,
+        "shippingNote": "Courier R70",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 7899,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-apple-ipad-10th-gen",
+    "title": "Apple iPad 10.9-inch 10th Gen (Wi-Fi, 64GB) - Silver",
+    "brand": "Apple",
+    "rating": 4.9,
+    "reviewsCount": 780,
+    "category": "Smartphones",
+    "model": "MPQ03HC/A",
+    "keywords": [
+      "Apple",
+      "Smartphones",
+      "MPQ03HC/A",
+      "Apple"
+    ],
+    "image": "images/iphone-15.png",
+    "specs": {
+      "Display": "10.9-inch Liquid Retina True Tone",
+      "Chip": "A14 Bionic Hexa-core",
+      "Port": "USB-C & Touch ID in Top Button",
+      "Warranty": "1-Year Apple ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 6999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 6899,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 7499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 7299,
+        "shippingFee": 70,
+        "shippingNote": "Courier R70",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 6999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-samsung-tab-s9-fe",
+    "title": "Samsung Galaxy Tab S9 FE 10.9-inch (128GB Wi-Fi) with S Pen",
+    "brand": "Samsung",
+    "rating": 4.8,
+    "reviewsCount": 260,
+    "category": "Smartphones",
+    "model": "SM-X510",
+    "keywords": [
+      "Samsung",
+      "Smartphones",
+      "SM-X510",
+      "Samsung"
+    ],
+    "image": "images/iphone-15.png",
+    "specs": {
+      "Screen": "10.9-inch 90Hz Display",
+      "Stylus": "IP68 Water-Resistant S Pen Included",
+      "Battery": "8000mAh All-Day Battery",
+      "Warranty": "2-Year Samsung ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 8999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 8699,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 9499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 9199,
+        "shippingFee": 70,
+        "shippingNote": "Courier R70",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 8899,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-xiaomi-redmi-note-13",
+    "title": "Xiaomi Redmi Note 13 4G (128GB / 6GB RAM) - Midnight Black",
+    "brand": "Xiaomi",
+    "rating": 4.6,
+    "reviewsCount": 440,
+    "category": "Smartphones",
+    "model": "23129RAA4G",
+    "keywords": [
+      "Xiaomi",
+      "Smartphones",
+      "23129RAA4G",
+      "Xiaomi"
+    ],
+    "image": "images/iphone-15.png",
+    "specs": {
+      "Camera": "108MP Ultra-Clear Triple Camera",
+      "Screen": "120Hz FHD+ AMOLED Ultra-Thin Bezel",
+      "Charging": "33W Fast Charge with 5000mAh",
+      "Warranty": "1-Year Official ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 3999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 3899,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 4299,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 4199,
+        "shippingFee": 70,
+        "shippingNote": "Courier R70",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 3999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-samsung-tv-65",
+    "title": "Samsung 65-inch QLED 4K Smart TV (Q60D Series)",
+    "brand": "Samsung",
+    "rating": 4.7,
+    "reviewsCount": 184,
+    "category": "Smart TVs",
+    "model": "QA65Q60DAKXXA",
+    "keywords": [
+      "Samsung",
+      "Smart TVs",
+      "QA65Q60DAKXXA",
+      "Samsung"
+    ],
+    "image": "images/samsung-tv-65.png",
+    "specs": {
+      "Screen Size": "65 Inch 4K UHD Quantum Dot",
+      "Refresh Rate": "60Hz Motion Xcelerator",
+      "Smart OS": "Tizen OS with SmartThings",
+      "Warranty": "2-Year Samsung South Africa"
+    },
+    "stores": [
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 14999,
+        "shippingFee": 150,
+        "shippingNote": "R150 Scheduled Heavy Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock (Ready to dispatch)",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      },
+      {
+        "name": "Hirschs",
+        "itemPrice": 14999,
+        "shippingFee": 250,
+        "shippingNote": "Bulky Appliance Delivery R250 (Includes unboxing)",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock at Hirsch's Warehouse",
+        "affiliateUrl": "https://www.hirschs.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 15499,
+        "shippingFee": 180,
+        "shippingNote": "Large Freight Delivery R180 | Free Store Pickup",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "Available in Strubens Valley & Woodmead",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "Takealot",
+        "itemPrice": 15999,
+        "shippingFee": 200,
+        "shippingNote": "Bulky Surcharge R200",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 16999,
+        "shippingFee": 0,
+        "shippingNote": "FREE TV Delivery Promotion",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-samsung-55-crystal-uhd",
+    "title": "Samsung 55-inch Crystal UHD 4K Smart TV (DU7000)",
+    "brand": "Samsung",
+    "rating": 4.7,
+    "reviewsCount": 590,
+    "category": "Smart TVs",
+    "model": "UA55DU7000KXXA",
+    "keywords": [
+      "Samsung",
+      "Smart TVs",
+      "UA55DU7000KXXA",
+      "Samsung"
+    ],
+    "image": "images/samsung-tv-65.png",
+    "specs": {
+      "Resolution": "4K Ultra HD (3,840 x 2,160)",
+      "Engine": "Crystal Processor 4K",
+      "Audio": "Q-Symphony Audio Integration",
+      "Warranty": "2-Year Samsung ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 7999,
+        "shippingFee": 150,
+        "shippingNote": "Bulky Delivery R150",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 7799,
+        "shippingFee": 150,
+        "shippingNote": "Standard Bulky Delivery R150",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 7999,
+        "shippingFee": 180,
+        "shippingNote": "Large Freight Delivery R180",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 7899,
+        "shippingFee": 150,
+        "shippingNote": "Scheduled Heavy Delivery R150",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 8499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Promotion Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Hirschs",
+        "itemPrice": 8299,
+        "shippingFee": 200,
+        "shippingNote": "Appliance Freight R200",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hirschs.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-hisense-65-u7n",
+    "title": "Hisense 65-inch U7N Mini-LED ULED 4K Smart TV",
+    "brand": "Hisense",
+    "rating": 4.8,
+    "reviewsCount": 210,
+    "category": "Smart TVs",
+    "model": "65U7N",
+    "keywords": [
+      "Hisense",
+      "Smart TVs",
+      "65U7N",
+      "Hisense"
+    ],
+    "image": "images/samsung-tv-65.png",
+    "specs": {
+      "Display": "Mini-LED with Quantum Dot Colour",
+      "Gaming": "144Hz Game Mode PRO with FreeSync Premium",
+      "Brightness": "Peak 1500 Nits HDR10+ Adaptive",
+      "Warranty": "3-Year Official Hisense ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 16999,
+        "shippingFee": 150,
+        "shippingNote": "Bulky Delivery R150",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 16499,
+        "shippingFee": 150,
+        "shippingNote": "Bulky Delivery R150",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 16999,
+        "shippingFee": 180,
+        "shippingNote": "Freight Delivery R180",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 16899,
+        "shippingFee": 150,
+        "shippingNote": "Heavy Courier R150",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      },
+      {
+        "name": "Hirschs",
+        "itemPrice": 17499,
+        "shippingFee": 200,
+        "shippingNote": "Bulky Delivery R200",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hirschs.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-hisense-55-a6k",
+    "title": "Hisense 55-inch 4K UHD Smart TV with Dolby Vision (55A6K)",
+    "brand": "Hisense",
+    "rating": 4.6,
+    "reviewsCount": 780,
+    "category": "Smart TVs",
+    "model": "55A6K",
+    "keywords": [
+      "Hisense",
+      "Smart TVs",
+      "55A6K",
+      "Hisense"
+    ],
+    "image": "images/samsung-tv-65.png",
+    "specs": {
+      "Resolution": "4K Ultra HD with AI 4K Upscaler",
+      "HDR": "Dolby Vision HDR & HDR10",
+      "Smart OS": "VIDAA Smart OS with Voice Remote",
+      "Warranty": "3-Year Hisense ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 5999,
+        "shippingFee": 150,
+        "shippingNote": "Bulky Delivery R150",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 5799,
+        "shippingFee": 150,
+        "shippingNote": "Bulky Delivery R150",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 5999,
+        "shippingFee": 180,
+        "shippingNote": "Freight R180",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 5899,
+        "shippingFee": 150,
+        "shippingNote": "Heavy Delivery R150",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 6499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery Promo",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-lg-55-c4-oled",
+    "title": "LG 55-inch 4K OLED evo C4 Smart TV (2024)",
+    "brand": "LG",
+    "rating": 4.9,
+    "reviewsCount": 165,
+    "category": "Smart TVs",
+    "model": "OLED55C46LA",
+    "keywords": [
+      "LG",
+      "Smart TVs",
+      "OLED55C46LA",
+      "LG"
+    ],
+    "image": "images/samsung-tv-65.png",
+    "specs": {
+      "Panel": "Self-lit OLED evo with Brightness Booster",
+      "Processor": "alpha 9 AI Processor 4K Gen7",
+      "Gaming": "0.1ms Response, 144Hz VRR, 4x HDMI 2.1",
+      "Warranty": "2-Year Official LG ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 23999,
+        "shippingFee": 150,
+        "shippingNote": "Bulky Delivery R150",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 23499,
+        "shippingFee": 150,
+        "shippingNote": "Bulky Delivery R150",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Hirschs",
+        "itemPrice": 24999,
+        "shippingFee": 250,
+        "shippingNote": "Fragile White Glove Delivery R250",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hirschs.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 24499,
+        "shippingFee": 180,
+        "shippingNote": "Freight R180",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 25999,
+        "shippingFee": 0,
+        "shippingNote": "FREE OLED Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-samsung-hw-b550",
+    "title": "Samsung HW-B550 2.1-Channel Soundbar with Wireless Subwoofer",
+    "brand": "Samsung",
+    "rating": 4.7,
+    "reviewsCount": 310,
+    "category": "Smart TVs",
+    "model": "HW-B550/XA",
+    "keywords": [
+      "Samsung",
+      "Smart TVs",
+      "HW-B550/XA",
+      "Samsung"
+    ],
+    "image": "images/samsung-tv-65.png",
+    "specs": {
+      "Channels": "2.1 Channel with 410W Power",
+      "Audio Tech": "Dolby Audio & DTS Virtual:X",
+      "Subwoofer": "Wireless Bass Boost Subwoofer",
+      "Warranty": "2-Year Samsung ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 3499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 3299,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 3499,
+        "shippingFee": 70,
+        "shippingNote": "Courier R70",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 3399,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      },
+      {
+        "name": "Hirschs",
+        "itemPrice": 3699,
+        "shippingFee": 95,
+        "shippingNote": "Courier R95",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hirschs.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-jbl-bar-500",
+    "title": "JBL Bar 500 5.1-Channel 590W Dolby Atmos Soundbar",
+    "brand": "JBL",
+    "rating": 4.8,
+    "reviewsCount": 195,
+    "category": "Smart TVs",
+    "model": "JBLBAR500PROBLKEP",
+    "keywords": [
+      "JBL",
+      "Smart TVs",
+      "JBLBAR500PROBLKEP",
+      "JBL"
+    ],
+    "image": "images/samsung-tv-65.png",
+    "specs": {
+      "Power Output": "590W Total System Power",
+      "Dolby Atmos": "MultiBeam 3D Surround Sound",
+      "Bass": "10-inch Wireless Down-Firing Subwoofer",
+      "Warranty": "1-Year Official JBL ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 9999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 9699,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 10499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Hirschs",
+        "itemPrice": 10999,
+        "shippingFee": 150,
+        "shippingNote": "Courier Freight R150",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hirschs.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 9899,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-philips-airfryer",
+    "title": "Philips 7000 Series Connected Airfryer XXL (7.2L)",
+    "brand": "Philips",
+    "rating": 4.9,
+    "reviewsCount": 627,
+    "category": "Kitchen Appliances",
+    "model": "HD9880/90",
+    "keywords": [
+      "Philips",
+      "Kitchen Appliances",
+      "HD9880/90",
+      "Philips"
+    ],
+    "image": "images/philips-airfryer.png",
+    "specs": {
+      "Capacity": "7.2 Litres (1.4kg food capacity)",
+      "Connectivity": "NutriU App Connected Wi-Fi",
+      "Power": "2000W Rapid CombiAir",
+      "Warranty": "2-Year Global Philips"
+    },
+    "stores": [
+      {
+        "name": "Amazon SA",
+        "itemPrice": 3899,
+        "shippingFee": 0,
+        "shippingNote": "FREE Standard Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock (Amazon ZA)",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Takealot",
+        "itemPrice": 4199,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery over R650",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 4199,
+        "shippingFee": 0,
+        "shippingNote": "FREE Standard Courier Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock (Ready to dispatch)",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      },
+      {
+        "name": "Hirschs",
+        "itemPrice": 4299,
+        "shippingFee": 95,
+        "shippingNote": "Delivery R95 | Free Collection",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hirschs.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 4499,
+        "shippingFee": 70,
+        "shippingNote": "Standard Delivery R70",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-ninja-dualzone-airfryer",
+    "title": "Ninja Foodi DualZone 7.6L 2-Basket Airfryer (AF300)",
+    "brand": "Ninja",
+    "rating": 4.9,
+    "reviewsCount": 840,
+    "category": "Kitchen Appliances",
+    "model": "AF300EU",
+    "keywords": [
+      "Ninja",
+      "Kitchen Appliances",
+      "AF300EU",
+      "Ninja"
+    ],
+    "image": "images/philips-airfryer.png",
+    "specs": {
+      "Dual Baskets": "2 Independent 3.8L Cooking Zones",
+      "SyncCook": "Match Cook & Sync Finish",
+      "Functions": "Air Fry, Max Crisp, Roast, Bake, Reheat, Dehydrate",
+      "Warranty": "1-Year Official ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 3999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 3799,
+        "shippingFee": 0,
+        "shippingNote": "FREE Next-Day Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Hirschs",
+        "itemPrice": 4199,
+        "shippingFee": 95,
+        "shippingNote": "Delivery R95",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hirschs.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 4299,
+        "shippingFee": 70,
+        "shippingNote": "Standard Delivery R70",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 3899,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-nutribullet-pro-900w",
+    "title": "Nutribullet Pro 900W 9-Piece High-Speed Blender Set",
+    "brand": "Nutribullet",
+    "rating": 4.8,
+    "reviewsCount": 920,
+    "category": "Kitchen Appliances",
+    "model": "NB9-0912M",
+    "keywords": [
+      "Nutribullet",
+      "Kitchen Appliances",
+      "NB9-0912M",
+      "Nutribullet"
+    ],
+    "image": "images/philips-airfryer.png",
+    "specs": {
+      "Motor Power": "900-Watt Nutrient Extractor",
+      "Blades": "Stainless Steel Extractor Blade",
+      "Cups": "900ml & 700ml Colossal BPA-free Cups",
+      "Warranty": "1-Year Official Nutribullet ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 2199,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 1999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery by Amazon",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Hirschs",
+        "itemPrice": 2299,
+        "shippingFee": 95,
+        "shippingNote": "Delivery R95",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hirschs.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 2399,
+        "shippingFee": 70,
+        "shippingNote": "Standard Delivery R70",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 2499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 2099,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-delonghi-coffee",
+    "title": "De'Longhi Magnifica S Compact Bean to Cup Coffee Machine",
+    "brand": "De'Longhi",
+    "rating": 4.9,
+    "reviewsCount": 476,
+    "category": "Kitchen Appliances",
+    "model": "ECAM22.110.B",
+    "keywords": [
+      "De'Longhi",
+      "Kitchen Appliances",
+      "ECAM22.110.B",
+      "De'Longhi"
+    ],
+    "image": "images/delonghi-coffee.png",
+    "specs": {
+      "Pressure": "15 Bar Italian Pump",
+      "Grinder": "13 Adjustable Grind Settings",
+      "Frother": "Manual Cappuccino System",
+      "Warranty": "2-Year Official De'Longhi ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 7499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery (Over R650 threshold)",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock (Takealot Hub)",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Hirschs",
+        "itemPrice": 7799,
+        "shippingFee": 95,
+        "shippingNote": "Standard Courier R95",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock at Hirsch's Showroom",
+        "affiliateUrl": "https://www.hirschs.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 7999,
+        "shippingFee": 95,
+        "shippingNote": "Standard Secure Courier R95",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "Available Online & In-Store",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 8199,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock (Amazon ZA)",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 8499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Standard Courier Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock (Ready to dispatch)",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-delonghi-dedica-espresso",
+    "title": "De'Longhi Dedica Deluxe Slim Espresso Machine (EC685)",
+    "brand": "De'Longhi",
+    "rating": 4.7,
+    "reviewsCount": 380,
+    "category": "Kitchen Appliances",
+    "model": "EC685.M",
+    "keywords": [
+      "De'Longhi",
+      "Kitchen Appliances",
+      "EC685.M",
+      "De'Longhi"
+    ],
+    "image": "images/delonghi-coffee.png",
+    "specs": {
+      "Design": "Ultra-Slim 15cm Metal Body",
+      "Pump": "15 Bar Professional Pressure",
+      "Steam Wand": "Adjustable Cappuccino Frother",
+      "Warranty": "2-Year De'Longhi ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 3899,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 3699,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Hirschs",
+        "itemPrice": 3999,
+        "shippingFee": 95,
+        "shippingNote": "Delivery R95",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hirschs.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 4199,
+        "shippingFee": 70,
+        "shippingNote": "Courier R70",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 3799,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-nespresso-essenza-mini",
+    "title": "Nespresso Essenza Mini Capsule Coffee Machine by Breville",
+    "brand": "Nespresso",
+    "rating": 4.8,
+    "reviewsCount": 710,
+    "category": "Kitchen Appliances",
+    "model": "BEC120BLK",
+    "keywords": [
+      "Nespresso",
+      "Kitchen Appliances",
+      "BEC120BLK",
+      "Nespresso"
+    ],
+    "image": "images/delonghi-coffee.png",
+    "specs": {
+      "Pressure": "19 Bar High-Pressure Extraction",
+      "Heating": "Fast Heat-up in 25 seconds",
+      "Sizes": "Espresso (40ml) & Lungo (110ml)",
+      "Warranty": "2-Year Nespresso ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 1999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 1899,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Hirschs",
+        "itemPrice": 2199,
+        "shippingFee": 95,
+        "shippingNote": "Delivery R95",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hirschs.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 2299,
+        "shippingFee": 70,
+        "shippingNote": "Courier R70",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 1949,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-dyson-v12-detect-slim",
+    "title": "Dyson V12 Detect Slim Absolute Cordless Vacuum Cleaner",
+    "brand": "Dyson",
+    "rating": 4.9,
+    "reviewsCount": 310,
+    "category": "Kitchen Appliances",
+    "model": "368340-01",
+    "keywords": [
+      "Dyson",
+      "Kitchen Appliances",
+      "368340-01",
+      "Dyson"
+    ],
+    "image": "images/philips-airfryer.png",
+    "specs": {
+      "Technology": "Laser Reveals Invisible Dust",
+      "Motor": "Hyperdymium Motor spins at 125,000rpm",
+      "Filtration": "99.99% Whole-Machine HEPA Filtration",
+      "Warranty": "2-Year Dyson Official ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 12999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 12499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Hirschs",
+        "itemPrice": 13499,
+        "shippingFee": 95,
+        "shippingNote": "Courier R95",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hirschs.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 13999,
+        "shippingFee": 95,
+        "shippingNote": "Courier R95",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 14499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-russell-hobbs-microwave",
+    "title": "Russell Hobbs 20L Mirror Door Digital Microwave Oven",
+    "brand": "Russell Hobbs",
+    "rating": 4.6,
+    "reviewsCount": 540,
+    "category": "Kitchen Appliances",
+    "model": "RHM2001",
+    "keywords": [
+      "Russell Hobbs",
+      "Kitchen Appliances",
+      "RHM2001",
+      "Russell"
+    ],
+    "image": "images/philips-airfryer.png",
+    "specs": {
+      "Capacity": "20 Litres with 245mm Glass Turntable",
+      "Power": "700W Microwave Power with 5 Levels",
+      "Design": "Contemporary Mirror Finish Door",
+      "Warranty": "2-Year Russell Hobbs ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 1299,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 1199,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 1299,
+        "shippingFee": 70,
+        "shippingNote": "Courier R70",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 1249,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      },
+      {
+        "name": "Hirschs",
+        "itemPrice": 1399,
+        "shippingFee": 95,
+        "shippingNote": "Delivery R95",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hirschs.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-macbook-air-m3",
+    "title": "Apple MacBook Air 13-inch M3 (8GB Unified Memory, 256GB SSD)",
+    "brand": "Apple",
+    "rating": 4.9,
+    "reviewsCount": 289,
+    "category": "Laptops & Computing",
+    "model": "MRXN3AA/A",
+    "keywords": [
+      "Apple",
+      "Laptops & Computing",
+      "MRXN3AA/A",
+      "Apple"
+    ],
+    "image": "images/macbook-air-m3.png",
+    "specs": {
+      "Processor": "Apple M3 8-core CPU / 8-core GPU",
+      "Display": "13.6-inch Liquid Retina with True Tone",
+      "Battery": "Up to 18 Hours Battery Life",
+      "Warranty": "1-Year Official Apple ZA"
+    },
+    "stores": [
+      {
+        "name": "Incredible",
+        "itemPrice": 19999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Next-Day Courier Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock (Nationwide Stores)",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Takealot",
+        "itemPrice": 20499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Standard Courier Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock (CPT Hub)",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 20999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery by Amazon",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 22999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Standard Courier Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock (Ready to dispatch)",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 23999,
+        "shippingFee": 95,
+        "shippingNote": "Standard Insured Freight R95",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": false,
+        "stockText": "Online Only",
+        "affiliateUrl": "https://www.makro.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-macbook-air-m2",
+    "title": "Apple MacBook Air 13-inch M2 (8GB Unified Memory, 256GB SSD)",
+    "brand": "Apple",
+    "rating": 4.9,
+    "reviewsCount": 640,
+    "category": "Laptops & Computing",
+    "model": "MLXY3AA/A",
+    "keywords": [
+      "Apple",
+      "Laptops & Computing",
+      "MLXY3AA/A",
+      "Apple"
+    ],
+    "image": "images/macbook-air-m3.png",
+    "specs": {
+      "Processor": "Apple M2 8-core CPU / 8-core GPU",
+      "Design": "Starlight Aluminum 11.3mm Thin",
+      "Display": "13.6-inch Liquid Retina Display",
+      "Warranty": "1-Year Apple ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 17499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 16999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 17999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 18499,
+        "shippingFee": 95,
+        "shippingNote": "Courier R95",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 17899,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-lenovo-ideapad-3-i5",
+    "title": "Lenovo IdeaPad 3 15.6-inch Intel Core i5 (8GB RAM, 512GB SSD)",
+    "brand": "Lenovo",
+    "rating": 4.6,
+    "reviewsCount": 412,
+    "category": "Laptops & Computing",
+    "model": "15IAU7",
+    "keywords": [
+      "Lenovo",
+      "Laptops & Computing",
+      "15IAU7",
+      "Lenovo"
+    ],
+    "image": "images/macbook-air-m3.png",
+    "specs": {
+      "CPU": "Intel Core i5-1235U 10-Core up to 4.4GHz",
+      "Screen": "15.6-inch Full HD Anti-Glare",
+      "OS": "Windows 11 Home",
+      "Warranty": "1-Year Official Lenovo ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 8999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 8499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 9499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 9199,
+        "shippingFee": 70,
+        "shippingNote": "Courier R70",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 8799,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-asus-vivobook-15",
+    "title": "ASUS Vivobook 15 15.6-inch Intel Core i5 (16GB RAM, 512GB SSD)",
+    "brand": "ASUS",
+    "rating": 4.7,
+    "reviewsCount": 270,
+    "category": "Laptops & Computing",
+    "model": "X1504ZA",
+    "keywords": [
+      "ASUS",
+      "Laptops & Computing",
+      "X1504ZA",
+      "ASUS"
+    ],
+    "image": "images/macbook-air-m3.png",
+    "specs": {
+      "Memory": "16GB DDR4 High-Speed RAM",
+      "Storage": "512GB M.2 NVMe PCIe SSD",
+      "Hinge": "180-degree Lay-Flat Hinge with Antimicrobial Guard",
+      "Warranty": "1-Year ASUS ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 10999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 10499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 11499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 11299,
+        "shippingFee": 70,
+        "shippingNote": "Courier R70",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 10799,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-hp-victus-15-gaming",
+    "title": "HP Victus 15.6-inch Gaming Laptop (Core i5, RTX 3050, 512GB)",
+    "brand": "HP",
+    "rating": 4.8,
+    "reviewsCount": 190,
+    "category": "Laptops & Computing",
+    "model": "15-fa0025ni",
+    "keywords": [
+      "HP",
+      "Laptops & Computing",
+      "15-fa0025ni",
+      "HP"
+    ],
+    "image": "images/macbook-air-m3.png",
+    "specs": {
+      "GPU": "NVIDIA GeForce RTX 3050 4GB GDDR6",
+      "Display": "15.6-inch 144Hz FHD IPS Anti-Glare",
+      "Audio": "Audio by B&O Dual Speakers",
+      "Warranty": "1-Year HP Official ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 15999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 15499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 16999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 16499,
+        "shippingFee": 95,
+        "shippingNote": "Courier R95",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 15799,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-dell-27-se2722h",
+    "title": "Dell 27-inch Full HD Monitor (SE2722H) 75Hz FreeSync",
+    "brand": "Dell",
+    "rating": 4.7,
+    "reviewsCount": 510,
+    "category": "Laptops & Computing",
+    "model": "SE2722H",
+    "keywords": [
+      "Dell",
+      "Laptops & Computing",
+      "SE2722H",
+      "Dell"
+    ],
+    "image": "images/macbook-air-m3.png",
+    "specs": {
+      "Resolution": "Full HD 1920 x 1080 at 75Hz",
+      "Panel": "VA with AMD FreeSync",
+      "Ports": "HDMI and VGA with Compact Base",
+      "Warranty": "3-Year Dell Advanced Exchange"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 2699,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 2499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 2899,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 2799,
+        "shippingFee": 70,
+        "shippingNote": "Courier R70",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 2599,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-samsung-odyssey-g5",
+    "title": "Samsung 32-inch Odyssey G5 WQHD 165Hz Curved Gaming Monitor",
+    "brand": "Samsung",
+    "rating": 4.8,
+    "reviewsCount": 240,
+    "category": "Laptops & Computing",
+    "model": "LS32CG552EUXEN",
+    "keywords": [
+      "Samsung",
+      "Laptops & Computing",
+      "LS32CG552EUXEN",
+      "Samsung"
+    ],
+    "image": "images/macbook-air-m3.png",
+    "specs": {
+      "Curvature": "1000R Deep Curve",
+      "Specs": "WQHD 2560 x 1440, 165Hz, 1ms (MPRT)",
+      "Sync": "AMD FreeSync Premium with HDR10",
+      "Warranty": "2-Year Samsung ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 6999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 6699,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 7499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 7299,
+        "shippingFee": 70,
+        "shippingNote": "Courier R70",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 6899,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-sony-xm5",
+    "title": "Sony WH-1000XM5 Wireless Noise Cancelling Headphones",
+    "brand": "Sony",
+    "rating": 4.8,
+    "reviewsCount": 412,
+    "category": "Audio & Wearables",
+    "model": "WH1000XM5/B",
+    "keywords": [
+      "Sony",
+      "Audio & Wearables",
+      "WH1000XM5/B",
+      "Sony"
+    ],
+    "image": "images/sony-xm5.png",
+    "specs": {
+      "Battery Life": "Up to 30 Hours with ANC",
+      "Noise Cancelling": "Dual Processors & 8 Mics",
+      "Codecs": "LDAC, AAC, SBC",
+      "Warranty": "1-Year Sony South Africa"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 6999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Express Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 6799,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery by Amazon",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 7499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock Nationwide",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 7999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Standard Courier Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock (Ready to dispatch)",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      },
+      {
+        "name": "Hirschs",
+        "itemPrice": 8499,
+        "shippingFee": 95,
+        "shippingNote": "Courier R95 | Free Collection",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hirschs.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-airpods-pro-2",
+    "title": "Apple AirPods Pro 2 with MagSafe Case (USB-C)",
+    "brand": "Apple",
+    "rating": 4.9,
+    "reviewsCount": 980,
+    "category": "Audio & Wearables",
+    "model": "MTJV3ZM/A",
+    "keywords": [
+      "Apple",
+      "Audio & Wearables",
+      "MTJV3ZM/A",
+      "Apple"
+    ],
+    "image": "images/sony-xm5.png",
+    "specs": {
+      "Chip": "Apple H2 with Adaptive Audio",
+      "Noise Cancellation": "Up to 2x more Active Noise Cancellation",
+      "Case": "Dust, Sweat and Water Resistant (IP54)",
+      "Warranty": "1-Year Apple ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 4999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 4899,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 5499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 5299,
+        "shippingFee": 70,
+        "shippingNote": "Courier R70",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 5099,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-airpods-4",
+    "title": "Apple AirPods 4 Wireless Earbuds with USB-C Charging Case",
+    "brand": "Apple",
+    "rating": 4.8,
+    "reviewsCount": 310,
+    "category": "Audio & Wearables",
+    "model": "MXP63ZM/A",
+    "keywords": [
+      "Apple",
+      "Audio & Wearables",
+      "MXP63ZM/A",
+      "Apple"
+    ],
+    "image": "images/sony-xm5.png",
+    "specs": {
+      "Audio": "Personalized Spatial Audio with Dynamic Head Tracking",
+      "Chip": "Apple H2 Chip with Voice Isolation",
+      "Battery": "Up to 30 Hours Total with Case",
+      "Warranty": "1-Year Apple ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 3299,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 3199,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 3599,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 3499,
+        "shippingFee": 70,
+        "shippingNote": "Courier R70",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 3349,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-jbl-charge-5",
+    "title": "JBL Charge 5 Portable Waterproof Bluetooth Speaker",
+    "brand": "JBL",
+    "rating": 4.8,
+    "reviewsCount": 850,
+    "category": "Audio & Wearables",
+    "model": "JBLCHARGE5BLK",
+    "keywords": [
+      "JBL",
+      "Audio & Wearables",
+      "JBLCHARGE5BLK",
+      "JBL"
+    ],
+    "image": "images/sony-xm5.png",
+    "specs": {
+      "Sound": "JBL Original Pro Sound with Long Excursion Driver",
+      "Battery": "20 Hours Playtime with Built-in Powerbank",
+      "Durability": "IP67 Waterproof and Dustproof",
+      "Warranty": "1-Year Official JBL ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 2999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 2799,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 3299,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 3199,
+        "shippingFee": 70,
+        "shippingNote": "Courier R70",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "Hirschs",
+        "itemPrice": 3299,
+        "shippingFee": 95,
+        "shippingNote": "Courier R95",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hirschs.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 2899,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-jbl-flip-6",
+    "title": "JBL Flip 6 Portable Waterproof Bluetooth Speaker",
+    "brand": "JBL",
+    "rating": 4.8,
+    "reviewsCount": 1100,
+    "category": "Audio & Wearables",
+    "model": "JBLFLIP6BLK",
+    "keywords": [
+      "JBL",
+      "Audio & Wearables",
+      "JBLFLIP6BLK",
+      "JBL"
+    ],
+    "image": "images/sony-xm5.png",
+    "specs": {
+      "Output": "2-Way Speaker System for Bold Sound",
+      "Battery": "12 Hours Playtime",
+      "Protection": "IP67 Waterproof and Dustproof",
+      "Warranty": "1-Year Official JBL ZA"
+    },
+    "stores": [
+      {
+        "name": "Takealot",
+        "itemPrice": 1999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Amazon SA",
+        "itemPrice": 1899,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 2199,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 2199,
+        "shippingFee": 70,
+        "shippingNote": "Courier R70",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "Hirschs",
+        "itemPrice": 2299,
+        "shippingFee": 95,
+        "shippingNote": "Courier R95",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hirschs.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 1949,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  },
+  {
+    "id": "prod-garmin-fenix-7x",
+    "title": "Garmin Fenix 7X Pro Solar Multisport GPS Smartwatch",
+    "brand": "Garmin",
+    "rating": 4.9,
+    "reviewsCount": 154,
+    "category": "Audio & Wearables",
+    "model": "010-02778-01",
+    "keywords": [
+      "Garmin",
+      "Audio & Wearables",
+      "010-02778-01",
+      "Garmin"
+    ],
+    "image": "images/garmin-fenix-7.png",
+    "specs": {
+      "Solar Charging": "Power Glass Solar Charging Lens",
+      "Battery": "Up to 37 Days in Smartwatch Mode",
+      "Sensors": "Multi-Band GPS, Heart Rate, SpO2, Built-in LED Flashlight",
+      "Warranty": "2-Year Official Garmin ZA"
+    },
+    "stores": [
+      {
+        "name": "Amazon SA",
+        "itemPrice": 14999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Next-Day Delivery (Prime)",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock (Amazon ZA)",
+        "affiliateUrl": "https://www.amazon.co.za"
+      },
+      {
+        "name": "Takealot",
+        "itemPrice": 15499,
+        "shippingFee": 0,
+        "shippingNote": "FREE Express Courier Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.takealot.com"
+      },
+      {
+        "name": "Incredible",
+        "itemPrice": 15999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Delivery | Store Pickup",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "Available in Store",
+        "affiliateUrl": "https://www.incredible.co.za"
+      },
+      {
+        "name": "Makro",
+        "itemPrice": 16499,
+        "shippingFee": 95,
+        "shippingNote": "Standard Secure Courier R95",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": false,
+        "stockText": "Online Only",
+        "affiliateUrl": "https://www.makro.co.za"
+      },
+      {
+        "name": "HiFi Corp",
+        "itemPrice": 15999,
+        "shippingFee": 0,
+        "shippingNote": "FREE Standard Courier Delivery",
+        "deliveryEstimate": "2-4 Business Days",
+        "inStock": true,
+        "stockText": "In Stock (Ready to dispatch)",
+        "affiliateUrl": "https://www.hificorp.co.za"
+      }
+    ]
+  }
+]

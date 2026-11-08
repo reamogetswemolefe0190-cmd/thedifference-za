@@ -1,0 +1,15 @@
+{
+  "name": "pricepulse-backend",
+  "version": "1.0.0",
+  "description": "PricePulse South Africa Cloudflare Worker & D1 API",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:init": "wrangler d1 execute pricepulse-db --local --file=schema.sql",
+    "db:seed": "wrangler d1 execute pricepulse-db --local --file=seed.sql"
+  },
+  "devDependencies": {
+    "wrangler": "^3.90.0"
+  }
+}
