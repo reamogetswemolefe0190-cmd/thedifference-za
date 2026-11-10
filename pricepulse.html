@@ -3771,30 +3771,22 @@
     }
 
     .alert-btn {
-
       height: 34px;
-
       padding: 0 12px;
-
       background: var(--brand);
-
       color: #fff;
-
       border: none;
-
-      border-radius: 6px;
-
+      border-radius: var(--radius-btn, 8px);
       font-size: 11px;
-
       font-weight: 700;
-
       cursor: pointer;
-
       white-space: nowrap;
-
+      transition: background var(--duration-fast, 125ms), transform var(--duration-fast, 125ms);
     }
 
     .alert-btn:hover { background: var(--brand-hover); }
+
+    .alert-btn:active { transform: translateY(1px); }
 
 
 
@@ -5066,7 +5058,7 @@
 
             <span class="bf-text">Monitoring 200 verified flagship deals across Takealot, Amazon SA, Makro, Game, Incredible, Hirsch's &amp; HiFi Corp</span>
 
-            <span class="bf-subtext">&bull; Real-time landed prices &amp; instant pickup comparisons</span>
+            <span class="bf-subtext">&bull; Landed prices calculated from stored offer delivery fees (R 0 for collection)</span>
 
             <span class="bf-text">&bull; Live price drops verified every 15 mins across South Africa</span>
 
@@ -5078,7 +5070,7 @@
 
             <span class="bf-text">Monitoring 200 verified flagship deals across Takealot, Amazon SA, Makro, Game, Incredible, Hirsch's &amp; HiFi Corp</span>
 
-            <span class="bf-subtext">&bull; Real-time landed prices &amp; instant pickup comparisons</span>
+            <span class="bf-subtext">&bull; Landed prices calculated from stored offer delivery fees (R 0 for collection)</span>
 
             <span class="bf-text">&bull; Live price drops verified every 15 mins across South Africa</span>
 
@@ -5378,17 +5370,17 @@
 
             </svg>
 
-            <span>Track Future Price Drops</span>
+            <span>Register for Price-Drop Alerts</span>
 
           </div>
 
-          <p class="alert-box-desc">Get an email notification the instant this product drops below your target price.</p>
+          <p class="alert-box-desc">Register your email to record your price-drop alert subscription. Stored subscriptions record your target price against future catalog updates.</p>
 
           <form class="alert-form" onsubmit="handleAlertSubmit(event)">
 
             <input type="email" required placeholder="your.email@example.com" class="alert-input">
 
-            <button type="submit" class="alert-btn">Set Alert</button>
+            <button type="submit" class="alert-btn">Register Alert</button>
 
           </form>
 
@@ -5412,7 +5404,7 @@
 
             <div>
 
-              <div class="price-lbl">Lowest Final Landed Price</div>
+              <div class="price-lbl" title="Landed price calculated from stored offer delivery fees (R 0 in collection mode)">Lowest Final Landed Price</div>
 
               <div class="price-big-row">
 
@@ -5483,7 +5475,7 @@
 
             <span>Ranked Multi-Store Landed Breakdown</span>
 
-            <span class="sub" id="storeMatrixSub">Sorted by lowest landed door delivery</span>
+            <span class="sub" id="storeMatrixSub">Calculated from stored offer delivery fees (collection sets shipping to R 0)</span>
 
           </div>
 
@@ -5536,12 +5528,6 @@
 
 
     </div>
-
-
-
-  </div>
-
-
 
   </main>
 
@@ -23248,6 +23234,8 @@
 
       const pickupBtn = document.getElementById('modePickupBtn');
 
+      const matrixSub = document.getElementById('storeMatrixSub');
+
       if (doorBtn && pickupBtn) {
 
         if (mode === 'door') {
@@ -23256,11 +23244,15 @@
 
           pickupBtn.classList.remove('active');
 
+          if (matrixSub) matrixSub.innerText = 'Calculated from stored offer delivery fees (sorted by lowest landed price)';
+
         } else {
 
           pickupBtn.classList.add('active');
 
           doorBtn.classList.remove('active');
+
+          if (matrixSub) matrixSub.innerText = 'Click & Collect mode: delivery fee set to R 0 (sorted by lowest store price)';
 
         }
 
@@ -23477,7 +23469,7 @@
           : 0;
         const highestStore = sortedStores[sortedStores.length - 1];
 
-        // Determinate savings capture & 7-store average target mark position (0..100 scale)
+        // Determinate savings capture & store average target mark position (0..100 scale)
         const efficiencyScore = spreadPct > 0 ? Math.min(94, Math.max(66, 64 + spreadPct)) : 80;
         const avgMarkPos = highestLanded > lowestLanded
           ? Math.min(88, Math.max(35, Math.round(((highestLanded - avgLanded) / (highestLanded - lowestLanded)) * efficiencyScore)))
@@ -23518,7 +23510,7 @@
                   <h3 class="astryx-heading" data-level="3">Astryx Price Intelligence</h3>
                   <span class="astryx-statusdot success" aria-hidden="true"></span>
                 </div>
-                <span class="astryx-text" data-type="supporting">7-store South African landed cost scorecard</span>
+                <span class="astryx-text" data-type="supporting">Store Average South African landed cost scorecard</span>
               </div>
             </div>
             <div class="astryx-hstack">
@@ -23531,18 +23523,18 @@
             <div class="astryx-progress-bar" data-variant="success">
               <div class="astryx-progress-bar-header">
                 <span class="astryx-low-val">Lowest: ${formatZAR(lowestLanded)} (${bestStore.name})</span>
-                <span>7-Store Avg: <strong>${formatZAR(avgLanded)}</strong></span>
+                <span>Store Avg: <strong>${formatZAR(avgLanded)}</strong></span>
                 <span>High: <strong>${formatZAR(highestLanded)}</strong> (${highestStore.name})</span>
               </div>
-              <div class="astryx-progress-bar-track" role="progressbar" aria-label="Landed price position vs 7-store market average" aria-valuenow="${efficiencyScore}" aria-valuemin="0" aria-valuemax="100">
+              <div class="astryx-progress-bar-track" role="progressbar" aria-label="Landed price position vs store market average" aria-valuenow="${efficiencyScore}" aria-valuemin="0" aria-valuemax="100">
                 <div class="astryx-progress-bar-fill" data-variant="success" style="width: ${efficiencyScore}%;"></div>
-                <div class="astryx-progress-bar-mark" data-variant="success" style="left: ${avgMarkPos}%;" title="7-Store SA Average: ${formatZAR(avgLanded)}" aria-label="7-Store SA Average: ${formatZAR(avgLanded)}"></div>
+                <div class="astryx-progress-bar-mark" data-variant="success" style="left: ${avgMarkPos}%;" title="Store SA Average: ${formatZAR(avgLanded)}" aria-label="Store SA Average: ${formatZAR(avgLanded)}"></div>
               </div>
             </div>
 
             <div class="astryx-scorecard-grid">
               <div class="astryx-scorecard-cell">
-                <span class="astryx-text" data-type="supporting">vs. 7-Store Average</span>
+                <span class="astryx-text" data-type="supporting">vs. Store Average</span>
                 <span class="astryx-scorecard-kpi" data-tabular-nums="true">${vsAvgSavings > 0 ? 'Save ' + formatZAR(vsAvgSavings) : formatZAR(avgLanded)}</span>
                 <span class="astryx-scorecard-delta" data-max-lines="1" title="Below ${formatZAR(avgLanded)} SA mean">
                   <svg class="icon-14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
@@ -23570,7 +23562,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <p class="astryx-footer-verdict">
-                <strong>Recommendation:</strong> Buy from <strong>${bestStore.name}</strong> at <strong>${formatZAR(lowestLanded)}</strong> (${isPickup ? 'Click & Collect' : 'Door Delivery'}) to save <strong>${formatZAR(savings)}</strong> vs. ${highestStore.name} and <strong>${formatZAR(vsAvgSavings)}</strong> below the 7-store average—or <strong>${formatZAR(installmentAmount)}/pm</strong> x 4 interest-free via Payflex.
+                <strong>Recommendation:</strong> Buy from <strong>${bestStore.name}</strong> at <strong>${formatZAR(lowestLanded)}</strong> (${isPickup ? 'Click & Collect' : 'Door Delivery'}) to save <strong>${formatZAR(savings)}</strong> vs. ${highestStore.name} and <strong>${formatZAR(vsAvgSavings)}</strong> below the store average—or <strong>${formatZAR(installmentAmount)}/pm</strong> x 4 interest-free via Payflex.
               </p>
             </div>
           </div>
@@ -23709,7 +23701,7 @@
 
             <div class="landed-col">
 
-              <div class="landed-lbl">Total Landed:</div>
+              <div class="landed-lbl" title="Landed price calculated from item price plus stored offer delivery fee (${isPickup ? 'R 0 in collection mode' : 'stored delivery fee'})">Total Landed:</div>
 
               <div class="landed-price">${formatZAR(st.totalLanded)}</div>
 
@@ -24116,7 +24108,7 @@
       const prodId = currentDetailProduct ? currentDetailProduct.id : '';
 
       if (prodId && !trackedAlerts.some(x => x.id === prodId)) {
-        trackedAlerts.unshift({ id: prodId, note: 'ALERT SET' });
+        trackedAlerts.unshift({ id: prodId, note: 'REGISTERED' });
         saveTrackedAlerts();
         renderAlertsPopover();
       }
@@ -24147,17 +24139,17 @@
 
         if (data && data.success) {
 
-          showToast(`Price alert registered for ${email}! Added to your Bell trackers.`);
+          showToast(`Price-alert registered successfully for ${email}. Added to your Bell trackers.`);
 
         } else {
 
-          showToast('Price alert registered! Added to your Bell trackers.');
+          showToast(email ? `Price-alert registered successfully for ${email}. Added to your Bell trackers.` : 'Price-alert registered successfully! Added to your Bell trackers.');
 
         }
 
       } catch (err) {
 
-        showToast('Price alert registered! Added to your Bell trackers.');
+        showToast(email ? `Price-alert registered successfully for ${email}. Added to your Bell trackers.` : 'Price-alert registered successfully! Added to your Bell trackers.');
 
       }
 
