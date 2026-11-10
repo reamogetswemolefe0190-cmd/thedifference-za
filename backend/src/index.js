@@ -605,7 +605,7 @@ export default {
             target_price: parsedPrice,
             status: "active"
           }
-        }, 200, request);
+        }, 201, request);
       }
 
       // 6. POST /api/feedback

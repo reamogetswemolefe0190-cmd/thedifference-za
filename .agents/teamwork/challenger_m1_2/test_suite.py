@@ -2388,7 +2388,7 @@ async function runWorkerVerification() {
     });
     const res = await worker.fetch(req, { DB: db }, {});
     const data = await res.json();
-    const passed = (res.status === 200 && data.success === true && typeof data.message === 'string' && data.message.includes('shopper@pricepulse.co.za'));
+    const passed = ((res.status === 201 || res.status === 200) && data.success === true && typeof data.message === 'string' && data.message.includes('shopper@pricepulse.co.za'));
 
     testReport.alert_valid_registration = {
       passed,
