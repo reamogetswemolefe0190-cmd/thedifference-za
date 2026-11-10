@@ -254,7 +254,7 @@ def run_tests():
 
     work_dir = os.path.dirname(os.path.abspath(__file__))
 
-    url = "http://localhost:8080/pricepulse.html"
+    url = "file:///" + os.path.abspath("pricepulse.html").replace("\\", "/")
 
 
 

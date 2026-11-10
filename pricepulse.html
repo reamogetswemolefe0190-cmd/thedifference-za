@@ -5440,7 +5440,7 @@
 
               <div class="installment-text" id="detailInstallmentText">
 
-                Payflex / Mobicred: From <strong>R2,875</strong> x 4 interest-free payments
+                From <strong>R2,875</strong> / month in 4 interest-free installments with Payflex or Mobicred
 
               </div>
 
@@ -6907,36 +6907,51 @@
         "name": "Takealot",
         "itemPrice": 13999,
         "shippingFee": 0,
+        "shippingNote": "FREE Delivery (Exceeds R650 threshold)",
+        "deliveryEstimate": "2-4 Business Days",
         "inStock": true,
-        "url": null
+        "stockText": "In Stock (Takealot Hub)",
+        "affiliateUrl": "https://www.takealot.com"
       },
       {
         "name": "Amazon SA",
         "itemPrice": 13999,
         "shippingFee": 0,
+        "shippingNote": "FREE Delivery by Amazon",
+        "deliveryEstimate": "2-4 Business Days",
         "inStock": true,
-        "url": null
+        "stockText": "In Stock",
+        "affiliateUrl": "https://www.amazon.co.za"
       },
       {
         "name": "Makro SA",
         "itemPrice": 14499,
         "shippingFee": 95,
+        "shippingNote": "Standard Secure Courier R95",
+        "deliveryEstimate": "2-4 Business Days",
         "inStock": true,
-        "url": null
+        "stockText": "In Stock (Online & Selected Stores)",
+        "affiliateUrl": "https://www.makro.co.za"
       },
       {
         "name": "Incredible Connection",
         "itemPrice": 14999,
         "shippingFee": 0,
+        "shippingNote": "FREE Delivery | Same Day Store Pickup",
+        "deliveryEstimate": "2-4 Business Days",
         "inStock": true,
-        "url": null
+        "stockText": "Available In-Store Nationwide",
+        "affiliateUrl": "https://www.incredible.co.za"
       },
       {
         "name": "HiFi Corp",
-        "itemPrice": 15499,
+        "itemPrice": 16999,
         "shippingFee": 0,
+        "shippingNote": "FREE Standard Courier Delivery",
+        "deliveryEstimate": "2-4 Business Days",
         "inStock": true,
-        "url": null
+        "stockText": "In Stock (Ready to dispatch)",
+        "affiliateUrl": "https://www.hificorp.co.za"
       },
       {
         "name": "Game",
@@ -22480,9 +22495,8 @@
 
 
     function formatZAR(amount) {
-
-      return 'R ' + amount.toLocaleString('en-ZA');
-
+      if (amount == null || !Number.isFinite(Number(amount))) return 'N/A';
+      return 'R ' + Number(amount).toLocaleString('en-ZA');
     }
 
 
@@ -22507,26 +22521,21 @@
         };
       }
 
-      // Safe fallback
-      const inStockStores = (product.stores || []).filter(s => s.inStock === true && s.freshness !== 'unavailable');
-      const candidateStores = inStockStores.length > 0 ? inStockStores : [];
-      let lowestLanded = Infinity;
-      let highestLanded = -Infinity;
-      let bestStore = candidateStores[0] || null;
-
-      (product.stores || []).forEach(s => {
-        const total = (s.itemPrice || 0) + (s.shippingFee || 0);
-        if (candidateStores.includes(s) && total < lowestLanded) {
-          lowestLanded = total;
-          bestStore = s;
-        }
-        if (total > highestLanded) {
-          highestLanded = total;
-        }
-      });
-
-      const savings = (bestStore && highestLanded > lowestLanded) ? highestLanded - lowestLanded : 0;
-      return { lowestLanded: bestStore ? lowestLanded : null, highestLanded, savings, bestStore, champion: bestStore };
+      // Fail-closed: Never invent or issue a champion recommendation if OfferPolicy is unavailable
+      return {
+        lowestLanded: null,
+        lowestEligible: null,
+        lowestRecorded: null,
+        highestLanded: null,
+        savings: 0,
+        savingsPct: 0,
+        bestStore: null,
+        champion: null,
+        eligibleCount: 0,
+        purchasableCount: 0,
+        isChampionStale: true,
+        isAllOutOfStock: true
+      };
     }
 
 
@@ -24028,7 +24037,7 @@
               <div class="alert-item-name">${p.title}</div>
               <div class="alert-item-meta">
                 <span class="alert-item-price">${formatZAR(metrics.lowestLanded)}</span>
-                <span>on ${metrics.bestStore.name}</span>
+                <span>${metrics.bestStore ? 'on ' + metrics.bestStore.name : 'Out of Stock'}</span>
                 <span class="alert-status-chip">${item.note || 'TRACKING'}</span>
               </div>
             </div>

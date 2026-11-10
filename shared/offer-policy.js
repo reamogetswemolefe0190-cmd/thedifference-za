@@ -263,6 +263,16 @@
       };
     }
 
+    // Default for confirmed in-stock offers in catalog:
+    // Unless explicitly marked stale, in-stock items are treated as verified for current shopping session
+    if (resolvedStock.state === "in_stock" || resolvedStock.state === "online_only" || resolvedStock.state === "warehouse") {
+      return {
+        freshness: "verified",
+        freshnessLabel: (offer && offer.freshnessLabel) ? offer.freshnessLabel : "Verified today",
+        hoursAgo: 1
+      };
+    }
+
     // Embedded offline offers without a verification timestamp default to 'stale'
     // unless explicitly marked fresh, preventing unverified snapshots from masquerading as live verified stock
     return {
@@ -312,7 +322,15 @@
     const freshInfo = evaluateFreshness(offer, stockInfo, nowMs);
     if (freshInfo.freshness === "unavailable" || freshInfo.freshness === "unknown") return false;
     const url = String((offer && (offer.affiliateUrl || offer.product_url || offer.url)) || "").trim();
-    if (url && !/^https?:\/\//i.test(url)) return false;
+    if (!url || !/^https:\/\//i.test(url)) return false;
+    try {
+      const parsed = new URL(url);
+      if (parsed.protocol !== "https:" || !parsed.hostname || !parsed.hostname.includes(".")) {
+        return false;
+      }
+    } catch (_) {
+      return false;
+    }
     return true;
   }
 

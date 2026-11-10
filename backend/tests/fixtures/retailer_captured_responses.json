@@ -1,0 +1,306 @@
+{
+  "test_cases": [
+    {
+      "id": "takealot_standard_instock",
+      "retailer": "takealot",
+      "raw_input": "In stock",
+      "payload_fragment": {
+        "stock_availability_summary": { "status": "In stock" }
+      },
+      "expected_state": "in_stock",
+      "expected_purchasable": true
+    },
+    {
+      "id": "takealot_low_stock_countdown",
+      "retailer": "takealot",
+      "raw_input": "In stock (only 2 left)",
+      "payload_fragment": {
+        "stock_availability_summary": { "status": "In stock (only 2 left)" }
+      },
+      "expected_state": "in_stock",
+      "expected_purchasable": true
+    },
+    {
+      "id": "takealot_warehouse_supplier",
+      "retailer": "takealot",
+      "raw_input": "In stock at supplier (lead time: 3-5 days)",
+      "payload_fragment": {
+        "stock_availability_summary": { "status": "In stock at supplier (lead time: 3-5 days)" }
+      },
+      "expected_state": "warehouse",
+      "expected_purchasable": true
+    },
+    {
+      "id": "takealot_warehouse_dispatch",
+      "retailer": "takealot",
+      "raw_input": "In Stock - Warehouse Dispatch",
+      "payload_fragment": {
+        "stock_availability_summary": { "status": "In Stock - Warehouse Dispatch" }
+      },
+      "expected_state": "warehouse",
+      "expected_purchasable": true
+    },
+    {
+      "id": "takealot_dispatch_24h",
+      "retailer": "takealot",
+      "raw_input": "Dispatches in 24 hours",
+      "payload_fragment": {
+        "stock_availability_summary": { "status": "Dispatches in 24 hours" }
+      },
+      "expected_state": "in_stock",
+      "expected_purchasable": true
+    },
+    {
+      "id": "takealot_unavailable",
+      "retailer": "takealot",
+      "raw_input": "Currently unavailable",
+      "payload_fragment": {
+        "stock_availability_summary": { "status": "Currently unavailable" }
+      },
+      "expected_state": "out_of_stock",
+      "expected_purchasable": false
+    },
+    {
+      "id": "takealot_supplier_out_of_stock",
+      "retailer": "takealot",
+      "raw_input": "Supplier out of stock",
+      "payload_fragment": {
+        "stock_availability_summary": { "status": "Supplier out of stock" }
+      },
+      "expected_state": "out_of_stock",
+      "expected_purchasable": false
+    },
+    {
+      "id": "takealot_missing_summary",
+      "retailer": "takealot",
+      "raw_input": null,
+      "payload_fragment": {},
+      "expected_state": "unknown",
+      "expected_purchasable": false
+    },
+    {
+      "id": "takealot_empty_status",
+      "retailer": "takealot",
+      "raw_input": "",
+      "payload_fragment": {
+        "stock_availability_summary": { "status": "" }
+      },
+      "expected_state": "unknown",
+      "expected_purchasable": false
+    },
+    {
+      "id": "incredible_instock_nationwide",
+      "retailer": "incredible",
+      "raw_input": "In Stock (Nationwide)",
+      "payload_fragment": {
+        "inStock": "yes",
+        "stock_status": "In Stock (Nationwide)"
+      },
+      "expected_state": "in_stock",
+      "expected_purchasable": true
+    },
+    {
+      "id": "incredible_online_exclusive",
+      "retailer": "incredible",
+      "raw_input": "Available Online Only",
+      "payload_fragment": {
+        "inStock": "yes",
+        "stock_status": "Available Online Only"
+      },
+      "expected_state": "online_only",
+      "expected_purchasable": true
+    },
+    {
+      "id": "incredible_store_only",
+      "retailer": "incredible",
+      "raw_input": "Available in store only",
+      "payload_fragment": {
+        "inStock": "yes",
+        "stock_status": "Available in store only"
+      },
+      "expected_state": "store_only",
+      "expected_purchasable": true
+    },
+    {
+      "id": "incredible_preorder",
+      "retailer": "incredible",
+      "raw_input": "Pre-Order Now",
+      "payload_fragment": {
+        "inStock": "yes",
+        "stock_status": "Pre-Order Now"
+      },
+      "expected_state": "preorder",
+      "expected_purchasable": true
+    },
+    {
+      "id": "incredible_out_of_stock",
+      "retailer": "incredible",
+      "raw_input": "Out of Stock",
+      "payload_fragment": {
+        "inStock": "no",
+        "stock_status": "Out of Stock"
+      },
+      "expected_state": "out_of_stock",
+      "expected_purchasable": false
+    },
+    {
+      "id": "incredible_instock_yes_empty_status",
+      "retailer": "incredible",
+      "raw_input": "In Stock",
+      "payload_fragment": {
+        "inStock": "yes",
+        "stock_status": ""
+      },
+      "expected_state": "in_stock",
+      "expected_purchasable": true
+    },
+    {
+      "id": "incredible_instock_no_contradicting_status",
+      "retailer": "incredible",
+      "raw_input": "Out of Stock",
+      "payload_fragment": {
+        "inStock": "no",
+        "stock_status": "In Stock"
+      },
+      "expected_state": "out_of_stock",
+      "expected_purchasable": false
+    },
+    {
+      "id": "hificorp_warehouse",
+      "retailer": "hificorp",
+      "raw_input": "Warehouse Stock - Dispatches in 48h",
+      "payload_fragment": {
+        "inStock": "yes",
+        "stock_status": "Warehouse Stock - Dispatches in 48h"
+      },
+      "expected_state": "warehouse",
+      "expected_purchasable": true
+    },
+    {
+      "id": "hificorp_sold_out",
+      "retailer": "hificorp",
+      "raw_input": "Sold Out",
+      "payload_fragment": {
+        "inStock": "no",
+        "stock_status": "Sold Out"
+      },
+      "expected_state": "out_of_stock",
+      "expected_purchasable": false
+    },
+    {
+      "id": "hificorp_collect_in_store",
+      "retailer": "hificorp",
+      "raw_input": "Collect in store",
+      "payload_fragment": {
+        "inStock": "yes",
+        "stock_status": "Collect in store"
+      },
+      "expected_state": "store_only",
+      "expected_purchasable": true
+    },
+    {
+      "id": "makro_dual_channel",
+      "retailer": "makro",
+      "raw_input": "In stock online & in store",
+      "payload_fragment": {
+        "stock": "In stock online & in store"
+      },
+      "expected_state": "in_stock",
+      "expected_purchasable": true
+    },
+    {
+      "id": "makro_online_only",
+      "retailer": "makro",
+      "raw_input": "Available Online Only",
+      "payload_fragment": {
+        "stock": "Available Online Only"
+      },
+      "expected_state": "online_only",
+      "expected_purchasable": true
+    },
+    {
+      "id": "makro_store_only",
+      "retailer": "makro",
+      "raw_input": "Available in store only",
+      "payload_fragment": {
+        "stock": "Available in store only"
+      },
+      "expected_state": "store_only",
+      "expected_purchasable": true
+    },
+    {
+      "id": "makro_out_of_stock",
+      "retailer": "makro",
+      "raw_input": "Temporarily out of stock",
+      "payload_fragment": {
+        "stock": "Temporarily out of stock"
+      },
+      "expected_state": "out_of_stock",
+      "expected_purchasable": false
+    },
+    {
+      "id": "amazon_instock",
+      "retailer": "amazon",
+      "raw_input": "In Stock",
+      "payload_fragment": {
+        "stock_text": "In Stock"
+      },
+      "expected_state": "in_stock",
+      "expected_purchasable": true
+    },
+    {
+      "id": "amazon_low_stock",
+      "retailer": "amazon",
+      "raw_input": "Only 3 left in stock - order soon",
+      "payload_fragment": {
+        "stock_text": "Only 3 left in stock - order soon"
+      },
+      "expected_state": "in_stock",
+      "expected_purchasable": true
+    },
+    {
+      "id": "amazon_unavailable",
+      "retailer": "amazon",
+      "raw_input": "Currently unavailable.",
+      "payload_fragment": {
+        "stock_text": "Currently unavailable."
+      },
+      "expected_state": "out_of_stock",
+      "expected_purchasable": false
+    },
+    {
+      "id": "amazon_preorder",
+      "retailer": "amazon",
+      "raw_input": "This item has not yet been released. Pre-order now.",
+      "payload_fragment": {
+        "stock_text": "This item has not yet been released. Pre-order now."
+      },
+      "expected_state": "preorder",
+      "expected_purchasable": true
+    },
+    {
+      "id": "trap_negative_before_positive_1",
+      "retailer": "general",
+      "raw_input": "Temporarily unavailable - in stock soon",
+      "payload_fragment": {},
+      "expected_state": "out_of_stock",
+      "expected_purchasable": false
+    },
+    {
+      "id": "trap_negative_before_positive_2",
+      "retailer": "general",
+      "raw_input": "Not in stock",
+      "payload_fragment": {},
+      "expected_state": "out_of_stock",
+      "expected_purchasable": false
+    },
+    {
+      "id": "trap_negative_before_positive_3",
+      "retailer": "general",
+      "raw_input": "No stock currently available",
+      "payload_fragment": {},
+      "expected_state": "out_of_stock",
+      "expected_purchasable": false
+    }
+  ]
+}

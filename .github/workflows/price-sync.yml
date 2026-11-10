@@ -52,19 +52,43 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           cd backend
-          python scrapers/sync_prices.py --all --fast
+          TARGET="${{ github.event.inputs.target_env || 'remote' }}"
+          echo "Selected D1 target environment: $TARGET"
+          python scrapers/sync_prices.py --all --fast --target "$TARGET"
+
+      - name: Verify Remote Database Changed & Recorded Freshness
+        if: success()
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          cd backend
+          TARGET="${{ github.event.inputs.target_env || 'remote' }}"
+          TARGET_FLAG="--${TARGET}"
+          echo "Verifying D1 data changes on $TARGET..."
+          npx wrangler d1 execute pricepulse-db $TARGET_FLAG \
+            --command="SELECT COUNT(*) as verified_offers, MAX(last_updated) as latest_update FROM store_offers WHERE freshness_state = 'verified';"
 
       - name: Invalidate Edge KV Cache
         if: success()
         env:
           ADMIN_PURGE_TOKEN: ${{ secrets.ADMIN_PURGE_TOKEN }}
         run: |
-          if [ -n "$ADMIN_PURGE_TOKEN" ]; then
-            curl -s -X POST https://pricepulse-backend.pricepulse-sa.workers.dev/api/cache/purge \
-              -H "Authorization: Bearer $ADMIN_PURGE_TOKEN" \
-              -H "Content-Type: application/json" \
-              -d '{"scope": "all"}'
-            echo "Edge catalog KV cache purged successfully."
-          else
-            echo "ADMIN_PURGE_TOKEN not provided; skipping cache purge."
+          if [ -z "$ADMIN_PURGE_TOKEN" ]; then
+            echo "::error::ADMIN_PURGE_TOKEN secret missing. Cache cannot be purged."
+            exit 1
           fi
+          HTTP_CODE=$(curl -s -S -o /tmp/purge_res.json -w "%{http_code}" -X POST https://pricepulse-backend.pricepulse-sa.workers.dev/api/cache/purge \
+            -H "Authorization: Bearer $ADMIN_PURGE_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{"scope": "all"}')
+          CURL_STATUS=$?
+          echo "Purge HTTP Status: $HTTP_CODE (curl exit: $CURL_STATUS)"
+          if [ -f /tmp/purge_res.json ]; then
+            cat /tmp/purge_res.json
+          fi
+          if [ $CURL_STATUS -ne 0 ] || [ "$HTTP_CODE" -ne 200 ]; then
+            echo "::error::Cache purge failed with HTTP status $HTTP_CODE (curl status $CURL_STATUS)"
+            exit 1
+          fi
+          echo "Edge catalog KV cache purged successfully."

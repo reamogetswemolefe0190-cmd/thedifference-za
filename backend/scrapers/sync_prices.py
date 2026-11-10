@@ -152,30 +152,20 @@ def resolve_category(input_str: str) -> Optional[str]:
 import glob
 import sqlite3
 
-def run_d1_command(sql: str) -> bool:
-    """Executes a SQL statement against local Cloudflare D1 database (direct SQLite with wrangler fallback)."""
-    # Fast path: Direct SQLite connection to local Miniflare D1 database files
-    d1_dir = BACKEND_DIR / ".wrangler" / "state" / "v3" / "d1" / "miniflare-D1DatabaseObject"
-    if d1_dir.exists():
-        d1_files = glob.glob(str(d1_dir / "*.sqlite"))
-        valid_dbs = [f for f in d1_files if not f.endswith("metadata.sqlite")]
-        if valid_dbs:
-            any_ok = False
-            for db_path in valid_dbs:
-                try:
-                    with sqlite3.connect(db_path, timeout=5) as conn:
-                        conn.executescript(sql)
-                    any_ok = True
-                except Exception:
-                    pass
-            if any_ok:
-                return True
+CURRENT_TARGET = "local"
+D1_STATS = {
+    "attempted": 0,
+    "success": 0,
+    "failure": 0,
+    "quarantined": 0
+}
 
-    # Fallback to Wrangler CLI
+def verify_remote_d1_access() -> bool:
+    """Verifies that remote Cloudflare D1 can be queried before starting sync."""
     cmd = [
         "npx", "wrangler", "d1", "execute", "pricepulse-db",
-        "--local",
-        f"--command={sql}"
+        "--remote",
+        "--command=SELECT 1 as ping;"
     ]
     try:
         proc = subprocess.run(
@@ -188,13 +178,56 @@ def run_d1_command(sql: str) -> bool:
             shell=True,
             timeout=30
         )
+        return proc.returncode == 0
+    except Exception as e:
+        print(f"[PREFLIGHT FAIL] Remote D1 connection check failed: {e}")
+        return False
+
+def run_d1_command(sql: str) -> bool:
+    """Executes a SQL statement against local or remote Cloudflare D1 database."""
+    if CURRENT_TARGET == "local":
+        # Fast path: Direct SQLite connection to local Miniflare D1 database files
+        d1_dir = BACKEND_DIR / ".wrangler" / "state" / "v3" / "d1" / "miniflare-D1DatabaseObject"
+        if d1_dir.exists():
+            d1_files = glob.glob(str(d1_dir / "*.sqlite"))
+            valid_dbs = [f for f in d1_files if not f.endswith("metadata.sqlite")]
+            if valid_dbs:
+                any_ok = False
+                for db_path in valid_dbs:
+                    try:
+                        with sqlite3.connect(db_path, timeout=5) as conn:
+                            conn.executescript(sql)
+                        any_ok = True
+                    except Exception:
+                        pass
+                if any_ok:
+                    return True
+
+    # Wrangler CLI execution (respecting local vs remote target)
+    target_flag = "--remote" if CURRENT_TARGET == "remote" else "--local"
+    cmd = [
+        "npx", "wrangler", "d1", "execute", "pricepulse-db",
+        target_flag,
+        f"--command={sql}"
+    ]
+    try:
+        proc = subprocess.run(
+            cmd,
+            cwd=str(BACKEND_DIR),
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            shell=True,
+            timeout=45
+        )
         if proc.returncode != 0:
             err_line = proc.stderr.strip().split("\n")[0] if proc.stderr else "Unknown error"
-            print(f"[D1 ERROR] Code {proc.returncode}: {err_line[:100]}")
+            print(f"[D1 ERROR ({CURRENT_TARGET})] Code {proc.returncode}: {err_line[:100]}")
             return False
         return True
     except Exception as e:
-        print(f"[D1 EXEC FAIL] {e}")
+        print(f"[D1 EXEC FAIL ({CURRENT_TARGET})] {e}")
         return False
 
 def update_d1_store_offer(offer: StandardOffer, previous_price: float = None):
@@ -217,6 +250,7 @@ def update_d1_store_offer(offer: StandardOffer, previous_price: float = None):
     # 2. Check for pricing anomalies (>80% drop / >500% spike)
     is_clean, anomaly_reason, pct_change = ANOMALY_DETECTOR.check_price(offer.item_price, previous_price)
     if not is_clean:
+        D1_STATS["quarantined"] += 1
         print(f"  [QUARANTINED] Price anomaly detected for {offer.store_id} ({anomaly_reason}, {pct_change:+.1f}%). Isolating in audit log.")
         quarantine_sql = (
             f"INSERT INTO price_anomalies (product_id, store_id, suspect_price, previous_price, percentage_change, reason, status) "
@@ -265,9 +299,13 @@ def update_d1_store_offer(offer: StandardOffer, previous_price: float = None):
         f"INSERT INTO price_history (product_id, store_id, landed_price, recorded_date) "
         f"VALUES ('{offer.product_id}', '{offer.store_id}', {landed_price}, date('now'));"
     )
+    D1_STATS["attempted"] += 1
     ok = run_d1_command(sql)
     if ok:
+        D1_STATS["success"] += 1
         print(f"  [SYNCED D1] {offer.store_id}: R{offer.item_price:,.0f} (Verified live)")
+    else:
+        D1_STATS["failure"] += 1
     return ok
 
 def update_catalog_json_files(offers: List[StandardOffer]):
@@ -381,11 +419,24 @@ async def main():
     parser.add_argument("--limit", type=int, help="Limit number of products processed")
     parser.add_argument("--tier", type=int, choices=[1, 2, 3], help="Priority catalog tier: 1 (Top 50), 2 (51-125), 3 (126-200)")
     parser.add_argument("--all", action="store_true", help="Sync all matching products in the registry")
+    parser.add_argument("--target", type=str, choices=["local", "remote"], default="local", help="D1 target environment: local or remote")
     parser.add_argument("--fast", action=argparse.BooleanOptionalAction, default=True, help="Use direct JSON API fetching (<200ms) for Takealot and JD Group")
     parser.add_argument("--all-stores", action="store_true", help="Include all 6 retailers (activates Playwright for non-JSON stores)")
     parser.add_argument("--headless", action="store_true", default=True, help="Run browser headless for Playwright fallbacks")
     parser.add_argument("--update-json", action="store_true", help="Persist updated prices to local JSON catalog files")
     args = parser.parse_args()
+
+    global CURRENT_TARGET
+    CURRENT_TARGET = args.target
+    print(f"[INFO] D1 Target Environment: {CURRENT_TARGET.upper()}")
+
+    if CURRENT_TARGET == "remote":
+        print("[INFO] Verifying Remote Cloudflare D1 connection...")
+        if not verify_remote_d1_access():
+            print("[FATAL] Remote Cloudflare D1 preflight check failed. Check credentials or network connectivity.")
+            sys.exit(1)
+        print("[INFO] Remote Cloudflare D1 connection verified.")
+        run_d1_command("INSERT INTO sync_runs (trigger_source, target_env, status) VALUES ('cli', 'remote', 'running');")
 
     registry_path = SCRAPERS_DIR / "registry.json"
     if not registry_path.exists():
@@ -474,11 +525,27 @@ async def main():
     if args.update_json and all_synced_offers:
         update_catalog_json_files(all_synced_offers)
 
+    if CURRENT_TARGET == "remote":
+        status_val = "failed" if (D1_STATS["failure"] > 0 or (len(all_synced_offers) > 0 and D1_STATS["success"] == 0)) else "completed"
+        run_d1_command(
+            f"UPDATE sync_runs SET finished_at = CURRENT_TIMESTAMP, "
+            f"offers_attempted = {D1_STATS['attempted']}, "
+            f"offers_synced = {D1_STATS['success']}, "
+            f"offers_failed = {D1_STATS['failure']}, "
+            f"status = '{status_val}' "
+            f"WHERE id = (SELECT MAX(id) FROM sync_runs);"
+        )
+
     print("\n==================================================")
     print(f"[SUMMARY] Sync completed in {total_time:.2f} seconds.")
     print(f"[SUMMARY] Total products processed: {len(target_prods)}")
     print(f"[SUMMARY] Total retail offers synced: {len(all_synced_offers)}")
+    print(f"[SUMMARY] D1 Operations: {D1_STATS['success']} succeeded, {D1_STATS['failure']} failed, {D1_STATS['quarantined']} quarantined.")
     print("==================================================")
+
+    if CURRENT_TARGET == "remote" and (D1_STATS["failure"] > 0 or (len(all_synced_offers) > 0 and D1_STATS["success"] == 0)):
+        print(f"[FATAL] Remote D1 sync failed: {D1_STATS['failure']} write errors encountered. Exiting with non-zero status.")
+        sys.exit(1)
 
 if __name__ == "__main__":
     asyncio.run(main())

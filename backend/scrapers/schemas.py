@@ -121,7 +121,8 @@ def validate_standard_offer(offer_dict: Dict[str, Any]) -> Tuple[bool, Optional[
     except (ValueError, TypeError):
         return False, f"Invalid price format: {offer_dict.get('item_price')}"
 
-    if not isinstance(offer_dict["product_url"], str) or not offer_dict["product_url"].startswith("http"):
-        return False, f"Invalid product URL: {offer_dict.get('product_url')}"
+    url = str(offer_dict.get("product_url", "")).strip()
+    if not url.startswith("https://") or len(url) < 12 or "." not in url[8:]:
+        return False, f"Invalid product HTTPS URL: {offer_dict.get('product_url')}"
 
     return True, None

@@ -12,7 +12,9 @@
     "db:seed": "wrangler d1 execute pricepulse-db --local --file=seed_200.sql",
     "db:seed:small": "wrangler d1 execute pricepulse-db --local --file=seed.sql",
     "db:migrate:remote": "wrangler d1 execute pricepulse-db --remote --file=migrations/0002_offer_evidence_and_sync_runs.sql",
-    "test:unit": "node --test \"tests/js/*.test.js\""
+    "test:unit": "node --test \"tests/js/*.test.js\"",
+    "test:kv:remote": "node --test tests/integration/kv-remote.test.js",
+    "test": "npm run test:unit && npm run test:kv:remote"
   },
   "devDependencies": {
     "wrangler": "4.160.0"
