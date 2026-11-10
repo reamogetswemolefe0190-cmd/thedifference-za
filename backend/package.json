@@ -3,13 +3,18 @@
   "version": "1.0.0",
   "description": "PricePulse South Africa Cloudflare Worker & D1 API",
   "main": "src/index.js",
+  "type": "module",
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
+    "deploy:test": "wrangler deploy --env test",
     "db:init": "wrangler d1 execute pricepulse-db --local --file=schema.sql",
-    "db:seed": "wrangler d1 execute pricepulse-db --local --file=seed.sql"
+    "db:seed": "wrangler d1 execute pricepulse-db --local --file=seed_200.sql",
+    "db:seed:small": "wrangler d1 execute pricepulse-db --local --file=seed.sql",
+    "db:migrate:remote": "wrangler d1 execute pricepulse-db --remote --file=migrations/0002_offer_evidence_and_sync_runs.sql",
+    "test:unit": "node --test \"tests/js/*.test.js\""
   },
   "devDependencies": {
-    "wrangler": "^3.90.0"
+    "wrangler": "4.160.0"
   }
 }

@@ -5060,7 +5060,7 @@
 
             <span class="bf-subtext">&bull; Landed prices calculated from stored offer delivery fees (R 0 for collection)</span>
 
-            <span class="bf-text">&bull; Live price drops verified every 15 mins across South Africa</span>
+            <span class="bf-text">&bull; Landed prices include each retailer's listed delivery fee</span>
 
             <span class="bf-subtext">&bull; 4-month interest-free Payflex &amp; Mobicred calculations included</span>
 
@@ -5072,7 +5072,7 @@
 
             <span class="bf-subtext">&bull; Landed prices calculated from stored offer delivery fees (R 0 for collection)</span>
 
-            <span class="bf-text">&bull; Live price drops verified every 15 mins across South Africa</span>
+            <span class="bf-text">&bull; Landed prices include each retailer's listed delivery fee</span>
 
             <span class="bf-subtext">&bull; 4-month interest-free Payflex &amp; Mobicred calculations included</span>
 
@@ -5576,6 +5576,9 @@
 
 
   <!-- ================= JAVASCRIPT DATA & LOGIC ================= -->
+
+  <!-- Single Source-of-Truth Offer Policy Engine -->
+  <script src="shared/offer-policy.js"></script>
 
   <script>
 
@@ -22485,41 +22488,45 @@
 
 
     function computePriceMetrics(product) {
+      if (typeof OfferPolicy !== 'undefined' && typeof OfferPolicy.evaluateProduct === 'function') {
+        const mode = typeof currentDeliveryMode !== 'undefined' ? currentDeliveryMode : 'door';
+        const evaluation = OfferPolicy.evaluateProduct(product, mode, Date.now());
+        return {
+          lowestLanded: evaluation.lowestLanded,
+          lowestEligible: evaluation.lowestEligible,
+          lowestRecorded: evaluation.lowestRecorded,
+          highestLanded: evaluation.highestComparable,
+          savings: evaluation.savings,
+          savingsPct: evaluation.savingsPct,
+          bestStore: evaluation.champion,
+          champion: evaluation.champion,
+          eligibleCount: evaluation.eligibleCount,
+          purchasableCount: evaluation.purchasableCount,
+          isChampionStale: evaluation.isChampionStale,
+          isAllOutOfStock: evaluation.isAllOutOfStock
+        };
+      }
 
+      // Safe fallback
+      const inStockStores = (product.stores || []).filter(s => s.inStock === true && s.freshness !== 'unavailable');
+      const candidateStores = inStockStores.length > 0 ? inStockStores : [];
       let lowestLanded = Infinity;
-
       let highestLanded = -Infinity;
+      let bestStore = candidateStores[0] || null;
 
-      let bestStore = product.stores[0];
-
-
-
-      product.stores.forEach(s => {
-
-        const total = s.itemPrice + s.shippingFee;
-
-        if (total < lowestLanded) {
-
+      (product.stores || []).forEach(s => {
+        const total = (s.itemPrice || 0) + (s.shippingFee || 0);
+        if (candidateStores.includes(s) && total < lowestLanded) {
           lowestLanded = total;
-
           bestStore = s;
-
         }
-
         if (total > highestLanded) {
-
           highestLanded = total;
-
         }
-
       });
 
-
-
-      const savings = highestLanded - lowestLanded;
-
-      return { lowestLanded, highestLanded, savings, bestStore };
-
+      const savings = (bestStore && highestLanded > lowestLanded) ? highestLanded - lowestLanded : 0;
+      return { lowestLanded: bestStore ? lowestLanded : null, highestLanded, savings, bestStore, champion: bestStore };
     }
 
 
@@ -22613,13 +22620,10 @@
 
 
     function createProductCard(prod) {
-
-      const { lowestLanded, highestLanded, savings, bestStore } = computePriceMetrics(prod);
-
+      const metrics = computePriceMetrics(prod);
+      const { lowestLanded, highestLanded, savings, bestStore } = metrics;
       const discountPct = highestLanded > lowestLanded ? Math.round(((highestLanded - lowestLanded) / highestLanded) * 100) : 0;
-
       const rating = prod.rating || 4.8;
-
       const reviews = prod.reviewsCount || 250;
 
 
@@ -22685,25 +22689,19 @@
 
 
             <!-- Live Stock & Courier Delivery Status Dot -->
-
             <div class="card-stock-row">
-
-              <span class="stock-dot-live"></span>
-
-              <span class="stock-text-live">In Stock • ${bestStore.shippingFee === 0 ? 'Free Courier Delivery' : 'Courier Available'}</span>
-
+              <span class="${bestStore ? 'stock-dot-live' : 'stock-dot-live'}" style="${bestStore ? '' : 'background: #94a3b8;'}"></span>
+              <span class="stock-text-live">${bestStore ? (bestStore.shippingFee === 0 ? 'In Stock • Free Courier Delivery' : 'In Stock • Courier Available') : (metrics.isAllOutOfStock ? 'Out of Stock Across Stores' : 'Recorded Market Baseline')}</span>
             </div>
 
-
-
             <div class="card-best-store">
-
-              <span class="best-txt">Best on</span>
-
-              ${getStoreLogoHTML(bestStore.name, 'store-inline-img')}
-
-              ${bestStore.shippingFee === 0 ? '<span class="free-del-tag">• Free Del.</span>' : `<span>• +R${bestStore.shippingFee} del.</span>`}
-
+              ${bestStore ? `
+                <span class="best-txt">Best on</span>
+                ${getStoreLogoHTML(bestStore.name, 'store-inline-img')}
+                ${bestStore.shippingFee === 0 ? '<span class="free-del-tag">• Free Del.</span>' : `<span>• +R${bestStore.shippingFee} del.</span>`}
+              ` : `
+                <span class="best-txt" style="color: #64748b;">${metrics.isAllOutOfStock ? 'Unavailable' : 'Multiple stores listed'}</span>
+              `}
             </div>
 
 
@@ -23341,232 +23339,220 @@
 
 
     function renderStoreComparisonMatrix(prod) {
-
       const isPickup = currentDeliveryMode === 'pickup';
 
-      const sortedStores = [...prod.stores].map(st => {
+      let evaluation = null;
+      if (typeof OfferPolicy !== 'undefined' && typeof OfferPolicy.evaluateProduct === 'function') {
+        evaluation = OfferPolicy.evaluateProduct(prod, currentDeliveryMode, Date.now());
+      }
 
-        const effectiveShipping = isPickup ? 0 : st.shippingFee;
-
-        const totalLanded = st.itemPrice + effectiveShipping;
-
-        const effectiveEstimate = isPickup ? 'Ready in 2-4 Hours (Same Day)' : st.deliveryEstimate;
-
-        const effectiveShippingNote = isPickup ? `Free In-Store Collection (${st.name} branch / Pargo point)` : st.shippingNote;
-
+      const sortedStores = (evaluation && evaluation.offers) ? evaluation.offers : [...prod.stores].map(st => {
+        const effectiveShipping = isPickup ? 0 : (st.shippingFee || 0);
+        const totalLanded = (st.itemPrice || 0) + effectiveShipping;
+        const effectiveEstimate = isPickup ? 'Ready in 2-4 Hours (Same Day)' : (st.deliveryEstimate || '2-4 Business Days');
+        const effectiveShippingNote = isPickup ? `Free In-Store Collection (${st.name} branch / Pargo point)` : (st.shippingNote || 'Standard Courier');
         const freshness = st.freshness || (st.inStock ? 'verified' : 'unavailable');
-
         const freshnessLabel = st.freshnessLabel || (st.inStock ? 'Verified today' : 'Out of Stock');
-
-
-
         return {
-
           ...st,
-
           effectiveShipping,
-
           totalLanded,
-
           effectiveEstimate,
-
           effectiveShippingNote,
-
           freshness,
-
           freshnessLabel
-
         };
-
       }).sort((a, b) => a.totalLanded - b.totalLanded);
 
+      // UNIFIED SOURCE-OF-TRUTH POLICY
+      const champion = evaluation ? evaluation.champion : (sortedStores.find(st => st.inStock && st.freshness === 'verified') || null);
+      const isChampionStale = evaluation ? evaluation.isChampionStale : (champion === null && sortedStores.some(st => st.inStock));
+      const isAllOutOfStock = evaluation ? evaluation.isAllOutOfStock : !sortedStores.some(st => st.inStock);
 
+      const lowestLanded = champion ? champion.totalLanded : (sortedStores[0] ? sortedStores[0].totalLanded : 0);
+      const highestLanded = sortedStores[sortedStores.length - 1] ? sortedStores[sortedStores.length - 1].totalLanded : lowestLanded;
+      const savings = (champion && highestLanded > lowestLanded) ? highestLanded - lowestLanded : 0;
 
-      // SOURCE-OF-TRUTH POLICY: Lowest Landed Price champion MUST be in-stock and verified
-
-      const verifiedStores = sortedStores.filter(st => st.inStock && st.freshness === 'verified');
-
-      const isChampionStale = verifiedStores.length === 0 && sortedStores.some(st => st.inStock);
-
-      const bestStore = verifiedStores.length > 0 ? verifiedStores[0] : sortedStores[0];
-
-      const lowestLanded = bestStore.totalLanded;
-
-      const highestLanded = sortedStores[sortedStores.length - 1].totalLanded;
-
-      const savings = highestLanded - lowestLanded;
-
-
-
-      document.getElementById('detailLowestLandedPrice').innerText = formatZAR(lowestLanded);
-
-      document.getElementById('detailHighestPrice').innerText = highestLanded > lowestLanded ? formatZAR(highestLanded) : '';
-
-      document.getElementById('detailMaxSavings').innerText = savings > 0 
-
-        ? `You save up to ${formatZAR(savings)} across SA retailers today` 
-
-        : (isChampionStale ? 'Recorded market baseline' : 'Verified market low across stores');
-
-      document.getElementById('detailSavingsBadge').innerText = savings > 0 ? `Save ${formatZAR(savings)}` : (isChampionStale ? 'Unverified' : 'Verified Price');
+      if (champion) {
+        document.getElementById('detailLowestLandedPrice').innerText = formatZAR(lowestLanded);
+        document.getElementById('detailHighestPrice').innerText = highestLanded > lowestLanded ? formatZAR(highestLanded) : '';
+        document.getElementById('detailMaxSavings').innerText = savings > 0 
+          ? `You save up to ${formatZAR(savings)} across SA retailers today` 
+          : 'Verified market low across stores';
+        document.getElementById('detailSavingsBadge').innerText = savings > 0 ? `Save ${formatZAR(savings)}` : 'Verified Price';
+      } else if (isAllOutOfStock) {
+        document.getElementById('detailLowestLandedPrice').innerText = 'Out of Stock';
+        document.getElementById('detailHighestPrice').innerText = '';
+        document.getElementById('detailMaxSavings').innerText = 'Currently out of stock across all verified retailers';
+        document.getElementById('detailSavingsBadge').innerText = 'Unavailable';
+      } else {
+        document.getElementById('detailLowestLandedPrice').innerText = formatZAR(lowestLanded);
+        document.getElementById('detailHighestPrice').innerText = '';
+        document.getElementById('detailMaxSavings').innerText = 'Recorded historical market baseline (Verification pending)';
+        document.getElementById('detailSavingsBadge').innerText = 'Recorded Baseline';
+      }
 
       document.getElementById('detailStoreCount').innerText = `${prod.stores.length} South African stores`;
 
-
-
       // Update Payflex / Mobicred installment calculator
-
-      const installmentAmount = Math.round(lowestLanded / 4);
-
       const installmentTextEl = document.getElementById('detailInstallmentText');
-
       if (installmentTextEl) {
+        if (champion) {
+          const installmentAmount = Math.round(lowestLanded / 4);
+          installmentTextEl.innerText = `From ${formatZAR(installmentAmount)} / month in 4 interest-free installments with Payflex or Mobicred.`;
+          installmentTextEl.style.display = 'block';
+        } else {
+          installmentTextEl.style.display = 'none';
+        }
+      }
 
-        installmentTextEl.innerText = `From ${formatZAR(installmentAmount)} / month in 4 interest-free installments with Payflex or Mobicred.`;
-
+      // Update Best Choice CTA
+      const ctaEl = document.getElementById('detailBestChoiceCTA');
+      if (ctaEl) {
+        if (champion) {
+          ctaEl.innerHTML = `
+            <a href="${champion.affiliateUrl}" target="_blank" rel="noopener noreferrer" class="cta-best-btn">
+              ${getStoreLogoHTML(champion.name, 'store-inline-img')}
+              <span>Go to Lowest Price (${champion.name})</span>
+              <svg class="icon-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          `;
+        } else if (isAllOutOfStock) {
+          ctaEl.innerHTML = `
+            <button class="cta-best-btn" disabled style="opacity: 0.6; cursor: not-allowed; background: var(--color-background-muted, #94a3b8);">
+              <span>Out of Stock Across Retailers</span>
+            </button>
+          `;
+        } else {
+          ctaEl.innerHTML = `
+            <a href="#matrixView" class="cta-best-btn" style="background: #475569;" onclick="document.getElementById('detailStoreMatrix').scrollIntoView({ behavior: 'smooth' }); return false;">
+              <span>Compare Retailers Below</span>
+            </a>
+          `;
+        }
       }
 
 
 
-      // Update Best Choice CTA
-
-      document.getElementById('detailBestChoiceCTA').innerHTML = `
-
-        <a href="${bestStore.affiliateUrl}" target="_blank" rel="noopener noreferrer" class="cta-best-btn">
-
-          ${getStoreLogoHTML(bestStore.name, 'store-inline-img')}
-
-          <span>${isChampionStale ? 'View Store Baseline' : 'Go to Lowest Price'} (${bestStore.name})</span>
-
-          <svg class="icon-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-
-            <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-
-          </svg>
-
-        </a>
-
-      `;
-
-
-
       // Populate Meta Astryx AI Price Intelligence Card (#astryxAiAdvisorCard)
-      // Built following the official `astryx` skill (@astryxdesign/cli v0.7.11):
-      // - Card paired with Layout (LayoutHeader[data-has-divider], LayoutContent, LayoutFooter[data-has-divider])
-      // - Flat 3-column dashboard-scorecard KPIs with tabular numerals (zero nested cards inside Card)
-      // - 2-word Badge (`data-variant`, `title`) with details in surrounding supporting Text
-      // - ProgressBar (`astryx-progress-bar`, `astryx-progress-bar-track`, `astryx-progress-bar-fill`, `astryx-progress-bar-mark`)
       const aiCardEl = document.getElementById('astryxAiAdvisorCard');
       if (aiCardEl) {
-        const totalStoresCount = sortedStores.length;
-        const inStockStores = sortedStores.filter(s => s.inStock);
-        const inStockCount = inStockStores.length;
-        const sumLanded = sortedStores.reduce((acc, s) => acc + s.totalLanded, 0);
-        const avgLanded = Math.round(sumLanded / Math.max(1, totalStoresCount));
-        const vsAvgSavings = Math.max(0, avgLanded - lowestLanded);
-        const spreadPct = highestLanded > lowestLanded
-          ? Math.round(((highestLanded - lowestLanded) / highestLanded) * 100)
-          : 0;
-        const highestStore = sortedStores[sortedStores.length - 1];
+        if (!champion) {
+          aiCardEl.style.display = 'none';
+        } else {
+          aiCardEl.style.display = 'block';
+          const totalStoresCount = sortedStores.length;
+          const inStockStores = sortedStores.filter(s => s.inStock);
+          const inStockCount = inStockStores.length;
+          const sumLanded = sortedStores.reduce((acc, s) => acc + s.totalLanded, 0);
+          const avgLanded = Math.round(sumLanded / Math.max(1, totalStoresCount));
+          const vsAvgSavings = Math.max(0, avgLanded - lowestLanded);
+          const spreadPct = highestLanded > lowestLanded
+            ? Math.round(((highestLanded - lowestLanded) / highestLanded) * 100)
+            : 0;
+          const highestStore = sortedStores[sortedStores.length - 1] || champion;
 
-        // Determinate savings capture & store average target mark position (0..100 scale)
-        const efficiencyScore = spreadPct > 0 ? Math.min(94, Math.max(66, 64 + spreadPct)) : 80;
-        const avgMarkPos = highestLanded > lowestLanded
-          ? Math.min(88, Math.max(35, Math.round(((highestLanded - avgLanded) / (highestLanded - lowestLanded)) * efficiencyScore)))
-          : 60;
+          // Determinate savings capture & store average target mark position (0..100 scale)
+          const efficiencyScore = spreadPct > 0 ? Math.min(94, Math.max(66, 64 + spreadPct)) : 80;
+          const avgMarkPos = highestLanded > lowestLanded
+            ? Math.min(88, Math.max(35, Math.round(((highestLanded - avgLanded) / (highestLanded - lowestLanded)) * efficiencyScore)))
+            : 60;
 
-        // Astryx Badge rule: keep badge label to 1-2 words; put detail in surrounding supporting text
-        let badgeVariant = 'green';
-        let badgeText = spreadPct >= 12 ? 'Strong Buy' : (savings > 0 ? 'Good Value' : 'Market Low');
-        if (isChampionStale) {
-          badgeVariant = 'yellow';
-          badgeText = 'Baseline';
-        } else if (spreadPct >= 5 && spreadPct < 12) {
-          badgeVariant = 'teal';
-        }
-        const supportingSpread = spreadPct > 0
-          ? `-${spreadPct}% below market high`
-          : 'Verified SA baseline';
+          // Astryx Badge rule: keep badge label to 1-2 words; put detail in surrounding supporting text
+          let badgeVariant = 'green';
+          let badgeText = spreadPct >= 12 ? 'Strong Buy' : (savings > 0 ? 'Good Value' : 'Market Low');
+          if (isChampionStale) {
+            badgeVariant = 'yellow';
+            badgeText = 'Baseline';
+          } else if (spreadPct >= 5 && spreadPct < 12) {
+            badgeVariant = 'teal';
+          }
+          const supportingSpread = spreadPct > 0
+            ? `-${spreadPct}% below market high`
+            : 'Verified SA baseline';
 
-        const fulfillmentKpi = isPickup
-          ? 'R 0 Pickup'
-          : (bestStore.effectiveShipping === 0 ? 'R 0 Courier' : formatZAR(bestStore.effectiveShipping));
-        const fulfillmentDelta = isPickup
-          ? `Ready in 2-4 hrs (${bestStore.name})`
-          : (bestStore.effectiveShipping === 0
-              ? `Free door delivery at ${bestStore.name}`
-              : `Click & Collect saves ${formatZAR(bestStore.effectiveShipping)}`);
+          const fulfillmentKpi = isPickup
+            ? 'R 0 Pickup'
+            : (champion.effectiveShipping === 0 ? 'R 0 Courier' : formatZAR(champion.effectiveShipping));
+          const fulfillmentDelta = isPickup
+            ? `Ready in 2-4 hrs (${champion.name})`
+            : (champion.effectiveShipping === 0
+                ? `Free door delivery at ${champion.name}`
+                : `Click & Collect saves ${formatZAR(champion.effectiveShipping)}`);
 
-        aiCardEl.innerHTML = `
-          <div class="astryx-layout-header" data-has-divider="true">
-            <div class="astryx-hstack">
-              <span class="astryx-icon-surface" aria-hidden="true">
-                <svg class="icon-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z" />
-                </svg>
-              </span>
-              <div class="astryx-vstack">
-                <div class="astryx-hstack">
-                  <h3 class="astryx-heading" data-level="3">Astryx Price Intelligence</h3>
-                  <span class="astryx-statusdot success" aria-hidden="true"></span>
-                </div>
-                <span class="astryx-text" data-type="supporting">Store Average South African landed cost scorecard</span>
-              </div>
-            </div>
-            <div class="astryx-hstack">
-              <span class="astryx-text" data-type="supporting" data-tabular-nums="true">${supportingSpread}</span>
-              <span class="astryx-badge" data-variant="${badgeVariant}" title="${badgeText}">${badgeText}</span>
-            </div>
-          </div>
-
-          <div class="astryx-layout-content">
-            <div class="astryx-progress-bar" data-variant="success">
-              <div class="astryx-progress-bar-header">
-                <span class="astryx-low-val">Lowest: ${formatZAR(lowestLanded)} (${bestStore.name})</span>
-                <span>Store Avg: <strong>${formatZAR(avgLanded)}</strong></span>
-                <span>High: <strong>${formatZAR(highestLanded)}</strong> (${highestStore.name})</span>
-              </div>
-              <div class="astryx-progress-bar-track" role="progressbar" aria-label="Landed price position vs store market average" aria-valuenow="${efficiencyScore}" aria-valuemin="0" aria-valuemax="100">
-                <div class="astryx-progress-bar-fill" data-variant="success" style="width: ${efficiencyScore}%;"></div>
-                <div class="astryx-progress-bar-mark" data-variant="success" style="left: ${avgMarkPos}%;" title="Store SA Average: ${formatZAR(avgLanded)}" aria-label="Store SA Average: ${formatZAR(avgLanded)}"></div>
-              </div>
-            </div>
-
-            <div class="astryx-scorecard-grid">
-              <div class="astryx-scorecard-cell">
-                <span class="astryx-text" data-type="supporting">vs. Store Average</span>
-                <span class="astryx-scorecard-kpi" data-tabular-nums="true">${vsAvgSavings > 0 ? 'Save ' + formatZAR(vsAvgSavings) : formatZAR(avgLanded)}</span>
-                <span class="astryx-scorecard-delta" data-max-lines="1" title="Below ${formatZAR(avgLanded)} SA mean">
-                  <svg class="icon-14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+          aiCardEl.innerHTML = `
+            <div class="astryx-layout-header" data-has-divider="true">
+              <div class="astryx-hstack">
+                <span class="astryx-icon-surface" aria-hidden="true">
+                  <svg class="icon-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z" />
                   </svg>
-                  <span>Below ${formatZAR(avgLanded)} SA mean</span>
                 </span>
+                <div class="astryx-vstack">
+                  <div class="astryx-hstack">
+                    <h3 class="astryx-heading" data-level="3">Astryx Price Intelligence</h3>
+                    <span class="astryx-statusdot success" aria-hidden="true"></span>
+                  </div>
+                  <span class="astryx-text" data-type="supporting">Store Average South African landed cost scorecard</span>
+                </div>
               </div>
-              <div class="astryx-scorecard-cell">
-                <span class="astryx-text" data-type="supporting">Optimal Fulfillment</span>
-                <span class="astryx-scorecard-kpi" data-tabular-nums="true">${fulfillmentKpi}</span>
-                <span class="astryx-scorecard-delta" data-max-lines="1" title="${fulfillmentDelta}">${fulfillmentDelta}</span>
-              </div>
-              <div class="astryx-scorecard-cell">
-                <span class="astryx-text" data-type="supporting">Retailer Stock</span>
-                <span class="astryx-scorecard-kpi" data-tabular-nums="true">${inStockCount} / ${totalStoresCount} Stores</span>
-                <span class="astryx-scorecard-delta" data-max-lines="1" title="Verified in stock today">Verified in stock today</span>
+              <div class="astryx-hstack">
+                <span class="astryx-text" data-type="supporting" data-tabular-nums="true">${supportingSpread}</span>
+                <span class="astryx-badge" data-variant="${badgeVariant}" title="${badgeText}">${badgeText}</span>
               </div>
             </div>
-          </div>
 
-          <div class="astryx-layout-footer" data-has-divider="true">
-            <div class="astryx-hstack" style="align-items: flex-start;">
-              <svg class="icon-16" style="color: var(--color-success); flex-shrink: 0; margin-top: 2px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <p class="astryx-footer-verdict">
-                <strong>Recommendation:</strong> Buy from <strong>${bestStore.name}</strong> at <strong>${formatZAR(lowestLanded)}</strong> (${isPickup ? 'Click & Collect' : 'Door Delivery'}) to save <strong>${formatZAR(savings)}</strong> vs. ${highestStore.name} and <strong>${formatZAR(vsAvgSavings)}</strong> below the store average—or <strong>${formatZAR(installmentAmount)}/pm</strong> x 4 interest-free via Payflex.
-              </p>
+            <div class="astryx-layout-content">
+              <div class="astryx-progress-bar" data-variant="success">
+                <div class="astryx-progress-bar-header">
+                  <span class="astryx-low-val">Lowest: ${formatZAR(lowestLanded)} (${champion.name})</span>
+                  <span>Store Avg: <strong>${formatZAR(avgLanded)}</strong></span>
+                  <span>High: <strong>${formatZAR(highestLanded)}</strong> (${highestStore.name})</span>
+                </div>
+                <div class="astryx-progress-bar-track" role="progressbar" aria-label="Landed price position vs store market average" aria-valuenow="${efficiencyScore}" aria-valuemin="0" aria-valuemax="100">
+                  <div class="astryx-progress-bar-fill" data-variant="success" style="width: ${efficiencyScore}%;"></div>
+                  <div class="astryx-progress-bar-mark" data-variant="success" style="left: ${avgMarkPos}%;" title="Store SA Average: ${formatZAR(avgLanded)}" aria-label="Store SA Average: ${formatZAR(avgLanded)}"></div>
+                </div>
+              </div>
+
+              <div class="astryx-scorecard-grid">
+                <div class="astryx-scorecard-cell">
+                  <span class="astryx-text" data-type="supporting">vs. Store Average</span>
+                  <span class="astryx-scorecard-kpi" data-tabular-nums="true">${vsAvgSavings > 0 ? 'Save ' + formatZAR(vsAvgSavings) : formatZAR(avgLanded)}</span>
+                  <span class="astryx-scorecard-delta" data-max-lines="1" title="Below ${formatZAR(avgLanded)} SA mean">
+                    <svg class="icon-14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                    </svg>
+                    <span>Below ${formatZAR(avgLanded)} SA mean</span>
+                  </span>
+                </div>
+                <div class="astryx-scorecard-cell">
+                  <span class="astryx-text" data-type="supporting">Optimal Fulfillment</span>
+                  <span class="astryx-scorecard-kpi" data-tabular-nums="true">${fulfillmentKpi}</span>
+                  <span class="astryx-scorecard-delta" data-max-lines="1" title="${fulfillmentDelta}">${fulfillmentDelta}</span>
+                </div>
+                <div class="astryx-scorecard-cell">
+                  <span class="astryx-text" data-type="supporting">Retailer Stock</span>
+                  <span class="astryx-scorecard-kpi" data-tabular-nums="true">${inStockCount} / ${totalStoresCount} Stores</span>
+                  <span class="astryx-scorecard-delta" data-max-lines="1" title="Verified in stock today">Verified in stock today</span>
+                </div>
+              </div>
             </div>
-          </div>
-        `;
+
+            <div class="astryx-layout-footer" data-has-divider="true">
+              <div class="astryx-hstack" style="align-items: flex-start;">
+                <svg class="icon-16" style="color: var(--color-success); flex-shrink: 0; margin-top: 2px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <p class="astryx-footer-verdict">
+                  <strong>Recommendation:</strong> Buy from <strong>${champion.name}</strong> at <strong>${formatZAR(lowestLanded)}</strong> (${isPickup ? 'Click & Collect' : 'Door Delivery'}) to save <strong>${formatZAR(savings)}</strong> vs. ${highestStore.name} and <strong>${formatZAR(vsAvgSavings)}</strong> below the store average—or <strong>${formatZAR(Math.round(lowestLanded / 4))}/pm</strong> x 4 interest-free via Payflex.
+                </p>
+              </div>
+            </div>
+          `;
+        }
       }
 
             // Render Store Rows
@@ -23602,8 +23588,7 @@
 
 
       sortedStores.forEach((st, idx) => {
-
-        const isLowest = (st.name === bestStore.name) && (st.inStock) && (st.freshness === 'verified');
+        const isLowest = champion ? ((st.name === champion.name) && (st.inStock) && (st.freshness === 'verified')) : false;
 
         const storeCard = document.createElement('div');
 
@@ -24098,63 +24083,64 @@
     });
 
     async function handleAlertSubmit(e) {
-
       e.preventDefault();
-
       const input = e.target.querySelector('input[type="email"]');
-
       const email = input ? input.value.trim() : '';
-
       const prodId = currentDetailProduct ? currentDetailProduct.id : '';
 
-      if (prodId && !trackedAlerts.some(x => x.id === prodId)) {
-        trackedAlerts.unshift({ id: prodId, note: 'REGISTERED' });
-        saveTrackedAlerts();
-        renderAlertsPopover();
+      if (!email || !email.includes('@')) {
+        showToast('Please enter a valid email address.');
+        return;
       }
 
-      showToast('Registering price alert...');
+      if (!prodId) {
+        showToast('Please select a product to set a price alert.');
+        return;
+      }
+
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      if (submitBtn) submitBtn.disabled = true;
+
+      showToast('Registering price-alert with edge database...');
+
+      const targetPrice = currentDetailProduct && currentDetailProduct.lowestLanded
+        ? Math.round(currentDetailProduct.lowestLanded * 0.95)
+        : (currentDetailProduct && currentDetailProduct.lowestRecorded ? Math.round(currentDetailProduct.lowestRecorded * 0.95) : 500);
 
       try {
-
         const res = await fetch(`${API_BASE}/api/alerts`, {
-
           method: 'POST',
-
           headers: { 'Content-Type': 'application/json' },
-
           body: JSON.stringify({
-
             product_id: prodId,
-
             email: email,
-
-            target_price: currentDetailProduct && currentDetailProduct.lowestLanded ? Math.round(currentDetailProduct.lowestLanded * 0.95) : 0
-
+            target_price: targetPrice
           })
-
         });
 
         const data = await res.json();
 
-        if (data && data.success) {
-
-          showToast(`Price-alert registered successfully for ${email}. Added to your Bell trackers.`);
-
+        if (res.ok && data && data.success) {
+          // Strictly add to tracked alerts ONLY after verified API confirmation
+          if (!trackedAlerts.some(x => x.id === prodId)) {
+            trackedAlerts.unshift({ id: prodId, note: 'REGISTERED', targetPrice: targetPrice });
+            saveTrackedAlerts();
+            renderAlertsPopover();
+          }
+          const actionMsg = data.updated ? 'Target price updated' : 'Price-alert registered';
+          showToast(`${actionMsg} for ${email} (Target: ${formatZAR(targetPrice)}). Added to Bell trackers.`);
+          e.target.reset();
         } else {
-
-          showToast(email ? `Price-alert registered successfully for ${email}. Added to your Bell trackers.` : 'Price-alert registered successfully! Added to your Bell trackers.');
-
+          // Explicit error feedback - no false positive toasts!
+          const errorMsg = (data && data.error) ? data.error : 'Could not register alert';
+          showToast(`Alert registration failed: ${errorMsg}`);
         }
-
       } catch (err) {
-
-        showToast(email ? `Price-alert registered successfully for ${email}. Added to your Bell trackers.` : 'Price-alert registered successfully! Added to your Bell trackers.');
-
+        // True network/offline failure
+        showToast(`Network error: Could not reach price alert service.`);
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
       }
-
-      e.target.reset();
-
     }
 
 
@@ -24266,9 +24252,7 @@
 
 
             <div class="slide-store-note">
-
-              <span>Lowest landed price on <strong>${bestStore.name}</strong> (${bestStore.shippingFee === 0 ? 'Free Delivery' : '+' + formatZAR(bestStore.shippingFee) + ' shipping'}) • Verified in Gauteng</span>
-
+              <span>${bestStore ? `Lowest landed price on <strong>${bestStore.name}</strong> (${bestStore.shippingFee === 0 ? 'Free Delivery' : '+' + formatZAR(bestStore.shippingFee) + ' shipping'}) • Verified in Gauteng` : 'Compare listed store offers • Live verification'}</span>
             </div>
 
 

@@ -5068,7 +5068,7 @@
 
             <span class="bf-subtext">&bull; Real-time landed prices &amp; instant pickup comparisons</span>
 
-            <span class="bf-text">&bull; Live price drops verified every 15 mins across South Africa</span>
+            <span class="bf-text">&bull; Landed prices include each retailer's listed delivery fee</span>
 
             <span class="bf-subtext">&bull; 4-month interest-free Payflex &amp; Mobicred calculations included</span>
 
@@ -5080,7 +5080,7 @@
 
             <span class="bf-subtext">&bull; Real-time landed prices &amp; instant pickup comparisons</span>
 
-            <span class="bf-text">&bull; Live price drops verified every 15 mins across South Africa</span>
+            <span class="bf-text">&bull; Landed prices include each retailer's listed delivery fee</span>
 
             <span class="bf-subtext">&bull; 4-month interest-free Payflex &amp; Mobicred calculations included</span>
 
@@ -5590,6 +5590,9 @@
 
 
   <!-- ================= JAVASCRIPT DATA & LOGIC ================= -->
+
+  <!-- Single Source-of-Truth Offer Policy Engine -->
+  <script src="shared/offer-policy.js"></script>
 
   <script>
 
@@ -22499,41 +22502,45 @@
 
 
     function computePriceMetrics(product) {
+      if (typeof OfferPolicy !== 'undefined' && typeof OfferPolicy.evaluateProduct === 'function') {
+        const mode = typeof currentDeliveryMode !== 'undefined' ? currentDeliveryMode : 'door';
+        const evaluation = OfferPolicy.evaluateProduct(product, mode, Date.now());
+        return {
+          lowestLanded: evaluation.lowestLanded,
+          lowestEligible: evaluation.lowestEligible,
+          lowestRecorded: evaluation.lowestRecorded,
+          highestLanded: evaluation.highestComparable,
+          savings: evaluation.savings,
+          savingsPct: evaluation.savingsPct,
+          bestStore: evaluation.champion,
+          champion: evaluation.champion,
+          eligibleCount: evaluation.eligibleCount,
+          purchasableCount: evaluation.purchasableCount,
+          isChampionStale: evaluation.isChampionStale,
+          isAllOutOfStock: evaluation.isAllOutOfStock
+        };
+      }
 
+      // Safe fallback
+      const inStockStores = (product.stores || []).filter(s => s.inStock === true && s.freshness !== 'unavailable');
+      const candidateStores = inStockStores.length > 0 ? inStockStores : [];
       let lowestLanded = Infinity;
-
       let highestLanded = -Infinity;
+      let bestStore = candidateStores[0] || null;
 
-      let bestStore = product.stores[0];
-
-
-
-      product.stores.forEach(s => {
-
-        const total = s.itemPrice + s.shippingFee;
-
-        if (total < lowestLanded) {
-
+      (product.stores || []).forEach(s => {
+        const total = (s.itemPrice || 0) + (s.shippingFee || 0);
+        if (candidateStores.includes(s) && total < lowestLanded) {
           lowestLanded = total;
-
           bestStore = s;
-
         }
-
         if (total > highestLanded) {
-
           highestLanded = total;
-
         }
-
       });
 
-
-
-      const savings = highestLanded - lowestLanded;
-
-      return { lowestLanded, highestLanded, savings, bestStore };
-
+      const savings = (bestStore && highestLanded > lowestLanded) ? highestLanded - lowestLanded : 0;
+      return { lowestLanded: bestStore ? lowestLanded : null, highestLanded, savings, bestStore, champion: bestStore };
     }
 
 
@@ -22627,13 +22634,10 @@
 
 
     function createProductCard(prod) {
-
-      const { lowestLanded, highestLanded, savings, bestStore } = computePriceMetrics(prod);
-
+      const metrics = computePriceMetrics(prod);
+      const { lowestLanded, highestLanded, savings, bestStore } = metrics;
       const discountPct = highestLanded > lowestLanded ? Math.round(((highestLanded - lowestLanded) / highestLanded) * 100) : 0;
-
       const rating = prod.rating || 4.8;
-
       const reviews = prod.reviewsCount || 250;
 
 
@@ -23349,112 +23353,100 @@
 
 
     function renderStoreComparisonMatrix(prod) {
-
       const isPickup = currentDeliveryMode === 'pickup';
 
-      const sortedStores = [...prod.stores].map(st => {
+      let evaluation = null;
+      if (typeof OfferPolicy !== 'undefined' && typeof OfferPolicy.evaluateProduct === 'function') {
+        evaluation = OfferPolicy.evaluateProduct(prod, currentDeliveryMode, Date.now());
+      }
 
-        const effectiveShipping = isPickup ? 0 : st.shippingFee;
-
-        const totalLanded = st.itemPrice + effectiveShipping;
-
-        const effectiveEstimate = isPickup ? 'Ready in 2-4 Hours (Same Day)' : st.deliveryEstimate;
-
-        const effectiveShippingNote = isPickup ? `Free In-Store Collection (${st.name} branch / Pargo point)` : st.shippingNote;
-
+      const sortedStores = (evaluation && evaluation.offers) ? evaluation.offers : [...prod.stores].map(st => {
+        const effectiveShipping = isPickup ? 0 : (st.shippingFee || 0);
+        const totalLanded = (st.itemPrice || 0) + effectiveShipping;
+        const effectiveEstimate = isPickup ? 'Ready in 2-4 Hours (Same Day)' : (st.deliveryEstimate || '2-4 Business Days');
+        const effectiveShippingNote = isPickup ? `Free In-Store Collection (${st.name} branch / Pargo point)` : (st.shippingNote || 'Standard Courier');
         const freshness = st.freshness || (st.inStock ? 'verified' : 'unavailable');
-
         const freshnessLabel = st.freshnessLabel || (st.inStock ? 'Verified today' : 'Out of Stock');
-
-
-
         return {
-
           ...st,
-
           effectiveShipping,
-
           totalLanded,
-
           effectiveEstimate,
-
           effectiveShippingNote,
-
           freshness,
-
           freshnessLabel
-
         };
-
       }).sort((a, b) => a.totalLanded - b.totalLanded);
 
+      // UNIFIED SOURCE-OF-TRUTH POLICY
+      const champion = evaluation ? evaluation.champion : (sortedStores.find(st => st.inStock && st.freshness === 'verified') || null);
+      const isChampionStale = evaluation ? evaluation.isChampionStale : (champion === null && sortedStores.some(st => st.inStock));
+      const isAllOutOfStock = evaluation ? evaluation.isAllOutOfStock : !sortedStores.some(st => st.inStock);
 
+      const lowestLanded = champion ? champion.totalLanded : (sortedStores[0] ? sortedStores[0].totalLanded : 0);
+      const highestLanded = sortedStores[sortedStores.length - 1] ? sortedStores[sortedStores.length - 1].totalLanded : lowestLanded;
+      const savings = (champion && highestLanded > lowestLanded) ? highestLanded - lowestLanded : 0;
 
-      // SOURCE-OF-TRUTH POLICY: Lowest Landed Price champion MUST be in-stock and verified
-
-      const verifiedStores = sortedStores.filter(st => st.inStock && st.freshness === 'verified');
-
-      const isChampionStale = verifiedStores.length === 0 && sortedStores.some(st => st.inStock);
-
-      const bestStore = verifiedStores.length > 0 ? verifiedStores[0] : sortedStores[0];
-
-      const lowestLanded = bestStore.totalLanded;
-
-      const highestLanded = sortedStores[sortedStores.length - 1].totalLanded;
-
-      const savings = highestLanded - lowestLanded;
-
-
-
-      document.getElementById('detailLowestLandedPrice').innerText = formatZAR(lowestLanded);
-
-      document.getElementById('detailHighestPrice').innerText = highestLanded > lowestLanded ? formatZAR(highestLanded) : '';
-
-      document.getElementById('detailMaxSavings').innerText = savings > 0 
-
-        ? `You save up to ${formatZAR(savings)} across SA retailers today` 
-
-        : (isChampionStale ? 'Recorded market baseline' : 'Verified market low across stores');
-
-      document.getElementById('detailSavingsBadge').innerText = savings > 0 ? `Save ${formatZAR(savings)}` : (isChampionStale ? 'Unverified' : 'Verified Price');
+      if (champion) {
+        document.getElementById('detailLowestLandedPrice').innerText = formatZAR(lowestLanded);
+        document.getElementById('detailHighestPrice').innerText = highestLanded > lowestLanded ? formatZAR(highestLanded) : '';
+        document.getElementById('detailMaxSavings').innerText = savings > 0 
+          ? `You save up to ${formatZAR(savings)} across SA retailers today` 
+          : 'Verified market low across stores';
+        document.getElementById('detailSavingsBadge').innerText = savings > 0 ? `Save ${formatZAR(savings)}` : 'Verified Price';
+      } else if (isAllOutOfStock) {
+        document.getElementById('detailLowestLandedPrice').innerText = 'Out of Stock';
+        document.getElementById('detailHighestPrice').innerText = '';
+        document.getElementById('detailMaxSavings').innerText = 'Currently out of stock across all verified retailers';
+        document.getElementById('detailSavingsBadge').innerText = 'Unavailable';
+      } else {
+        document.getElementById('detailLowestLandedPrice').innerText = formatZAR(lowestLanded);
+        document.getElementById('detailHighestPrice').innerText = '';
+        document.getElementById('detailMaxSavings').innerText = 'Recorded historical market baseline (Verification pending)';
+        document.getElementById('detailSavingsBadge').innerText = 'Recorded Baseline';
+      }
 
       document.getElementById('detailStoreCount').innerText = `${prod.stores.length} South African stores`;
 
-
-
       // Update Payflex / Mobicred installment calculator
-
-      const installmentAmount = Math.round(lowestLanded / 4);
-
       const installmentTextEl = document.getElementById('detailInstallmentText');
-
       if (installmentTextEl) {
-
-        installmentTextEl.innerText = `From ${formatZAR(installmentAmount)} / month in 4 interest-free installments with Payflex or Mobicred.`;
-
+        if (champion) {
+          const installmentAmount = Math.round(lowestLanded / 4);
+          installmentTextEl.innerText = `From ${formatZAR(installmentAmount)} / month in 4 interest-free installments with Payflex or Mobicred.`;
+          installmentTextEl.style.display = 'block';
+        } else {
+          installmentTextEl.style.display = 'none';
+        }
       }
 
-
-
       // Update Best Choice CTA
-
-      document.getElementById('detailBestChoiceCTA').innerHTML = `
-
-        <a href="${bestStore.affiliateUrl}" target="_blank" rel="noopener noreferrer" class="cta-best-btn">
-
-          ${getStoreLogoHTML(bestStore.name, 'store-inline-img')}
-
-          <span>${isChampionStale ? 'View Store Baseline' : 'Go to Lowest Price'} (${bestStore.name})</span>
-
-          <svg class="icon-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-
-            <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-
-          </svg>
-
-        </a>
-
-      `;
+      const ctaEl = document.getElementById('detailBestChoiceCTA');
+      if (ctaEl) {
+        if (champion) {
+          ctaEl.innerHTML = `
+            <a href="${champion.affiliateUrl}" target="_blank" rel="noopener noreferrer" class="cta-best-btn">
+              ${getStoreLogoHTML(champion.name, 'store-inline-img')}
+              <span>Go to Lowest Price (${champion.name})</span>
+              <svg class="icon-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          `;
+        } else if (isAllOutOfStock) {
+          ctaEl.innerHTML = `
+            <button class="cta-best-btn" disabled style="opacity: 0.6; cursor: not-allowed; background: var(--color-background-muted, #94a3b8);">
+              <span>Out of Stock Across Retailers</span>
+            </button>
+          `;
+        } else {
+          ctaEl.innerHTML = `
+            <a href="#matrixView" class="cta-best-btn" style="background: #475569;" onclick="document.getElementById('detailStoreMatrix').scrollIntoView({ behavior: 'smooth' }); return false;">
+              <span>Compare Retailers Below</span>
+            </a>
+          `;
+        }
+      }
 
 
 
@@ -24106,63 +24098,64 @@
     });
 
     async function handleAlertSubmit(e) {
-
       e.preventDefault();
-
       const input = e.target.querySelector('input[type="email"]');
-
       const email = input ? input.value.trim() : '';
-
       const prodId = currentDetailProduct ? currentDetailProduct.id : '';
 
-      if (prodId && !trackedAlerts.some(x => x.id === prodId)) {
-        trackedAlerts.unshift({ id: prodId, note: 'ALERT SET' });
-        saveTrackedAlerts();
-        renderAlertsPopover();
+      if (!email || !email.includes('@')) {
+        showToast('Please enter a valid email address.');
+        return;
       }
 
-      showToast('Registering price alert...');
+      if (!prodId) {
+        showToast('Please select a product to set a price alert.');
+        return;
+      }
+
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      if (submitBtn) submitBtn.disabled = true;
+
+      showToast('Registering price-alert with edge database...');
+
+      const targetPrice = currentDetailProduct && currentDetailProduct.lowestLanded
+        ? Math.round(currentDetailProduct.lowestLanded * 0.95)
+        : (currentDetailProduct && currentDetailProduct.lowestRecorded ? Math.round(currentDetailProduct.lowestRecorded * 0.95) : 500);
 
       try {
-
         const res = await fetch(`${API_BASE}/api/alerts`, {
-
           method: 'POST',
-
           headers: { 'Content-Type': 'application/json' },
-
           body: JSON.stringify({
-
             product_id: prodId,
-
             email: email,
-
-            target_price: currentDetailProduct && currentDetailProduct.lowestLanded ? Math.round(currentDetailProduct.lowestLanded * 0.95) : 0
-
+            target_price: targetPrice
           })
-
         });
 
         const data = await res.json();
 
-        if (data && data.success) {
-
-          showToast(`Price alert registered for ${email}! Added to your Bell trackers.`);
-
+        if (res.ok && data && data.success) {
+          // Strictly add to tracked alerts ONLY after verified API confirmation
+          if (!trackedAlerts.some(x => x.id === prodId)) {
+            trackedAlerts.unshift({ id: prodId, note: 'REGISTERED', targetPrice: targetPrice });
+            saveTrackedAlerts();
+            renderAlertsPopover();
+          }
+          const actionMsg = data.updated ? 'Target price updated' : 'Price-alert registered';
+          showToast(`${actionMsg} for ${email} (Target: ${formatZAR(targetPrice)}). Added to Bell trackers.`);
+          e.target.reset();
         } else {
-
-          showToast('Price alert registered! Added to your Bell trackers.');
-
+          // Explicit error feedback - no false positive toasts!
+          const errorMsg = (data && data.error) ? data.error : 'Could not register alert';
+          showToast(`Alert registration failed: ${errorMsg}`);
         }
-
       } catch (err) {
-
-        showToast('Price alert registered! Added to your Bell trackers.');
-
+        // True network/offline failure
+        showToast(`Network error: Could not reach price alert service.`);
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
       }
-
-      e.target.reset();
-
     }
 
 
@@ -24274,9 +24267,7 @@
 
 
             <div class="slide-store-note">
-
-              <span>Lowest landed price on <strong>${bestStore.name}</strong> (${bestStore.shippingFee === 0 ? 'Free Delivery' : '+' + formatZAR(bestStore.shippingFee) + ' shipping'}) • Verified in Gauteng</span>
-
+              <span>${bestStore ? `Lowest landed price on <strong>${bestStore.name}</strong> (${bestStore.shippingFee === 0 ? 'Free Delivery' : '+' + formatZAR(bestStore.shippingFee) + ' shipping'}) • Verified in Gauteng` : 'Compare listed store offers • Live verification'}</span>
             </div>
 
 

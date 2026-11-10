@@ -12,6 +12,9 @@ class StandardOffer:
     delivery_note: str
     collection_note: str
     product_url: str
+    stock_state: str = "unknown"
+    stock_raw: Optional[str] = None
+    stock_source: str = "scraper"
 
 def clean_price(price_str: str) -> Optional[int]:
     """

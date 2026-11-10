@@ -1,20 +1,59 @@
 /**
  * PricePulse South Africa - Cloudflare Worker API
  * High-performance edge API connected to Cloudflare D1 & KV
+ * Strictly zero-emoji compliant.
  */
 
-const CORS_HEADERS = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type",
-  "Content-Type": "application/json;charset=UTF-8"
-};
+import OfferPolicy from "../../shared/offer-policy.js";
 
-function jsonResponse(data, status = 200) {
+const ALLOWED_ORIGINS = new Set([
+  "https://thedifference-za.pages.dev",
+  "http://localhost:8080",
+  "http://127.0.0.1:8080",
+  "http://localhost:8787",
+  "http://127.0.0.1:8787"
+]);
+
+function getCorsHeaders(request) {
+  const origin = request.headers.get("Origin") || "";
+  const allowOrigin = ALLOWED_ORIGINS.has(origin) ? origin : "https://thedifference-za.pages.dev";
+  return {
+    "Access-Control-Allow-Origin": allowOrigin,
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    "Access-Control-Max-Age": "86400",
+    "Vary": "Origin",
+    "Content-Type": "application/json;charset=UTF-8"
+  };
+}
+
+function jsonResponse(data, status = 200, request = null, extraHeaders = {}) {
+  const baseHeaders = request ? getCorsHeaders(request) : {
+    "Access-Control-Allow-Origin": "https://thedifference-za.pages.dev",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    "Content-Type": "application/json;charset=UTF-8"
+  };
   return new Response(JSON.stringify(data), {
     status,
-    headers: CORS_HEADERS
+    headers: { ...baseHeaders, ...extraHeaders }
   });
+}
+
+function getBearerToken(request) {
+  const authHeader = request.headers.get("Authorization") || "";
+  const match = authHeader.match(/^Bearer\s+(.+)$/i);
+  return match ? match[1].trim() : null;
+}
+
+function timingSafeEqualStr(a, b) {
+  if (typeof a !== "string" || typeof b !== "string") return false;
+  if (a.length !== b.length) return false;
+  let mismatch = 0;
+  for (let i = 0; i < a.length; i++) {
+    mismatch |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+  return mismatch === 0;
 }
 
 export default {
@@ -24,18 +63,47 @@ export default {
 
     // Handle CORS preflight
     if (request.method === "OPTIONS") {
-      return new Response(null, { headers: CORS_HEADERS });
+      return new Response(null, { headers: getCorsHeaders(request) });
     }
 
     try {
-      // 1. Health check
+      // 1. Health check & Data Freshness Monitor
       if (pathname === "/" || pathname === "/api/health") {
+        let lastSync = null;
+        let staleOfferCount = 0;
+
+        if (env.DB) {
+          try {
+            const syncQuery = await env.DB.prepare(
+              "SELECT * FROM sync_runs ORDER BY id DESC LIMIT 1"
+            ).first();
+            if (syncQuery) {
+              lastSync = {
+                finished_at: syncQuery.finished_at,
+                status: syncQuery.status,
+                offers_synced: syncQuery.offers_synced,
+                offers_failed: syncQuery.offers_failed,
+                trigger: syncQuery.trigger_source
+              };
+            }
+
+            const staleQuery = await env.DB.prepare(
+              "SELECT COUNT(*) as count FROM store_offers WHERE last_verified_at < datetime('now', '-24 hours')"
+            ).first();
+            staleOfferCount = staleQuery?.count || 0;
+          } catch (e) {
+            // Non-blocking on missing table/migration during bootstrap
+          }
+        }
+
         return jsonResponse({
           status: "healthy",
           engine: "PricePulse South Africa (Cloudflare Edge)",
           region: request.cf?.colo || "local",
+          last_sync: lastSync,
+          stale_offer_count: staleOfferCount,
           timestamp: new Date().toISOString()
-        });
+        }, 200, request);
       }
 
       // 2. Search suggestions
@@ -50,56 +118,80 @@ export default {
             "Garmin Fenix",
             "Sony XM5"
           ]
-        });
+        }, 200, request);
       }
 
-      // 2b. Cache invalidation & purge endpoints (Active KV Invalidation)
+      // 2b. Cache invalidation & purge endpoints (Secured Active KV Invalidation)
       const isCachePurgeRoute = pathname === "/api/cache/purge" || pathname === "/api/cache/purge/" ||
                                 pathname === "/api/cache/invalidate" || pathname === "/api/cache/invalidate/";
-      if (isCachePurgeRoute && (request.method === "POST" || request.method === "GET")) {
-        let prodId = searchParams.get("product_id") || searchParams.get("id");
-        let explicitKey = searchParams.get("key");
+      if (isCachePurgeRoute) {
+        // Enforce POST only for destructive operations
+        if (request.method !== "POST") {
+          return jsonResponse({
+            success: false,
+            error: "Method Not Allowed. Cache purge requires POST."
+          }, 405, request, { "Allow": "POST" });
+        }
 
-        if (request.method === "POST") {
-          try {
-            const contentType = request.headers.get("content-type") || "";
-            if (contentType.includes("application/json")) {
-              const body = await request.clone().json();
-              if (body && typeof body === "object") {
-                prodId = prodId || body.product_id || body.productId || body.id;
-                explicitKey = explicitKey || body.key;
-              }
-            }
-          } catch (e) {
-            // Silently continue if POST body is empty or not valid JSON
+        // Origin enforcement if browser request
+        const origin = request.headers.get("Origin");
+        if (origin && !ALLOWED_ORIGINS.has(origin)) {
+          return jsonResponse({
+            success: false,
+            error: "Forbidden: Origin not permitted for cache administration."
+          }, 403, request);
+        }
+
+        // Authentication: Require Bearer token
+        const configuredToken = env.ADMIN_PURGE_TOKEN;
+        if (!configuredToken) {
+          return jsonResponse({
+            success: false,
+            error: "Purge unavailable: ADMIN_PURGE_TOKEN is not configured in worker environment."
+          }, 503, request);
+        }
+
+        const clientToken = getBearerToken(request);
+        if (!clientToken || !timingSafeEqualStr(clientToken, configuredToken)) {
+          return jsonResponse({
+            success: false,
+            error: "Unauthorized: Missing or invalid Bearer token."
+          }, 401, request, { "WWW-Authenticate": "Bearer" });
+        }
+
+        let body = {};
+        try {
+          const contentType = request.headers.get("content-type") || "";
+          if (contentType.includes("application/json")) {
+            body = await request.clone().json();
           }
-        }
+        } catch (e) {}
 
-        if (prodId) {
-          prodId = String(prodId).trim();
-        }
-        if (explicitKey) {
-          explicitKey = String(explicitKey).trim();
+        const explicitKey = body.key ? String(body.key).trim() : null;
+        const prodId = (body.product_id || body.productId || body.id) ? String(body.product_id || body.productId || body.id).trim() : null;
+        const purgeAll = body.scope === "all" || body.purge_all === true;
+
+        if (!explicitKey && !prodId && !purgeAll) {
+          return jsonResponse({
+            success: false,
+            error: "Invalid request payload. Specify 'key', 'product_id', or 'scope: \"all\"'."
+          }, 400, request);
         }
 
         const deletedKeys = [];
 
         if (env.CACHE) {
           if (explicitKey) {
+            // Isolate single key purge strictly: do NOT cascade into global purge!
             await env.CACHE.delete(explicitKey);
             deletedKeys.push(explicitKey);
-          }
-
-          if (prodId) {
-            // Direct product key invalidation
+          } else if (prodId) {
+            // Invalidate product-specific keys
             const directKey = `product_${prodId}`;
             await env.CACHE.delete(directKey);
-            if (!deletedKeys.includes(directKey)) {
-              deletedKeys.push(directKey);
-            }
+            deletedKeys.push(directKey);
             await env.CACHE.delete(prodId);
 
-            // If list() is supported, invalidate matching product and catalog cache keys
             if (typeof env.CACHE.list === "function") {
               let cursor = undefined;
               do {
@@ -116,8 +208,8 @@ export default {
                 cursor = listResult.list_complete ? undefined : listResult.cursor;
               } while (cursor);
             }
-          } else {
-            // Purge all edge catalog cache keys
+          } else if (purgeAll) {
+            // Explicit global catalog cache wipe
             if (typeof env.CACHE.list === "function") {
               let cursor = undefined;
               do {
@@ -132,7 +224,6 @@ export default {
                 cursor = listResult.list_complete ? undefined : listResult.cursor;
               } while (cursor);
             } else {
-              // Fallback for mock environments lacking list()
               const defaultCatalogKey = "products_All_all_savings-desc_door_";
               await env.CACHE.delete(defaultCatalogKey);
               deletedKeys.push(defaultCatalogKey);
@@ -140,18 +231,14 @@ export default {
           }
         }
 
-        const responsePayload = {
+        return jsonResponse({
           success: true,
-          message: prodId ? `Purged cache for product ${prodId}` : "Purged all edge catalog cache keys",
+          message: explicitKey
+            ? `Purged single key: ${explicitKey}`
+            : (prodId ? `Purged cache for product ${prodId}` : "Purged all edge catalog cache keys"),
           purged_keys: deletedKeys,
           timestamp: new Date().toISOString()
-        };
-
-        if (!env.CACHE) {
-          responsePayload.warning = "KV binding 'CACHE' is not configured";
-        }
-
-        return jsonResponse(responsePayload);
+        }, 200, request);
       }
 
       // 3. GET /api/products
@@ -173,7 +260,7 @@ export default {
         const cacheKey = `products_${category}_${storeFilter}_${sortBy}_${deliveryMode}_${query}`;
         if (env.CACHE && !query) {
           const cached = await env.CACHE.get(cacheKey, "json");
-          if (cached) return jsonResponse(cached);
+          if (cached) return jsonResponse(cached, 200, request);
         }
 
         // Fetch products and offers from D1
@@ -195,6 +282,8 @@ export default {
         }
 
         let results = [];
+        const nowMs = Date.now();
+
         for (const prod of (productsQuery.results || [])) {
           let specs = {};
           try { specs = JSON.parse(prod.specs_json || "{}"); } catch (e) {}
@@ -202,67 +291,33 @@ export default {
           const rawOffers = offersByProduct[prod.id] || [];
           if (rawOffers.length === 0) continue;
 
-          // Compute landed cost and Source-of-Truth freshness for each offer
-          const nowMs = Date.now();
-          const computedStores = rawOffers.map(store => {
-            const isPickup = deliveryMode === "pickup";
-            const effectiveDeliveryFee = isPickup ? 0 : store.delivery_fee;
-            const totalLanded = store.item_price + effectiveDeliveryFee;
+          // Map D1 offer rows into format expected by OfferPolicy
+          const normalizedOffers = rawOffers.map(o => ({
+            name: o.store_name,
+            storeId: o.store_id,
+            itemPrice: o.item_price,
+            shippingFee: o.delivery_fee,
+            stock_status: o.stock_status,
+            stockState: o.stock_state,
+            stockRaw: o.stock_raw || o.stock_status,
+            stock_source: o.stock_source,
+            freshness: o.freshness_state,
+            lastVerifiedAt: o.last_verified_at,
+            collection_note: o.collection_note,
+            delivery_note: o.delivery_note,
+            affiliateUrl: o.product_url
+          }));
 
-            // Compute freshness state
-            const verifiedDate = store.last_verified_at ? new Date(store.last_verified_at) : new Date(store.last_updated || nowMs);
-            const hoursAgo = Math.max(0, (nowMs - verifiedDate.getTime()) / (1000 * 60 * 60));
-
-            let freshness = store.freshness_state || "verified";
-            let freshnessLabel = "Verified today";
-
-            if (!store.stock_status.toLowerCase().includes("in stock")) {
-              freshness = "unavailable";
-              freshnessLabel = "Out of Stock";
-            } else if (hoursAgo > 24) {
-              freshness = "stale";
-              const daysAgo = Math.floor(hoursAgo / 24);
-              freshnessLabel = `Recorded ${daysAgo <= 1 ? "yesterday" : `${daysAgo}d ago`}`;
-            } else if (hoursAgo <= 4) {
-              freshnessLabel = `Verified ${Math.max(1, Math.round(hoursAgo))}h ago`;
-            }
-
-            const inStock = freshness !== "unavailable";
-
-            return {
-              storeId: store.store_id,
-              name: store.store_name,
-              itemPrice: store.item_price,
-              shippingFee: effectiveDeliveryFee,
-              shippingNote: isPickup ? store.collection_note : store.delivery_note,
-              inStock,
-              stockText: store.stock_status,
-              totalLanded,
-              freshness, // 'verified' | 'stale' | 'unavailable'
-              freshnessLabel,
-              lastVerifiedAt: store.last_verified_at || store.last_updated,
-              affiliateUrl: store.product_url
-            };
-          });
-
-          // Sort stores by landed price ascending
-          computedStores.sort((a, b) => a.totalLanded - b.totalLanded);
-
-          // SOURCE-OF-TRUTH POLICY: Lowest Landed Price champion MUST be in-stock and verified
-          const verifiedInStock = computedStores.filter(s => s.inStock && s.freshness === "verified");
-          const championPool = verifiedInStock.length > 0 ? verifiedInStock : computedStores.filter(s => s.inStock);
-          championPool.sort((a, b) => a.totalLanded - b.totalLanded);
-
-          const bestStore = championPool[0] || computedStores[0];
-          const isChampionStale = verifiedInStock.length === 0 && computedStores.some(s => s.inStock);
-          const lowestLanded = bestStore.totalLanded;
-          const highestLanded = computedStores[computedStores.length - 1].totalLanded;
-          const savings = Math.max(0, highestLanded - lowestLanded);
-          const savingsPct = highestLanded > 0 ? Math.round((savings / highestLanded) * 100) : 0;
+          // Centralized evaluation via OfferPolicy
+          const evaluation = OfferPolicy.evaluateProduct(
+            { ...prod, stores: normalizedOffers },
+            deliveryMode,
+            nowMs
+          );
 
           // Filter by store if specified
           if (storeFilter !== "all") {
-            const hasStore = computedStores.some(s => s.storeId === storeFilter);
+            const hasStore = evaluation.offers.some(s => s.storeId === storeFilter);
             if (!hasStore) continue;
           }
 
@@ -302,13 +357,21 @@ export default {
             rating: prod.rating,
             reviewsCount: prod.review_count,
             specs,
-            stores: computedStores,
-            lowestLanded,
-            highestLanded,
-            savings,
-            savingsPct,
-            bestStore,
-            isChampionStale
+            stores: evaluation.offers,
+            champion: evaluation.champion,
+            bestStore: evaluation.champion, // null if no eligible in-stock offer
+            lowestLanded: evaluation.lowestLanded,
+            lowestEligible: evaluation.lowestEligible,
+            lowestRecorded: evaluation.lowestRecorded,
+            highestLanded: evaluation.highestComparable,
+            highestComparable: evaluation.highestComparable,
+            savings: evaluation.savings,
+            savingsPct: evaluation.savingsPct,
+            eligibleCount: evaluation.eligibleCount,
+            purchasableCount: evaluation.purchasableCount,
+            comparableCount: evaluation.comparableCount,
+            isChampionStale: evaluation.isChampionStale,
+            isAllOutOfStock: evaluation.isAllOutOfStock
           });
         }
 
@@ -316,9 +379,17 @@ export default {
         if (sortBy === "savings-desc") {
           results.sort((a, b) => b.savings - a.savings);
         } else if (sortBy === "price-asc") {
-          results.sort((a, b) => a.lowestLanded - b.lowestLanded);
+          results.sort((a, b) => {
+            const priceA = a.lowestEligible !== null ? a.lowestEligible : (a.lowestRecorded || Infinity);
+            const priceB = b.lowestEligible !== null ? b.lowestEligible : (b.lowestRecorded || Infinity);
+            return priceA - priceB;
+          });
         } else if (sortBy === "price-desc") {
-          results.sort((a, b) => b.lowestLanded - a.lowestLanded);
+          results.sort((a, b) => {
+            const priceA = a.lowestEligible !== null ? a.lowestEligible : (a.lowestRecorded || 0);
+            const priceB = b.lowestEligible !== null ? b.lowestEligible : (b.lowestRecorded || 0);
+            return priceB - priceA;
+          });
         } else if (sortBy === "stores-desc") {
           results.sort((a, b) => b.stores.length - a.stores.length);
         }
@@ -339,7 +410,7 @@ export default {
           }
         }
 
-        return jsonResponse(payload);
+        return jsonResponse(payload, 200, request);
       }
 
       // 4. GET /api/products/:id
@@ -348,17 +419,17 @@ export default {
         const prodId = decodeURIComponent(rawId);
 
         if (!prodId) {
-          return jsonResponse({ success: false, error: "Product ID is required" }, 400);
+          return jsonResponse({ success: false, error: "Product ID is required" }, 400, request);
         }
 
         const cacheKey = `product_${prodId}`;
         if (env.CACHE) {
           const cached = await env.CACHE.get(cacheKey, "json");
-          if (cached) return jsonResponse(cached);
+          if (cached) return jsonResponse(cached, 200, request);
         }
 
         if (!env.DB) {
-          return jsonResponse({ success: false, error: "D1 database binding 'DB' is not configured" }, 500);
+          return jsonResponse({ success: false, error: "D1 database binding 'DB' is not configured" }, 500, request);
         }
 
         let prod = await env.DB.prepare(
@@ -373,27 +444,58 @@ export default {
         }
 
         if (!prod) {
-          return jsonResponse({ success: false, error: "Product not found" }, 404);
+          return jsonResponse({ success: false, error: "Product not found" }, 404, request);
         }
 
         const offers = await env.DB.prepare(
           "SELECT o.*, s.name as store_name FROM store_offers o JOIN stores s ON o.store_id = s.id WHERE o.product_id = ?"
         ).bind(prod.id).all();
 
+        // Calendar-day history window (last 30 calendar days)
         const history = await env.DB.prepare(
-          "SELECT * FROM price_history WHERE product_id = ? ORDER BY recorded_date DESC LIMIT 30"
+          "SELECT * FROM price_history WHERE product_id = ? AND recorded_date >= date('now', '-30 days') ORDER BY recorded_date DESC"
         ).bind(prod.id).all();
 
         let specs = {};
         try { specs = JSON.parse(prod.specs_json || "{}"); } catch (e) {}
+
+        const mappedOffers = (offers.results || []).map(o => ({
+          name: o.store_name,
+          storeId: o.store_id,
+          itemPrice: o.item_price,
+          shippingFee: o.delivery_fee,
+          stock_status: o.stock_status,
+          stockState: o.stock_state,
+          stockRaw: o.stock_raw || o.stock_status,
+          stock_source: o.stock_source,
+          freshness: o.freshness_state,
+          lastVerifiedAt: o.last_verified_at,
+          collection_note: o.collection_note,
+          delivery_note: o.delivery_note,
+          affiliateUrl: o.product_url
+        }));
+
+        const evaluation = OfferPolicy.evaluateProduct(
+          { ...prod, stores: mappedOffers },
+          "door",
+          Date.now()
+        );
 
         const detailPayload = {
           success: true,
           data: {
             ...prod,
             specs,
-            stores: offers.results || [],
-            history: history.results || []
+            stores: evaluation.offers,
+            champion: evaluation.champion,
+            bestStore: evaluation.champion,
+            lowestLanded: evaluation.lowestLanded,
+            lowestRecorded: evaluation.lowestRecorded,
+            history: history.results || [],
+            history_window: {
+              type: "calendar_days",
+              days: 30
+            }
           }
         };
 
@@ -404,17 +506,9 @@ export default {
           } else {
             await putPromise;
           }
-          if (prod.id !== prodId) {
-            const canonicalPromise = env.CACHE.put(`product_${prod.id}`, JSON.stringify(detailPayload), { expirationTtl: 60 });
-            if (ctx && typeof ctx.waitUntil === "function") {
-              ctx.waitUntil(canonicalPromise);
-            } else {
-              await canonicalPromise;
-            }
-          }
         }
 
-        return jsonResponse(detailPayload);
+        return jsonResponse(detailPayload, 200, request);
       }
 
       // 5. POST /api/alerts (Price Drop Alert Registration)
@@ -423,59 +517,118 @@ export default {
         try {
           body = await request.json();
         } catch (e) {
-          return jsonResponse({ success: false, error: "Product ID and Email are required" }, 400);
+          return jsonResponse({ success: false, error: "Invalid JSON payload" }, 400, request);
         }
 
         const productId = (body?.product_id || body?.productId || "").toString().trim();
-        const email = (body?.email || "").toString().trim();
-        const targetPrice = typeof body?.target_price === "number"
-          ? body.target_price
-          : parseFloat(body?.target_price || "0") || 0;
+        const email = (body?.email || "").toString().trim().toLowerCase();
+        const rawTargetPrice = body?.target_price !== undefined ? body.target_price : body?.targetPrice;
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!productId || !email || !emailRegex.test(email)) {
-          return jsonResponse({ success: false, error: "Product ID and Email are required" }, 400);
+        if (!email || !emailRegex.test(email) || email.length > 254) {
+          return jsonResponse({ success: false, error: "Valid email address is required" }, 400, request);
         }
 
-        if (env.DB) {
-          await env.DB.prepare(
-            "INSERT INTO price_alerts (product_id, user_email, target_price) VALUES (?, ?, ?)"
-          ).bind(productId, email, targetPrice).run();
+        if (!productId) {
+          return jsonResponse({ success: false, error: "Product ID is required" }, 400, request);
         }
+
+        // Strictly validate target_price: positive, finite number > 0
+        const parsedPrice = typeof rawTargetPrice === "number" ? rawTargetPrice : Number(rawTargetPrice);
+        if (!Number.isFinite(parsedPrice) || parsedPrice <= 0 || parsedPrice > 10000000) {
+          return jsonResponse({
+            success: false,
+            error: "Target price must be a valid positive finite number greater than zero."
+          }, 400, request);
+        }
+
+        if (!env.DB) {
+          return jsonResponse({ success: false, error: "D1 database binding 'DB' is not configured" }, 500, request);
+        }
+
+        // Verify product actually exists in D1
+        const productExists = await env.DB.prepare(
+          "SELECT id, title FROM products WHERE id = ?"
+        ).bind(productId).first();
+
+        if (!productExists) {
+          return jsonResponse({
+            success: false,
+            error: `Product with ID '${productId}' does not exist.`
+          }, 404, request);
+        }
+
+        // Check if an active alert already exists for this (product_id, email)
+        const existingAlert = await env.DB.prepare(
+          "SELECT id, target_price FROM price_alerts WHERE product_id = ? AND lower(user_email) = ? AND status = 'active'"
+        ).bind(productId, email).first();
+
+        if (existingAlert) {
+          // Update existing active alert
+          await env.DB.prepare(
+            "UPDATE price_alerts SET target_price = ?, created_at = CURRENT_TIMESTAMP WHERE id = ?"
+          ).bind(parsedPrice, existingAlert.id).run();
+
+          return jsonResponse({
+            success: true,
+            updated: true,
+            message: `Updated target price alert for ${email} to R ${parsedPrice.toLocaleString('en-ZA')}`,
+            alert: {
+              product_id: productId,
+              email: email,
+              target_price: parsedPrice,
+              status: "active"
+            }
+          }, 200, request);
+        }
+
+        // Insert new active alert
+        await env.DB.prepare(
+          "INSERT INTO price_alerts (product_id, user_email, target_price, status) VALUES (?, ?, ?, 'active')"
+        ).bind(productId, email, parsedPrice).run();
 
         return jsonResponse({
           success: true,
-          message: `Price drop alert registered for ${email}`
-        });
+          created: true,
+          message: `Price-alert registered for ${email} on ${productExists.title}`,
+          alert: {
+            product_id: productId,
+            email: email,
+            target_price: parsedPrice,
+            status: "active"
+          }
+        }, 201, request);
       }
 
-      // 6. POST /api/feedback (Beta Testers Feedback & Price Mismatch Reports)
+      // 6. POST /api/feedback
       if (pathname === "/api/feedback" && request.method === "POST") {
         const body = await request.json();
         const { email, feedback_type, product_id, store_id, reported_price, message } = body;
 
         if (!message) {
-          return jsonResponse({ success: false, error: "Message is required" }, 400);
+          return jsonResponse({ success: false, error: "Message is required" }, 400, request);
         }
 
         const id = 'fb-' + Date.now() + '-' + Math.random().toString(36).substr(2, 6);
         const userAgent = request.headers.get("user-agent") || "";
         const country = request.cf?.country || "ZA";
 
-        await env.DB.prepare(
-          "INSERT INTO beta_feedback (id, tester_email, feedback_type, product_id, store_id, reported_price, message, user_agent, ip_country) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
-        ).bind(id, email || null, feedback_type || 'general', product_id || null, store_id || null, reported_price || null, message, userAgent, country).run();
+        if (env.DB) {
+          await env.DB.prepare(
+            "INSERT INTO beta_feedback (id, tester_email, feedback_type, product_id, store_id, reported_price, message, user_agent, ip_country) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+          ).bind(id, email || null, feedback_type || 'general', product_id || null, store_id || null, reported_price || null, message, userAgent, country).run();
+        }
 
         return jsonResponse({
           success: true,
           id: id,
           message: "Thank you for your beta feedback! Our engineering team has logged this report."
-        });
+        }, 200, request);
       }
 
-      return jsonResponse({ error: "Endpoint not found" }, 404);
+      return jsonResponse({ error: "Endpoint not found" }, 404, request);
     } catch (err) {
-      return jsonResponse({ success: false, error: err.message }, 500);
+      return jsonResponse({ success: false, error: err.message }, 500, request);
     }
   }
 };

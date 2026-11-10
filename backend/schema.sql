@@ -46,6 +46,11 @@ CREATE TABLE store_offers (
     collection_note TEXT,
     product_url TEXT NOT NULL,
     freshness_state TEXT DEFAULT 'verified',  -- 'verified' | 'stale' | 'unavailable'
+    stock_state TEXT NOT NULL DEFAULT 'unknown', -- 'in_stock' | 'online_only' | 'warehouse' | 'store_only' | 'preorder' | 'out_of_stock' | 'unknown'
+    stock_raw TEXT,
+    stock_source TEXT DEFAULT 'catalog_snapshot',
+    last_attempt_at TIMESTAMP,
+    last_error TEXT,
     last_verified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -89,7 +94,24 @@ CREATE INDEX IF NOT EXISTS idx_store_offers_prod ON store_offers(product_id);
 CREATE UNIQUE INDEX IF NOT EXISTS idx_store_offers_prod_store ON store_offers(product_id, store_id);
 CREATE INDEX IF NOT EXISTS idx_price_history_prod ON price_history(product_id, recorded_date);
 CREATE INDEX IF NOT EXISTS idx_price_alerts_prod ON price_alerts(product_id, status);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_price_alerts_active_unique ON price_alerts(product_id, user_email) WHERE status = 'active';
 CREATE INDEX IF NOT EXISTS idx_anomalies_status ON price_anomalies(status);
+
+-- 6b. Ingestion Synchronization Runs Audit Table
+CREATE TABLE IF NOT EXISTS sync_runs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    started_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    finished_at TIMESTAMP,
+    trigger_source TEXT NOT NULL DEFAULT 'manual',   -- 'schedule' | 'manual' | 'ci'
+    target_env TEXT NOT NULL DEFAULT 'local',        -- 'local' | 'remote'
+    products_attempted INTEGER DEFAULT 0,
+    offers_synced INTEGER DEFAULT 0,
+    offers_failed INTEGER DEFAULT 0,
+    offers_quarantined INTEGER DEFAULT 0,
+    status TEXT NOT NULL DEFAULT 'running',          -- 'running' | 'success' | 'partial' | 'failed'
+    error_summary TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_sync_runs_finished ON sync_runs(finished_at DESC);
 
 -- 7. Beta Testers Feedback & Discrepancy Reporting
 CREATE TABLE IF NOT EXISTS beta_feedback (

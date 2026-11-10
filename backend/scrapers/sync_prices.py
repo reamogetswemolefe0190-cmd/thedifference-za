@@ -24,6 +24,7 @@ BACKEND_DIR = SCRAPERS_DIR.parent
 sys.path.insert(0, str(BACKEND_DIR))
 
 from scrapers.base_scraper import StandardOffer
+from scrapers.stock_normalizer import normalize_stock_status
 from scrapers.fast_fetchers import fetch_takealot_json, fetch_jd_group_json
 from scrapers.schemas import validate_standard_offer
 from scrapers.anomaly_detector import ANOMALY_DETECTOR
@@ -225,22 +226,27 @@ def update_d1_store_offer(offer: StandardOffer, previous_price: float = None):
         run_d1_command(quarantine_sql)
         return False
 
-    # 3. Idempotent upsert
+    # 3. Idempotent upsert with normalized stock state & audit evidence
+    stock_norm = normalize_stock_status(offer.stock_status)
+    stock_state = stock_norm["state"]
+    stock_raw = offer.stock_status
+
     escaped_url = offer.product_url.replace("'", "''")
     escaped_stock = offer.stock_status.replace("'", "''")
     escaped_delivery_note = offer.delivery_note.replace("'", "''")
     escaped_collection_note = offer.collection_note.replace("'", "''")
+    escaped_stock_raw = stock_raw.replace("'", "''")
     landed_price = offer.item_price + offer.delivery_fee
 
     sql = (
         f"INSERT INTO store_offers ("
         f"product_id, store_id, item_price, delivery_fee, delivery_note, "
         f"stock_status, collection_available, collection_note, product_url, "
-        f"freshness_state, last_verified_at, last_updated"
+        f"freshness_state, stock_state, stock_raw, stock_source, last_attempt_at, last_verified_at, last_updated"
         f") VALUES ("
         f"'{offer.product_id}', '{offer.store_id}', {offer.item_price}, {offer.delivery_fee}, '{escaped_delivery_note}', "
         f"'{escaped_stock}', 1, '{escaped_collection_note}', '{escaped_url}', "
-        f"'verified', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP"
+        f"'verified', '{stock_state}', '{escaped_stock_raw}', 'scraper', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP"
         f") "
         f"ON CONFLICT(product_id, store_id) DO UPDATE SET "
         f"item_price = excluded.item_price, "
@@ -250,6 +256,10 @@ def update_d1_store_offer(offer: StandardOffer, previous_price: float = None):
         f"collection_note = excluded.collection_note, "
         f"product_url = excluded.product_url, "
         f"freshness_state = 'verified', "
+        f"stock_state = excluded.stock_state, "
+        f"stock_raw = excluded.stock_raw, "
+        f"stock_source = excluded.stock_source, "
+        f"last_attempt_at = CURRENT_TIMESTAMP, "
         f"last_verified_at = CURRENT_TIMESTAMP, "
         f"last_updated = CURRENT_TIMESTAMP; "
         f"INSERT INTO price_history (product_id, store_id, landed_price, recorded_date) "
