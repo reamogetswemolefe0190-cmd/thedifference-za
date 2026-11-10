@@ -11,7 +11,8 @@ import unittest
 from scrapers.schemas import (
     validate_takealot_payload,
     validate_jd_group_payload,
-    validate_standard_offer
+    validate_standard_offer,
+    validate_https_url
 )
 from scrapers.circuit_breaker import CircuitBreaker
 from scrapers.anomaly_detector import AnomalyDetector
@@ -141,6 +142,104 @@ class TestResilienceAndQuarantine(unittest.TestCase):
         self.assertTrue(ok)
         self.assertIsNone(reason)
         self.assertEqual(pct, -25.0)
+
+    def test_url_validation_hardening(self):
+        # 1. Valid URLs with permitted retail domains
+        valid_cases = [
+            ("https://www.takealot.com/sony-playstation-5/PLID123", "takealot"),
+            ("https://takealot.com/item/123", "takealot"),
+            ("https://www.amazon.co.za/dp/B0D123", "amazon"),
+            ("https://www.makro.co.za/electronics/tv/p/0001", "makro"),
+            ("https://www.incredible.co.za/apple-iphone-15", "incredible"),
+            ("https://www.hirschs.co.za/samsung-fridge", "hirschs"),
+            ("https://www.hificorp.co.za/jbl-speaker", "hificorp"),
+            ("https://secure.store.co.za/item?id=123&ref=feed", None),
+        ]
+        for url, store in valid_cases:
+            ok, err = validate_https_url(url, expected_store=store)
+            self.assertTrue(ok, f"Expected '{url}' for store '{store}' to pass, got err: {err}")
+            self.assertIsNone(err)
+
+        # 2. Strict rejection of HTTP, missing schemes, and non-HTTPS protocols
+        invalid_schemes = [
+            "http://www.takealot.com/product/123",
+            "ftp://files.takealot.com/item",
+            "javascript:alert(1)",
+            "data:text/html;base64,PHNjcmlwdD4=",
+            "file:///etc/passwd",
+            "www.takealot.com/product/123"
+        ]
+        for url in invalid_schemes:
+            ok, err = validate_https_url(url)
+            self.assertFalse(ok, f"Expected '{url}' to fail scheme validation")
+            self.assertIn("URL scheme must be strictly 'https'", err or "")
+
+        # 3. Rejection of empty, whitespace, control characters
+        bad_chars = [
+            "",
+            "   ",
+            "https://takealot.com/item with spaces",
+            "https://takealot.com/item\nnewline",
+            "https://takealot.com/item<script>",
+            None,
+            12345
+        ]
+        for bad in bad_chars:
+            ok, err = validate_https_url(bad)
+            self.assertFalse(ok, f"Expected '{bad}' to fail syntax check")
+
+        # 4. Rejection of localhost, private IPs, and raw IP addresses
+        forbidden_hosts = [
+            "https://localhost/item",
+            "https://127.0.0.1/item",
+            "https://192.168.1.1/item",
+            "https://10.0.0.1/item",
+            "https://172.16.0.1/item",
+            "https://8.8.8.8/item"
+        ]
+        for url in forbidden_hosts:
+            ok, err = validate_https_url(url)
+            self.assertFalse(ok, f"Expected forbidden host '{url}' to be rejected")
+
+        # 5. Rejection of store domain spoofing / mismatches
+        ok, err = validate_https_url("https://www.takealot-fake.com/ps5", expected_store="takealot")
+        self.assertFalse(ok)
+        self.assertIn("does not match permitted domains", err or "")
+
+        ok, err = validate_https_url("https://www.amazon.co.za/ps5", expected_store="takealot")
+        self.assertFalse(ok)
+        self.assertIn("does not match permitted domains", err or "")
+
+    def test_standard_offer_validation_contract(self):
+        valid_offer = {
+            "product_id": "prod-ps5-slim",
+            "store_id": "takealot",
+            "item_price": 11499.0,
+            "stock_status": "In stock",
+            "product_url": "https://www.takealot.com/ps5-slim/PLID999"
+        }
+        ok, err = validate_standard_offer(valid_offer)
+        self.assertTrue(ok)
+        self.assertIsNone(err)
+
+        # Missing required field
+        bad_offer = dict(valid_offer)
+        del bad_offer["product_url"]
+        ok, err = validate_standard_offer(bad_offer)
+        self.assertFalse(ok)
+        self.assertIn("missing required field", err)
+
+        # Non-HTTPS URL
+        bad_offer2 = dict(valid_offer, product_url="http://www.takealot.com/ps5")
+        ok, err = validate_standard_offer(bad_offer2)
+        self.assertFalse(ok)
+        self.assertIn("Invalid product HTTPS URL", err)
+
+        # Spoofed retailer URL
+        bad_offer3 = dict(valid_offer, product_url="https://shady-deals.com/ps5")
+        ok, err = validate_standard_offer(bad_offer3)
+        self.assertFalse(ok)
+        self.assertIn("does not match permitted domains", err)
 
 
 if __name__ == "__main__":

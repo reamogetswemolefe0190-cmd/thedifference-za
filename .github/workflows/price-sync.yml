@@ -53,8 +53,9 @@ jobs:
         run: |
           cd backend
           TARGET="${{ github.event.inputs.target_env || 'remote' }}"
-          echo "Selected D1 target environment: $TARGET"
-          python scrapers/sync_prices.py --all --fast --target "$TARGET"
+          TRIGGER="${{ github.event_name == 'schedule' && 'schedule' || 'ci' }}"
+          echo "Selected D1 target environment: $TARGET (Trigger: $TRIGGER)"
+          python scrapers/sync_prices.py --all --fast --target "$TARGET" --trigger "$TRIGGER"
 
       - name: Verify Remote Database Changed & Recorded Freshness
         if: success()
@@ -64,10 +65,8 @@ jobs:
         run: |
           cd backend
           TARGET="${{ github.event.inputs.target_env || 'remote' }}"
-          TARGET_FLAG="--${TARGET}"
-          echo "Verifying D1 data changes on $TARGET..."
-          npx wrangler d1 execute pricepulse-db $TARGET_FLAG \
-            --command="SELECT COUNT(*) as verified_offers, MAX(last_updated) as latest_update FROM store_offers WHERE freshness_state = 'verified';"
+          echo "Actively verifying D1 database mutations and audit run on $TARGET..."
+          python scrapers/verify_sync_changes.py --target "$TARGET" --max-age-minutes 30
 
       - name: Invalidate Edge KV Cache
         if: success()

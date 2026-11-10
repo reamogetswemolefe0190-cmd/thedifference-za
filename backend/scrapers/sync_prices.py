@@ -150,9 +150,14 @@ def resolve_category(input_str: str) -> Optional[str]:
     return None
 
 import glob
+import shutil
 import sqlite3
+from typing import Any, Tuple
 
 CURRENT_TARGET = "local"
+ACTIVE_RUN_ID: Optional[int] = None
+NPX_BIN = shutil.which("npx") or ("npx.cmd" if sys.platform == "win32" else "npx")
+
 D1_STATS = {
     "attempted": 0,
     "success": 0,
@@ -160,12 +165,52 @@ D1_STATS = {
     "quarantined": 0
 }
 
-def verify_remote_d1_access() -> bool:
-    """Verifies that remote Cloudflare D1 can be queried before starting sync."""
+def execute_d1_query(sql: str, json_output: bool = False) -> Tuple[bool, Optional[Any], str]:
+    """
+    Executes a SQL query against Cloudflare D1 using Wrangler CLI with shell=False.
+    Guarantees no shell-injection or metacharacter quote-splitting across platforms.
+    """
+    target_flag = "--remote" if CURRENT_TARGET == "remote" else "--local"
     cmd = [
-        "npx", "wrangler", "d1", "execute", "pricepulse-db",
+        NPX_BIN, "wrangler", "d1", "execute", "pricepulse-db",
+        target_flag,
+        f"--command={sql}"
+    ]
+    if json_output:
+        cmd.append("--json")
+
+    try:
+        proc = subprocess.run(
+            cmd,
+            cwd=str(BACKEND_DIR),
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            shell=False,
+            timeout=45
+        )
+        if proc.returncode != 0:
+            err_line = proc.stderr.strip().split("\n")[0] if proc.stderr else "Unknown error"
+            return False, None, f"Exit {proc.returncode}: {err_line}"
+
+        if json_output:
+            try:
+                data = json.loads(proc.stdout)
+                return True, data, ""
+            except Exception as je:
+                return False, None, f"Failed to parse JSON output: {je}"
+        return True, None, ""
+    except Exception as exc:
+        return False, None, str(exc)
+
+def verify_remote_d1_access() -> bool:
+    """Verifies that remote Cloudflare D1 can be queried before starting sync without shell=True."""
+    cmd = [
+        NPX_BIN, "wrangler", "d1", "execute", "pricepulse-db",
         "--remote",
-        "--command=SELECT 1 as ping;"
+        "--command=SELECT 1 as ping;",
+        "--json"
     ]
     try:
         proc = subprocess.run(
@@ -175,7 +220,7 @@ def verify_remote_d1_access() -> bool:
             text=True,
             encoding="utf-8",
             errors="replace",
-            shell=True,
+            shell=False,
             timeout=30
         )
         return proc.returncode == 0
@@ -184,7 +229,7 @@ def verify_remote_d1_access() -> bool:
         return False
 
 def run_d1_command(sql: str) -> bool:
-    """Executes a SQL statement against local or remote Cloudflare D1 database."""
+    """Executes a SQL statement against local or remote Cloudflare D1 database with shell=False."""
     if CURRENT_TARGET == "local":
         # Fast path: Direct SQLite connection to local Miniflare D1 database files
         d1_dir = BACKEND_DIR / ".wrangler" / "state" / "v3" / "d1" / "miniflare-D1DatabaseObject"
@@ -203,32 +248,100 @@ def run_d1_command(sql: str) -> bool:
                 if any_ok:
                     return True
 
-    # Wrangler CLI execution (respecting local vs remote target)
-    target_flag = "--remote" if CURRENT_TARGET == "remote" else "--local"
-    cmd = [
-        "npx", "wrangler", "d1", "execute", "pricepulse-db",
-        target_flag,
-        f"--command={sql}"
-    ]
+    # Fallback / Remote execution via Wrangler CLI
+    ok, _, err = execute_d1_query(sql, json_output=False)
+    if not ok:
+        print(f"[D1 ERROR ({CURRENT_TARGET})] {err[:100]}")
+    return ok
+
+def init_sync_run(trigger_source: str = "cli") -> int:
+    """
+    Inserts a new run record into sync_runs and returns the specific auto-incremented ID.
+    If the audit insert fails, the run FAILS immediately.
+    """
+    sql = f"INSERT INTO sync_runs (trigger_source, target_env, status) VALUES ('{trigger_source}', '{CURRENT_TARGET}', 'running') RETURNING id;"
+
+    if CURRENT_TARGET == "local":
+        d1_dir = BACKEND_DIR / ".wrangler" / "state" / "v3" / "d1" / "miniflare-D1DatabaseObject"
+        if d1_dir.exists():
+            d1_files = glob.glob(str(d1_dir / "*.sqlite"))
+            valid_dbs = [f for f in d1_files if not f.endswith("metadata.sqlite")]
+            if valid_dbs:
+                for db_path in valid_dbs:
+                    try:
+                        with sqlite3.connect(db_path, timeout=5) as conn:
+                            cur = conn.cursor()
+                            cur.execute(sql)
+                            row = cur.fetchone()
+                            conn.commit()
+                            if row and row[0]:
+                                return int(row[0])
+                    except Exception:
+                        pass
+
+    # Wrangler CLI execution for remote or local fallback
+    ok, data, err = execute_d1_query(sql, json_output=True)
+    if not ok or not data:
+        print(f"[FATAL] Failed to initialize audit sync run in D1 ({CURRENT_TARGET}): {err}")
+        sys.exit(1)
+
     try:
-        proc = subprocess.run(
-            cmd,
-            cwd=str(BACKEND_DIR),
-            capture_output=True,
-            text=True,
-            encoding="utf-8",
-            errors="replace",
-            shell=True,
-            timeout=45
-        )
-        if proc.returncode != 0:
-            err_line = proc.stderr.strip().split("\n")[0] if proc.stderr else "Unknown error"
-            print(f"[D1 ERROR ({CURRENT_TARGET})] Code {proc.returncode}: {err_line[:100]}")
-            return False
-        return True
+        run_id = int(data[0]["results"][0]["id"])
+        return run_id
+    except (KeyError, IndexError, TypeError, ValueError) as ex:
+        print(f"[FATAL] Failed to parse returned run ID from D1 ({CURRENT_TARGET}): {ex}")
+        sys.exit(1)
+
+def finish_sync_run(status: str, total_products: int, error_summary: Optional[str] = None) -> None:
+    """
+    Updates the sync_runs record for the specific ACTIVE_RUN_ID.
+    If the audit update fails, the run FAILS immediately.
+    """
+    global ACTIVE_RUN_ID
+    if ACTIVE_RUN_ID is None:
+        print("[FATAL] Cannot finish sync run: No active run ID tracked. Failing run.")
+        sys.exit(1)
+
+    if error_summary:
+        safe_err = error_summary.replace("'", "''")
+        escaped_err = f"'{safe_err}'"
+    else:
+        escaped_err = "NULL"
+    update_sql = (
+        f"UPDATE sync_runs SET "
+        f"finished_at = CURRENT_TIMESTAMP, "
+        f"products_attempted = {total_products}, "
+        f"offers_synced = {D1_STATS['success']}, "
+        f"offers_failed = {D1_STATS['failure']}, "
+        f"offers_quarantined = {D1_STATS['quarantined']}, "
+        f"status = '{status}', "
+        f"error_summary = {escaped_err} "
+        f"WHERE id = {ACTIVE_RUN_ID};"
+    )
+
+    ok = run_d1_command(update_sql)
+    if not ok:
+        print(f"[FATAL] Audit update failed: Could not record completion for run ID #{ACTIVE_RUN_ID}. Failing run.")
+        sys.exit(1)
+
+    print(f"[AUDIT] Successfully finalized sync run #{ACTIVE_RUN_ID} (status: '{status}').")
+
+    # Write sync summary file for downstream workflow verification
+    summary_path = BACKEND_DIR / "sync_summary.json"
+    try:
+        with open(summary_path, "w", encoding="utf-8") as f:
+            json.dump({
+                "run_id": ACTIVE_RUN_ID,
+                "target_env": CURRENT_TARGET,
+                "status": status,
+                "products_attempted": total_products,
+                "offers_synced": D1_STATS["success"],
+                "offers_failed": D1_STATS["failure"],
+                "offers_quarantined": D1_STATS["quarantined"],
+                "finished_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+            }, f, indent=2)
     except Exception as e:
-        print(f"[D1 EXEC FAIL ({CURRENT_TARGET})] {e}")
-        return False
+        print(f"[WARN] Failed to write sync_summary.json: {e}")
 
 def update_d1_store_offer(offer: StandardOffer, previous_price: float = None):
     """
@@ -257,7 +370,10 @@ def update_d1_store_offer(offer: StandardOffer, previous_price: float = None):
             f"VALUES ('{offer.product_id}', '{offer.store_id}', {offer.item_price}, "
             f"{previous_price if previous_price is not None else 'NULL'}, {pct_change}, '{anomaly_reason}', 'quarantined');"
         )
-        run_d1_command(quarantine_sql)
+        anomaly_ok = run_d1_command(quarantine_sql)
+        if not anomaly_ok:
+            print(f"[FATAL] Audit write failed: Could not record price anomaly for {offer.product_id} @ {offer.store_id}. Failing run.")
+            sys.exit(1)
         return False
 
     # 3. Idempotent upsert with normalized stock state & audit evidence
@@ -424,9 +540,10 @@ async def main():
     parser.add_argument("--all-stores", action="store_true", help="Include all 6 retailers (activates Playwright for non-JSON stores)")
     parser.add_argument("--headless", action="store_true", default=True, help="Run browser headless for Playwright fallbacks")
     parser.add_argument("--update-json", action="store_true", help="Persist updated prices to local JSON catalog files")
+    parser.add_argument("--trigger", type=str, choices=["cli", "schedule", "ci", "manual"], default="cli", help="Trigger source for audit run logging")
     args = parser.parse_args()
 
-    global CURRENT_TARGET
+    global CURRENT_TARGET, ACTIVE_RUN_ID
     CURRENT_TARGET = args.target
     print(f"[INFO] D1 Target Environment: {CURRENT_TARGET.upper()}")
 
@@ -436,7 +553,10 @@ async def main():
             print("[FATAL] Remote Cloudflare D1 preflight check failed. Check credentials or network connectivity.")
             sys.exit(1)
         print("[INFO] Remote Cloudflare D1 connection verified.")
-        run_d1_command("INSERT INTO sync_runs (trigger_source, target_env, status) VALUES ('cli', 'remote', 'running');")
+
+    # Initialize audit run tracking in D1 and track specific run ID
+    ACTIVE_RUN_ID = init_sync_run(trigger_source=args.trigger)
+    print(f"[AUDIT] Initialized sync run ID #{ACTIVE_RUN_ID} (Target: {CURRENT_TARGET.upper()}, Trigger: {args.trigger})")
 
     registry_path = SCRAPERS_DIR / "registry.json"
     if not registry_path.exists():
@@ -525,16 +645,11 @@ async def main():
     if args.update_json and all_synced_offers:
         update_catalog_json_files(all_synced_offers)
 
-    if CURRENT_TARGET == "remote":
-        status_val = "failed" if (D1_STATS["failure"] > 0 or (len(all_synced_offers) > 0 and D1_STATS["success"] == 0)) else "completed"
-        run_d1_command(
-            f"UPDATE sync_runs SET finished_at = CURRENT_TIMESTAMP, "
-            f"offers_attempted = {D1_STATS['attempted']}, "
-            f"offers_synced = {D1_STATS['success']}, "
-            f"offers_failed = {D1_STATS['failure']}, "
-            f"status = '{status_val}' "
-            f"WHERE id = (SELECT MAX(id) FROM sync_runs);"
-        )
+    status_val = "failed" if (D1_STATS["failure"] > 0 or (len(all_synced_offers) > 0 and D1_STATS["success"] == 0)) else "completed"
+    err_summary = f"{D1_STATS['failure']} write errors encountered" if D1_STATS["failure"] > 0 else None
+
+    # Finalize specific run ID in audit table (fails run if audit write unsuccessful)
+    finish_sync_run(status=status_val, total_products=len(target_prods), error_summary=err_summary)
 
     print("\n==================================================")
     print(f"[SUMMARY] Sync completed in {total_time:.2f} seconds.")
