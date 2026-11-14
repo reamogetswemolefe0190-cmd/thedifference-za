@@ -1,0 +1,63 @@
+name: Deploy Frontend to Cloudflare Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'pricepulse.html'
+      - 'images/**'
+      - 'shared/**'
+      - '.github/workflows/deploy-frontend.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build Bundle & Deploy to Pages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify Cloudflare Secrets
+        run: |
+          if [ -z "${{ secrets.CLOUDFLARE_API_TOKEN }}" ] || [ -z "${{ secrets.CLOUDFLARE_ACCOUNT_ID }}" ]; then
+            echo "::error::Missing CLOUDFLARE_API_TOKEN or CLOUDFLARE_ACCOUNT_ID repository secret. Deploy cannot proceed."
+            exit 1
+          fi
+
+      - name: Assemble deploy bundle
+        run: |
+          mkdir -p dist
+          cp index.html pricepulse.html dist/
+          cp -r images shared dist/
+          echo "Bundle contents:"
+          find dist -maxdepth 1 -exec du -sh {} \;
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=thedifference-za --branch=main --commit-dirty=true
+
+      - name: Verify Production Serves New Build
+        if: success()
+        env:
+          PROD_URL: https://thedifference-za.pages.dev/
+        run: |
+          sleep 15
+          MARKER="promo-meta-chip"
+          for i in 1 2 3 4 5; do
+            if curl -sfL "${PROD_URL}?deploycheck=${GITHUB_RUN_ID}-${i}" | grep -q "$MARKER"; then
+              echo "Production verified: new frontend build is live at ${PROD_URL}"
+              exit 0
+            fi
+            echo "Attempt $i: marker not found yet, retrying in 20s..."
+            sleep 20
+          done
+          echo "::warning::Deploy command succeeded but the verification marker was not found on production within ~100s. If this persists, confirm the Pages project production branch matches --branch=main in Cloudflare dashboard > Pages > thedifference-za > Settings > Builds & deployments."
