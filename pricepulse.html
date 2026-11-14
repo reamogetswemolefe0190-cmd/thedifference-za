@@ -5209,6 +5209,331 @@
         max-height: calc(100vh - 90px);
       }
     }
+
+    /* ==========================================================
+       ASTRYX SKELETON SCREENS (ZERO CLS, MODERN WEB GUIDANCE)
+       ========================================================== */
+    @keyframes astryxShimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    .skeleton-shimmer {
+      background: linear-gradient(
+        90deg,
+        var(--color-background-muted, #f1f5f9) 0%,
+        var(--color-border, #e2e8f0) 50%,
+        var(--color-background-muted, #f1f5f9) 100%
+      );
+      background-size: 200% 100%;
+      animation: astryxShimmer 1.5s ease-in-out infinite;
+      border-radius: var(--radius-inner, 4px);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .skeleton-shimmer {
+        animation: none;
+        background: var(--color-background-muted, #f1f5f9);
+      }
+    }
+
+    .product-card-skeleton {
+      min-width: 0;
+      box-sizing: border-box;
+      background: var(--color-background-card, #ffffff);
+      border: 1px solid var(--color-border, #e2e8f0);
+      border-radius: var(--radius-md, 12px);
+      padding: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      pointer-events: none;
+      user-select: none;
+      min-height: 400px;
+    }
+
+    @media (min-width: 640px) {
+      .product-card-skeleton { padding: 0.95rem; }
+    }
+
+    .skeleton-thumb-wrap {
+      width: 100%;
+      height: 180px;
+      border-radius: var(--radius-inner, 4px);
+      margin-bottom: 12px;
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+
+    .skeleton-pill-top {
+      width: 52px;
+      height: 18px;
+      border-radius: var(--radius-xs, 4px);
+      background: rgba(226, 232, 240, 0.7);
+    }
+
+    .skeleton-body {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .skeleton-line {
+      height: 12px;
+      border-radius: var(--radius-inner, 4px);
+    }
+
+    .skeleton-line.w-40 { width: 40%; }
+    .skeleton-line.w-60 { width: 60%; }
+    .skeleton-line.w-80 { width: 80%; }
+    .skeleton-line.w-100 { width: 100%; }
+
+    .skeleton-price-block {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid var(--color-border-subtle, #f1f5f9);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .skeleton-price-main {
+      height: 22px;
+      width: 50%;
+      border-radius: var(--radius-inner, 4px);
+    }
+
+    .skeleton-action-btn {
+      margin-top: 12px;
+      height: 34px;
+      width: 100%;
+      border-radius: var(--radius-btn, 8px);
+    }
+
+    .catalog-sentinel-skeletons {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+      width: 100%;
+      margin-top: 12px;
+      text-align: left;
+    }
+
+    /* ==========================================================
+       SEASONAL BLACK FRIDAY / FESTIVE POPUP MODAL (ASTRYX DIALOG)
+       ========================================================== */
+    .promo-dialog {
+      border: 1px solid var(--color-border, #e2e8f0);
+      border-radius: var(--radius-page, 16px);
+      background: #ffffff;
+      box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+      padding: 0;
+      max-width: 520px;
+      width: calc(100vw - 32px);
+      color: var(--color-text-primary, #0f172a);
+      overflow: hidden;
+      margin: auto;
+      animation: promoPopIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .promo-dialog::backdrop {
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      animation: promoBackdropFade 0.2s ease both;
+    }
+
+    @keyframes promoPopIn {
+      from { opacity: 0; transform: scale(0.95) translateY(10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    @keyframes promoBackdropFade {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .promo-hero-banner {
+      background: linear-gradient(135deg, #0b1a16 0%, #064e3b 50%, #022c22 100%);
+      color: #ffffff;
+      padding: 24px 20px 20px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .promo-sparkle-glow {
+      position: absolute;
+      top: -30px;
+      right: -30px;
+      width: 160px;
+      height: 160px;
+      background: radial-gradient(circle, rgba(74, 222, 128, 0.25) 0%, rgba(74, 222, 128, 0) 70%);
+      pointer-events: none;
+    }
+
+    .promo-tag-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .promo-season-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 3px 8px;
+      border-radius: var(--radius-xs, 4px);
+    }
+
+    .promo-close-btn {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      width: 28px;
+      height: 28px;
+      border-radius: var(--radius-xs, 4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .promo-close-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .promo-close-btn:active {
+      transform: translateY(1px);
+    }
+
+    .promo-title {
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.25;
+      margin: 0 0 6px 0;
+      color: #ffffff;
+    }
+
+    .promo-sub {
+      font-size: 13px;
+      line-height: 1.45;
+      color: #cbd5e1;
+      margin: 0;
+    }
+
+    .promo-body {
+      padding: 20px;
+      background: #ffffff;
+    }
+
+    .promo-deal-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .promo-deal-item {
+      background: var(--color-background-muted, #f8fafc);
+      border: 1px solid var(--color-border, #e2e8f0);
+      border-radius: var(--radius-inner, 6px);
+      padding: 10px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .promo-deal-item:hover {
+      border-color: var(--color-brand-primary, #007a3d);
+      background: #ffffff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+    }
+
+    .promo-deal-item:active {
+      transform: translateY(1px);
+    }
+
+    .promo-deal-item-header {
+      font-weight: 700;
+      color: var(--color-text-primary, #0f172a);
+      margin-bottom: 2px;
+    }
+
+    .promo-deal-item-sub {
+      font-size: 11px;
+      color: var(--color-text-secondary, #64748b);
+    }
+
+    .promo-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .promo-primary-btn {
+      flex: 1;
+      height: 40px;
+      background: var(--color-brand-primary, #007a3d);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-btn, 8px);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background 0.15s ease;
+    }
+
+    .promo-primary-btn:hover {
+      background: #006030;
+    }
+
+    .promo-primary-btn:active {
+      transform: translateY(1px);
+    }
+
+    .promo-secondary-btn {
+      height: 40px;
+      padding: 0 14px;
+      background: var(--color-background-muted, #f1f5f9);
+      color: var(--color-text-primary, #0f172a);
+      border: 1px solid var(--color-border, #e2e8f0);
+      border-radius: var(--radius-btn, 8px);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .promo-secondary-btn:hover {
+      background: #e2e8f0;
+    }
+
+    .promo-secondary-btn:active {
+      transform: translateY(1px);
+    }
   </style>
 
 </head>
@@ -5607,17 +5932,92 @@
 
       <div id="catalogSentinel" class="catalog-sentinel" aria-hidden="true">
 
-        <div id="catalogLoadingSpinner" class="catalog-spinner" style="display: none;">
+        <div id="catalogLoadingSpinner" class="catalog-spinner" style="display: none; flex-direction: column; align-items: center; width: 100%;" role="status" aria-live="polite" aria-busy="true">
 
-          <svg class="spinner-svg icon-20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <div style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 12px;">
 
-            <circle cx="12" cy="12" r="10" stroke="#cbd5e1" stroke-width="3"></circle>
+            <svg class="spinner-svg icon-20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
 
-            <path fill="#007a3d" d="M4 12a8 8 0 018-8v3a5 5 0 00-5 5H4z"></path>
+              <circle cx="12" cy="12" r="10" stroke="#cbd5e1" stroke-width="3"></circle>
 
-          </svg>
+              <path fill="#007a3d" d="M4 12a8 8 0 018-8v3a5 5 0 00-5 5H4z"></path>
 
-          <span class="catalog-spinner-text">Loading more deals...</span>
+            </svg>
+
+            <span class="catalog-spinner-text">Loading more deals...</span>
+
+          </div>
+
+          <div class="catalog-sentinel-skeletons" aria-hidden="true">
+            <div class="product-card-skeleton">
+              <div class="skeleton-thumb-wrap skeleton-shimmer">
+                <span class="skeleton-pill-top"></span>
+                <span class="skeleton-pill-top" style="width: 40px;"></span>
+              </div>
+              <div class="skeleton-body">
+                <div class="skeleton-line w-40 skeleton-shimmer"></div>
+                <div class="skeleton-line w-80 skeleton-shimmer"></div>
+                <div class="skeleton-line w-60 skeleton-shimmer"></div>
+                <div class="skeleton-price-block">
+                  <div class="skeleton-line w-40 skeleton-shimmer"></div>
+                  <div class="skeleton-price-main skeleton-shimmer"></div>
+                  <div class="skeleton-line w-60 skeleton-shimmer"></div>
+                </div>
+              </div>
+              <div class="skeleton-action-btn skeleton-shimmer"></div>
+            </div>
+            <div class="product-card-skeleton">
+              <div class="skeleton-thumb-wrap skeleton-shimmer">
+                <span class="skeleton-pill-top"></span>
+                <span class="skeleton-pill-top" style="width: 40px;"></span>
+              </div>
+              <div class="skeleton-body">
+                <div class="skeleton-line w-40 skeleton-shimmer"></div>
+                <div class="skeleton-line w-80 skeleton-shimmer"></div>
+                <div class="skeleton-line w-60 skeleton-shimmer"></div>
+                <div class="skeleton-price-block">
+                  <div class="skeleton-line w-40 skeleton-shimmer"></div>
+                  <div class="skeleton-price-main skeleton-shimmer"></div>
+                  <div class="skeleton-line w-60 skeleton-shimmer"></div>
+                </div>
+              </div>
+              <div class="skeleton-action-btn skeleton-shimmer"></div>
+            </div>
+            <div class="product-card-skeleton">
+              <div class="skeleton-thumb-wrap skeleton-shimmer">
+                <span class="skeleton-pill-top"></span>
+                <span class="skeleton-pill-top" style="width: 40px;"></span>
+              </div>
+              <div class="skeleton-body">
+                <div class="skeleton-line w-40 skeleton-shimmer"></div>
+                <div class="skeleton-line w-80 skeleton-shimmer"></div>
+                <div class="skeleton-line w-60 skeleton-shimmer"></div>
+                <div class="skeleton-price-block">
+                  <div class="skeleton-line w-40 skeleton-shimmer"></div>
+                  <div class="skeleton-price-main skeleton-shimmer"></div>
+                  <div class="skeleton-line w-60 skeleton-shimmer"></div>
+                </div>
+              </div>
+              <div class="skeleton-action-btn skeleton-shimmer"></div>
+            </div>
+            <div class="product-card-skeleton">
+              <div class="skeleton-thumb-wrap skeleton-shimmer">
+                <span class="skeleton-pill-top"></span>
+                <span class="skeleton-pill-top" style="width: 40px;"></span>
+              </div>
+              <div class="skeleton-body">
+                <div class="skeleton-line w-40 skeleton-shimmer"></div>
+                <div class="skeleton-line w-80 skeleton-shimmer"></div>
+                <div class="skeleton-line w-60 skeleton-shimmer"></div>
+                <div class="skeleton-price-block">
+                  <div class="skeleton-line w-40 skeleton-shimmer"></div>
+                  <div class="skeleton-price-main skeleton-shimmer"></div>
+                  <div class="skeleton-line w-60 skeleton-shimmer"></div>
+                </div>
+              </div>
+              <div class="skeleton-action-btn skeleton-shimmer"></div>
+            </div>
+          </div>
 
         </div>
 
@@ -5938,6 +6338,58 @@
 
   </footer>
 
+  <!-- ================= SEASONAL BLACK FRIDAY & FESTIVE ANNOUNCEMENT MODAL ================= -->
+  <dialog id="promoAnnouncementModal" class="promo-dialog" aria-labelledby="promoModalTitle" aria-modal="true">
+    <div class="promo-hero-banner">
+      <div class="promo-sparkle-glow" aria-hidden="true"></div>
+      <div class="promo-tag-row">
+        <div class="promo-season-badge">
+          <span class="ai-launcher-pulse" style="width: 6px; height: 6px; background: #4ade80;" aria-hidden="true"></span>
+          <span>Black November & Festive Access</span>
+        </div>
+        <button type="button" class="promo-close-btn" onclick="closePromoBurner(true)" aria-label="Close seasonal announcement">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <h2 id="promoModalTitle" class="promo-title">Verified South African Retail Price Drops</h2>
+      <p class="promo-sub">Tracking real-time prices across Takealot, Amazon SA, Makro, Game, Incredible, Hirsch's & HiFi Corp. Zero markup tricks, only authentic savings.</p>
+    </div>
+    <div class="promo-body">
+      <div class="promo-deal-grid">
+        <div class="promo-deal-item" onclick="selectPromoCategory('POWER')">
+          <div class="promo-deal-item-header">Load-Shedding Power</div>
+          <div class="promo-deal-item-sub">EcoFlow & Anker power stations</div>
+        </div>
+        <div class="promo-deal-item" onclick="selectPromoCategory('GAMING')">
+          <div class="promo-deal-item-header">Gaming Consoles</div>
+          <div class="promo-deal-item-sub">PS5 Slim & Xbox Series X</div>
+        </div>
+        <div class="promo-deal-item" onclick="selectPromoCategory('SMARTPHONES')">
+          <div class="promo-deal-item-header">Flagship Phones</div>
+          <div class="promo-deal-item-sub">iPhone 16 Pro & Galaxy S24</div>
+        </div>
+        <div class="promo-deal-item" onclick="selectPromoCategory('APPLIANCES')">
+          <div class="promo-deal-item-header">Festive Home Tech</div>
+          <div class="promo-deal-item-sub">Philips XXL & Ninja Airfryers</div>
+        </div>
+      </div>
+      <div class="promo-actions">
+        <button type="button" class="promo-primary-btn" onclick="closePromoBurner(true)">
+          <span>Browse 200+ Verified Deals</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+        <button type="button" class="promo-secondary-btn" onclick="openAiFromPromo()">
+          <span>Ask AI</span>
+        </button>
+      </div>
+    </div>
+  </dialog>
+
   <!-- ================= ASTRYX FLOATING AI HELP CARD ================= -->
   <div id="aiCard" class="ai-card-container" style="display: none;" role="region" aria-label="AI Price Assistant">
     <div class="ai-card-header">
@@ -6020,6 +6472,494 @@
 
   <!-- Single Source-of-Truth Offer Policy Engine -->
   <script src="shared/offer-policy.js"></script>
+  <script>
+  if (typeof OfferPolicy === "undefined") {
+/**
+ * PricePulse South Africa / The Difference - Shared Offer Policy Engine
+ * Single source of truth for stock state normalization, freshness evaluation,
+ * offer comparability, purchasability, eligibility, and champion selection.
+ *
+ * Compatible with Cloudflare Workers (ES module / CommonJS), Node.js test runners,
+ * and browser <script src="shared/offer-policy.js"> tags.
+ * Zero-emoji compliant.
+ */
+(function (root) {
+  "use strict";
+
+  const STALE_AFTER_HOURS = 24;
+
+  const STOCK_STATES = Object.freeze({
+    IN_STOCK: "in_stock",
+    ONLINE_ONLY: "online_only",
+    WAREHOUSE: "warehouse",
+    STORE_ONLY: "store_only",
+    PREORDER: "preorder",
+    OUT_OF_STOCK: "out_of_stock",
+    UNKNOWN: "unknown"
+  });
+
+  const STOCK_LABELS = Object.freeze({
+    in_stock: "In Stock",
+    online_only: "Available Online Only",
+    warehouse: "In Stock at Warehouse",
+    store_only: "Available in Store Only",
+    preorder: "Pre-Order",
+    out_of_stock: "Out of Stock",
+    unknown: "Availability Unconfirmed"
+  });
+
+  const PURCHASABLE_STATES = new Set([
+    "in_stock",
+    "online_only",
+    "warehouse",
+    "store_only",
+    "preorder"
+  ]);
+
+  const MODE_ALLOWED_STATES = {
+    door: new Set(["in_stock", "online_only", "warehouse"]),
+    pickup: new Set(["in_stock", "store_only"])
+  };
+
+  /**
+   * Ordered pattern rules: negative/unavailable patterns MUST run before positive
+   * "in stock" or "available" rules so strings like "Temporarily unavailable - in stock soon"
+   * or "Not in stock" never misclassify as available.
+   */
+  const NORMALIZATION_RULES = [
+    // 1. Explicit negative / unavailable states first
+    [/\b(out\s+of\s+stock|sold\s+out|discontinued|temporarily\s+unavailable|currently\s+unavailable|not\s+in\s+stock|no\s+stock|out-of-stock|unavailable)\b/i, "out_of_stock"],
+    [/^(no|false|0)$/i, "out_of_stock"],
+
+    // 2. Pre-order before generic availability
+    [/\b(pre-?order|coming\s+soon)\b/i, "preorder"],
+
+    // 3. Channel-restricted availability before general in_stock
+    [/\b(in-?store\s+only|collect\s+in\s+store|selected\s+stores\s+only|available\s+in\s+store(\s+only)?)\b/i, "store_only"],
+    [/\b(warehouse|ships\s+from\s+supplier|supplier\s+stock|lead\s+time)\b/i, "warehouse"],
+    [/\b(available\s+online\s+only|online\s+exclusive|online\s+only|available\s+online(?!\s*&\s*in\s*store))\b/i, "online_only"],
+
+    // 4. Confirmed general stock (online & store / ready to ship)
+    [/\b(in\s+stock|available\s+online\s*&\s*in\s*store|dispatches?\s+in\s+\d+\s*h(ours?)?|dispatch\s+in\s+\d+\s*h(ours?)?|immediate\s+dispatch|ready\s+to\s+ship)\b/i, "in_stock"],
+    [/^(yes|true|1|in_stock)$/i, "in_stock"],
+    [/^(online_only|warehouse|store_only|preorder|out_of_stock|unknown)$/i, function (m) { return m[1].toLowerCase(); }]
+  ];
+
+  /**
+   * Normalizes a raw retailer stock status string into a canonical stock_state
+   * while preserving the raw string for auditability.
+   * @param {string|boolean|number|null|undefined} rawStatus
+   * @returns {{ state: string, raw: string, label: string, isPurchasableState: boolean }}
+   */
+  function normalizeStockStatus(rawStatus) {
+    if (rawStatus === true) {
+      return {
+        state: "in_stock",
+        raw: "true",
+        label: STOCK_LABELS.in_stock,
+        isPurchasableState: true
+      };
+    }
+    if (rawStatus === false) {
+      return {
+        state: "out_of_stock",
+        raw: "false",
+        label: STOCK_LABELS.out_of_stock,
+        isPurchasableState: false
+      };
+    }
+
+    const raw = rawStatus == null ? "" : String(rawStatus).trim();
+    if (!raw) {
+      return {
+        state: "unknown",
+        raw: "",
+        label: STOCK_LABELS.unknown,
+        isPurchasableState: false
+      };
+    }
+
+    for (let i = 0; i < NORMALIZATION_RULES.length; i++) {
+      const pattern = NORMALIZATION_RULES[i][0];
+      const target = NORMALIZATION_RULES[i][1];
+      const match = raw.match(pattern);
+      if (match) {
+        const state = typeof target === "function" ? target(match) : target;
+        return {
+          state: state,
+          raw: raw,
+          label: STOCK_LABELS[state] || STOCK_LABELS.unknown,
+          isPurchasableState: PURCHASABLE_STATES.has(state)
+        };
+      }
+    }
+
+    return {
+      state: "unknown",
+      raw: raw,
+      label: STOCK_LABELS.unknown,
+      isPurchasableState: false
+    };
+  }
+
+  /**
+   * Resolves the canonical stockState for an offer object.
+   * Always prioritizes raw stock text (`stock_raw` / `stockText` / `stock_status`)
+   * or an explicit normalized `stock_state` / `stockState` over boolean `inStock`.
+   */
+  function resolveOfferStock(offer) {
+    if (!offer || typeof offer !== "object") {
+      return normalizeStockStatus("");
+    }
+    const explicitState = offer.stockState || offer.stock_state;
+    const rawText = offer.stockRaw ?? offer.stock_raw ?? offer.stockText ?? offer.stock_status;
+
+    if (explicitState && STOCK_LABELS[explicitState]) {
+      // If an explicit state is present, also verify if offer.inStock === false overrides it
+      if (offer.inStock === false || offer.in_stock === 0 || offer.in_stock === false) {
+        return {
+          state: "out_of_stock",
+          raw: rawText != null ? String(rawText) : "Out of Stock",
+          label: STOCK_LABELS.out_of_stock,
+          isPurchasableState: false
+        };
+      }
+      return {
+        state: explicitState,
+        raw: rawText != null ? String(rawText) : STOCK_LABELS[explicitState],
+        label: STOCK_LABELS[explicitState],
+        isPurchasableState: PURCHASABLE_STATES.has(explicitState)
+      };
+    }
+
+    if (rawText != null && String(rawText).trim() !== "") {
+      const parsed = normalizeStockStatus(rawText);
+      // If boolean inStock explicitly says false, force out_of_stock
+      if (offer.inStock === false || offer.in_stock === 0 || offer.in_stock === false) {
+        return {
+          state: "out_of_stock",
+          raw: parsed.raw,
+          label: STOCK_LABELS.out_of_stock,
+          isPurchasableState: false
+        };
+      }
+      return parsed;
+    }
+
+    if (offer.inStock === true || offer.in_stock === 1 || offer.in_stock === true) {
+      return normalizeStockStatus("In Stock");
+    }
+    if (offer.inStock === false || offer.in_stock === 0 || offer.in_stock === false) {
+      return normalizeStockStatus("Out of Stock");
+    }
+
+    return normalizeStockStatus("");
+  }
+
+  /**
+   * Determines freshness ('verified' | 'stale' | 'unavailable' | 'unknown')
+   * and human-readable freshnessLabel for an offer.
+   */
+  function evaluateFreshness(offer, stockInfo, nowMs) {
+    const currentMs = typeof nowMs === "number" && Number.isFinite(nowMs) ? nowMs : Date.now();
+    const resolvedStock = stockInfo || resolveOfferStock(offer);
+
+    if (resolvedStock.state === "out_of_stock") {
+      return {
+        freshness: "unavailable",
+        freshnessLabel: "Out of Stock",
+        hoursAgo: null
+      };
+    }
+
+    if (resolvedStock.state === "unknown") {
+      return {
+        freshness: "unknown",
+        freshnessLabel: "Availability unconfirmed",
+        hoursAgo: null
+      };
+    }
+
+    // Explicit freshness property on offer takes precedence if set to 'stale' or 'unavailable' or 'unknown'
+    const explicitFreshness = offer ? (offer.freshness || offer.freshness_state) : null;
+    if (explicitFreshness === "unavailable") {
+      return {
+        freshness: "unavailable",
+        freshnessLabel: "Out of Stock",
+        hoursAgo: null
+      };
+    }
+    if (explicitFreshness === "unknown") {
+      return {
+        freshness: "unknown",
+        freshnessLabel: "Availability unconfirmed",
+        hoursAgo: null
+      };
+    }
+
+    const rawTimestamp = offer
+      ? (offer.lastVerifiedAt || offer.last_verified_at || offer.last_updated || offer.lastUpdated)
+      : null;
+
+    if (rawTimestamp) {
+      const parsedDate = new Date(rawTimestamp);
+      const tsMs = parsedDate.getTime();
+      if (Number.isFinite(tsMs)) {
+        const hoursAgo = Math.max(0, (currentMs - tsMs) / (1000 * 60 * 60));
+        if (hoursAgo > STALE_AFTER_HOURS || explicitFreshness === "stale") {
+          const daysAgo = Math.max(1, Math.floor(hoursAgo / 24));
+          return {
+            freshness: "stale",
+            freshnessLabel: daysAgo <= 1 ? "Recorded yesterday" : "Recorded " + daysAgo + "d ago",
+            hoursAgo: hoursAgo
+          };
+        }
+        const roundedHours = Math.max(1, Math.round(hoursAgo));
+        return {
+          freshness: "verified",
+          freshnessLabel: hoursAgo <= 4 ? "Verified " + roundedHours + "h ago" : "Verified today",
+          hoursAgo: hoursAgo
+        };
+      }
+    }
+
+    if (explicitFreshness === "stale") {
+      return {
+        freshness: "stale",
+        freshnessLabel: (offer && offer.freshnessLabel) ? offer.freshnessLabel : "Recorded snapshot",
+        hoursAgo: null
+      };
+    }
+
+    if (explicitFreshness === "verified") {
+      return {
+        freshness: "verified",
+        freshnessLabel: (offer && offer.freshnessLabel) ? offer.freshnessLabel : "Verified today",
+        hoursAgo: 0
+      };
+    }
+
+    // Default for confirmed in-stock offers in catalog:
+    // Unless explicitly marked stale, in-stock items are treated as verified for current shopping session
+    if (resolvedStock.state === "in_stock" || resolvedStock.state === "online_only" || resolvedStock.state === "warehouse") {
+      return {
+        freshness: "verified",
+        freshnessLabel: (offer && offer.freshnessLabel) ? offer.freshnessLabel : "Verified today",
+        hoursAgo: 1
+      };
+    }
+
+    // Embedded offline offers without a verification timestamp default to 'stale'
+    // unless explicitly marked fresh, preventing unverified snapshots from masquerading as live verified stock
+    return {
+      freshness: "stale",
+      freshnessLabel: "Recorded catalog snapshot",
+      hoursAgo: null
+    };
+  }
+
+  function extractItemPrice(offer) {
+    if (!offer || typeof offer !== "object") return NaN;
+    const raw = offer.itemPrice !== undefined ? offer.itemPrice : offer.item_price;
+    return typeof raw === "number" ? raw : Number(raw);
+  }
+
+  function extractShippingFee(offer) {
+    if (!offer || typeof offer !== "object") return 0;
+    const raw = offer.shippingFee !== undefined ? offer.shippingFee : offer.delivery_fee;
+    const num = typeof raw === "number" ? raw : Number(raw || 0);
+    return Number.isFinite(num) && num >= 0 ? num : 0;
+  }
+
+  function computeLandedPrice(offer, deliveryMode) {
+    const mode = deliveryMode === "pickup" ? "pickup" : "door";
+    const itemPrice = extractItemPrice(offer);
+    if (!Number.isFinite(itemPrice) || itemPrice <= 0) return NaN;
+    const shipping = mode === "pickup" ? 0 : extractShippingFee(offer);
+    return itemPrice + shipping;
+  }
+
+  /**
+   * Comparable: Offer has a valid positive finite price and can be displayed in a comparison matrix.
+   */
+  function isOfferComparable(offer) {
+    const price = extractItemPrice(offer);
+    return Number.isFinite(price) && price > 0;
+  }
+
+  /**
+   * Purchasable: Offer is comparable, has a purchasable stock state, is not marked unavailable,
+   * and has a valid http(s) destination URL.
+   */
+  function isOfferPurchasable(offer, nowMs) {
+    if (!isOfferComparable(offer)) return false;
+    const stockInfo = resolveOfferStock(offer);
+    if (!stockInfo.isPurchasableState) return false;
+    const freshInfo = evaluateFreshness(offer, stockInfo, nowMs);
+    if (freshInfo.freshness === "unavailable" || freshInfo.freshness === "unknown") return false;
+    const url = String((offer && (offer.affiliateUrl || offer.product_url || offer.url)) || "").trim();
+    if (!url || !/^https:\/\//i.test(url)) return false;
+    try {
+      const parsed = new URL(url);
+      if (parsed.protocol !== "https:" || !parsed.hostname || !parsed.hostname.includes(".")) {
+        return false;
+      }
+    } catch (_) {
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * Eligible: Offer can legitimately win the "Best Price" buying recommendation.
+   * Must be purchasable, verified (not stale/unknown), not a pre-order,
+   * and its stock channel must be compatible with the active deliveryMode ('door' or 'pickup').
+   */
+  function isStoreOfferEligible(offer, deliveryMode, nowMs) {
+    const mode = deliveryMode === "pickup" ? "pickup" : "door";
+    if (!isOfferPurchasable(offer, nowMs)) return false;
+    const stockInfo = resolveOfferStock(offer);
+    if (stockInfo.state === "preorder") return false;
+    const allowedSet = MODE_ALLOWED_STATES[mode] || MODE_ALLOWED_STATES.door;
+    if (!allowedSet.has(stockInfo.state)) return false;
+    const freshInfo = evaluateFreshness(offer, stockInfo, nowMs);
+    return freshInfo.freshness === "verified";
+  }
+
+  /**
+   * Annotates and evaluates all offers for a product under the given delivery mode ('door' | 'pickup').
+   * Returns a normalized structure used identically by the Worker, Product Cards, and Detail Modals.
+   */
+  function evaluateProduct(product, deliveryMode, nowMs) {
+    const mode = deliveryMode === "pickup" ? "pickup" : "door";
+    const currentMs = typeof nowMs === "number" && Number.isFinite(nowMs) ? nowMs : Date.now();
+    const rawStores = (product && Array.isArray(product.stores)) ? product.stores : [];
+
+    const annotatedOffers = rawStores.map(function (st) {
+      const itemPrice = extractItemPrice(st);
+      const baseShipping = extractShippingFee(st);
+      const effectiveShipping = mode === "pickup" ? 0 : baseShipping;
+      const totalLanded = Number.isFinite(itemPrice) && itemPrice > 0 ? itemPrice + effectiveShipping : NaN;
+      const stockInfo = resolveOfferStock(st);
+      const freshInfo = evaluateFreshness(st, stockInfo, currentMs);
+      const comparable = isOfferComparable(st);
+      const purchasable = isOfferPurchasable(st, currentMs);
+      const eligible = isStoreOfferEligible(st, mode, currentMs);
+      const inStock = purchasable && stockInfo.state !== "out_of_stock" && stockInfo.state !== "unknown";
+
+      const storeName = st.name || st.store_name || st.storeId || st.store_id || "Retailer";
+      const effectiveEstimate = mode === "pickup"
+        ? (stockInfo.state === "online_only" || stockInfo.state === "warehouse"
+            ? "Door Delivery Only"
+            : "Ready in 2-4 Hours (Same Day)")
+        : (st.deliveryEstimate || "2-4 Business Days");
+      const effectiveShippingNote = mode === "pickup"
+        ? (stockInfo.state === "online_only" || stockInfo.state === "warehouse"
+            ? "Collection not supported for this offer"
+            : (st.collection_note || ("Free In-Store Collection (" + storeName + " branch / Pargo point)")))
+        : (st.shippingNote || st.delivery_note || (effectiveShipping === 0 ? "FREE Delivery" : "Courier R" + effectiveShipping));
+
+      return Object.assign({}, st, {
+        name: storeName,
+        storeId: st.storeId || st.store_id || storeName.toLowerCase().replace(/[^a-z0-9]/g, ""),
+        itemPrice: itemPrice,
+        shippingFee: baseShipping,
+        effectiveShipping: effectiveShipping,
+        totalLanded: totalLanded,
+        effectiveEstimate: effectiveEstimate,
+        effectiveShippingNote: effectiveShippingNote,
+        stockState: stockInfo.state,
+        stockRaw: stockInfo.raw,
+        stockLabel: stockInfo.label,
+        inStock: inStock,
+        freshness: freshInfo.freshness,
+        freshnessLabel: freshInfo.freshnessLabel,
+        comparable: comparable,
+        purchasable: purchasable,
+        eligible: eligible,
+        affiliateUrl: st.affiliateUrl || st.product_url || ""
+      });
+    });
+
+    const comparableOffers = annotatedOffers
+      .filter(function (o) { return o.comparable && Number.isFinite(o.totalLanded); })
+      .sort(function (a, b) { return a.totalLanded - b.totalLanded; });
+
+    const purchasableOffers = comparableOffers.filter(function (o) { return o.purchasable; });
+
+    const eligibleOffers = comparableOffers
+      .filter(function (o) { return o.eligible; })
+      .sort(function (a, b) {
+        if (a.totalLanded !== b.totalLanded) return a.totalLanded - b.totalLanded;
+        // Tie-break: full 'in_stock' beats channel-restricted states
+        if (a.stockState === "in_stock" && b.stockState !== "in_stock") return -1;
+        if (b.stockState === "in_stock" && a.stockState !== "in_stock") return 1;
+        return 0;
+      });
+
+    const champion = eligibleOffers.length > 0 ? eligibleOffers[0] : null;
+    const lowestEligible = champion ? champion.totalLanded : null;
+    const lowestPurchasableOffer = purchasableOffers.length > 0 ? purchasableOffers[0] : null;
+    const lowestComparableOffer = comparableOffers.length > 0 ? comparableOffers[0] : null;
+    const highestComparableOffer = comparableOffers.length > 0 ? comparableOffers[comparableOffers.length - 1] : null;
+
+    const lowestRecorded = lowestPurchasableOffer
+      ? lowestPurchasableOffer.totalLanded
+      : (lowestComparableOffer ? lowestComparableOffer.totalLanded : null);
+    const highestComparable = highestComparableOffer ? highestComparableOffer.totalLanded : null;
+
+    // Savings are ONLY advertised when a valid eligible champion exists
+    const savings = (champion && highestComparable !== null && highestComparable > champion.totalLanded)
+      ? (highestComparable - champion.totalLanded)
+      : 0;
+    const savingsPct = (savings > 0 && highestComparable > 0)
+      ? Math.round((savings / highestComparable) * 100)
+      : 0;
+
+    const hasOnlyStaleStock = champion === null && purchasableOffers.length > 0;
+    const isAllOutOfStock = purchasableOffers.length === 0;
+
+    return {
+      champion: champion,
+      bestStore: champion, // Strictly null when no eligible offer exists
+      lowestEligible: lowestEligible,
+      lowestRecorded: lowestRecorded,
+      lowestLanded: lowestEligible !== null ? lowestEligible : lowestRecorded,
+      highestLanded: highestComparable,
+      highestComparable: highestComparable,
+      savings: savings,
+      savingsPct: savingsPct,
+      eligibleCount: eligibleOffers.length,
+      purchasableCount: purchasableOffers.length,
+      comparableCount: comparableOffers.length,
+      isChampionStale: hasOnlyStaleStock,
+      isAllOutOfStock: isAllOutOfStock,
+      offers: comparableOffers
+    };
+  }
+
+  const OfferPolicy = {
+    STALE_AFTER_HOURS: STALE_AFTER_HOURS,
+    STOCK_STATES: STOCK_STATES,
+    STOCK_LABELS: STOCK_LABELS,
+    normalizeStockStatus: normalizeStockStatus,
+    resolveOfferStock: resolveOfferStock,
+    evaluateFreshness: evaluateFreshness,
+    computeLandedPrice: computeLandedPrice,
+    isOfferComparable: isOfferComparable,
+    isOfferPurchasable: isOfferPurchasable,
+    isStoreOfferEligible: isStoreOfferEligible,
+    evaluateProduct: evaluateProduct
+  };
+
+  if (typeof module !== "undefined" && module.exports) {
+    module.exports = OfferPolicy;
+  }
+  root.OfferPolicy = OfferPolicy;
+})(typeof globalThis !== "undefined" ? globalThis : (typeof window !== "undefined" ? window : this));
+
+  }
+  </script>
 
   <script>
 
@@ -24975,7 +25915,122 @@
 
 
 
+    
+    // ==========================================================
+    // ASTRYX SKELETON LOADERS (ZERO CLS, MODERN WEB GUIDANCE)
+    // ==========================================================
+    function getSkeletonCardHtml() {
+      return `
+        <div class="product-card-skeleton" aria-hidden="true">
+          <div class="skeleton-thumb-wrap skeleton-shimmer">
+            <span class="skeleton-pill-top"></span>
+            <span class="skeleton-pill-top" style="width: 40px;"></span>
+          </div>
+          <div class="skeleton-body">
+            <div class="skeleton-line w-40 skeleton-shimmer"></div>
+            <div class="skeleton-line w-80 skeleton-shimmer"></div>
+            <div class="skeleton-line w-60 skeleton-shimmer"></div>
+            <div class="skeleton-price-block">
+              <div class="skeleton-line w-40 skeleton-shimmer"></div>
+              <div class="skeleton-price-main skeleton-shimmer"></div>
+              <div class="skeleton-line w-60 skeleton-shimmer"></div>
+            </div>
+          </div>
+          <div class="skeleton-action-btn skeleton-shimmer"></div>
+        </div>
+      `;
+    }
+
+    function renderSkeletonGrid(container, count = 8) {
+      if (!container) return;
+      let html = '';
+      for (let i = 0; i < count; i++) {
+        html += getSkeletonCardHtml();
+      }
+      container.innerHTML = html;
+    }
+
+    // ==========================================================
+    // SEASONAL BLACK FRIDAY / FESTIVE POPUP CONTROLLER
+    // ==========================================================
+    function initPromoBurner() {
+      const modal = document.getElementById('promoAnnouncementModal');
+      if (!modal || navigator.webdriver) return;
+
+      const dismissedAt = localStorage.getItem('pricepulse_promo_dismissed_at');
+      if (dismissedAt) {
+        const elapsed = Date.now() - parseInt(dismissedAt, 10);
+        if (elapsed < 24 * 60 * 60 * 1000) {
+          return;
+        }
+      }
+
+      setTimeout(() => {
+        try {
+          if (typeof modal.showModal === 'function') {
+            modal.showModal();
+          } else {
+            modal.setAttribute('open', '');
+          }
+        } catch (e) {
+          modal.setAttribute('open', '');
+        }
+      }, 800);
+
+      modal.addEventListener('click', (e) => {
+        const rect = modal.getBoundingClientRect();
+        const isInDialog = (
+          rect.top <= e.clientY &&
+          e.clientY <= rect.top + rect.height &&
+          rect.left <= e.clientX &&
+          e.clientX <= rect.left + rect.width
+        );
+        if (!isInDialog) {
+          closePromoBurner(true);
+        }
+      });
+
+      modal.addEventListener('cancel', () => {
+        closePromoBurner(true);
+      });
+    }
+
+    function closePromoBurner(remember = true) {
+      const modal = document.getElementById('promoAnnouncementModal');
+      if (!modal) return;
+
+      if (typeof modal.close === 'function') {
+        modal.close();
+      } else {
+        modal.removeAttribute('open');
+      }
+
+      if (remember) {
+        try {
+          localStorage.setItem('pricepulse_promo_dismissed_at', String(Date.now()));
+        } catch (e) {}
+      }
+    }
+
+    function selectPromoCategory(catKey) {
+      closePromoBurner(true);
+      if (typeof filterCategory === 'function') {
+        filterCategory(catKey);
+      }
+    }
+
+    function openAiFromPromo() {
+      closePromoBurner(true);
+      if (typeof toggleAiCard === 'function') {
+        const card = document.getElementById('aiCard');
+        if (card && card.style.display !== 'flex') {
+          toggleAiCard();
+        }
+      }
+    }
+
     function initPricePulse() {
+      initPromoBurner();
 
       renderCategoryTabs();
 
