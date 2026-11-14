@@ -25005,6 +25005,8 @@
     // ==========================================================
     // ASTRYX FLOATING AI HELP CARD CONTROLLER (ZERO EMOJIS)
     // ==========================================================
+    let aiChatHistory = [];
+
     function toggleAiCard() {
       const card = document.getElementById('aiCard');
       if (!card) return;
@@ -25031,7 +25033,7 @@
       }
     }
 
-    function sendAiMessage() {
+    async function sendAiMessage() {
       const input = document.getElementById('aiChatInput');
       if (!input) return;
       const query = input.value.trim();
@@ -25040,119 +25042,216 @@
       const chatBody = document.getElementById('aiChatBody');
       if (!chatBody) return;
 
-      // Append user bubble
+      // 1. Append user bubble
       const userBubble = document.createElement('div');
       userBubble.className = 'ai-bubble ai-bubble-user';
       userBubble.textContent = query;
       chatBody.appendChild(userBubble);
 
+      aiChatHistory.push({ role: 'user', content: query });
+      if (aiChatHistory.length > 8) aiChatHistory.shift();
+
       input.value = '';
       chatBody.scrollTop = chatBody.scrollHeight;
 
-      // Process query
-      setTimeout(() => {
-        const qLower = query.toLowerCase();
+      // 2. Append typing indicator
+      const typingIndicator = document.createElement('div');
+      typingIndicator.id = 'aiTypingIndicator';
+      typingIndicator.className = 'ai-bubble ai-bubble-assistant';
+      typingIndicator.style.display = 'flex';
+      typingIndicator.style.alignItems = 'center';
+      typingIndicator.style.gap = '6px';
+      typingIndicator.style.color = 'var(--color-text-secondary, #64748b)';
+      typingIndicator.innerHTML = '<span class="ai-launcher-pulse" style="width: 6px; height: 6px;"></span><span>Checking verified prices...</span>';
+      chatBody.appendChild(typingIndicator);
+      chatBody.scrollTop = chatBody.scrollHeight;
 
-        // 1. Check for delivery / shipping queries
-        if (qLower.includes('delivery') || qLower.includes('shipping') || qLower.includes('courier') || qLower.includes('fee')) {
+      const removeTyping = () => {
+        const ind = document.getElementById('aiTypingIndicator');
+        if (ind) ind.remove();
+      };
+
+      // 3. Query Cloudflare Workers AI edge grounding API
+      try {
+        const res = await fetch(`${API_BASE}/api/ai/chat`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: query, history: aiChatHistory })
+        });
+
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        const data = await res.json();
+        removeTyping();
+
+        if (data.success && data.reply) {
+          aiChatHistory.push({ role: 'assistant', content: data.reply });
+
           const assistantBubble = document.createElement('div');
           assistantBubble.className = 'ai-bubble ai-bubble-assistant';
-          assistantBubble.innerHTML = '<strong>South African Retailer Delivery Fee Comparison:</strong><br><br>' +
-            '• <strong>Takealot:</strong> Free Door Courier over R650 (or R70 standard). Pargo pickup points from R35.<br>' +
-            '• <strong>Amazon SA:</strong> Free Delivery over R500 on qualifying items (or R70 standard).<br>' +
-            '• <strong>Makro SA:</strong> Free Delivery over R500 on selected small parcels, or Free Click & Collect in-store.<br>' +
-            '• <strong>Incredible & HiFi Corp:</strong> Free delivery on selected promotions or Free In-Store Pickup.<br>' +
-            '• <strong>Hirsch\'s:</strong> Regional store-to-door courier calculated at checkout.';
+
+          const paragraphs = data.reply.split(/\n\n+/);
+          paragraphs.forEach((pText, idx) => {
+            const p = document.createElement('div');
+            if (idx > 0) p.style.marginTop = '6px';
+            p.textContent = pText.replace(/\*\*/g, '');
+            assistantBubble.appendChild(p);
+          });
+
+          // Render interactive deal card if grounded products matched
+          if (Array.isArray(data.matched_products) && data.matched_products.length > 0) {
+            const p = data.matched_products[0];
+            const dealCard = document.createElement('div');
+            dealCard.className = 'ai-deal-card';
+
+            const titleDiv = document.createElement('div');
+            titleDiv.className = 'ai-deal-title';
+            titleDiv.textContent = p.title;
+            dealCard.appendChild(titleDiv);
+
+            const priceRow = document.createElement('div');
+            priceRow.className = 'ai-deal-price-row';
+            priceRow.innerHTML = '<span class="ai-deal-price">' + (p.formattedPrice || formatZAR(p.lowestLanded)) + '</span>' +
+              '<span class="ai-deal-badge">' + (p.savingsText || 'Verified Champion Deal') + '</span>';
+            dealCard.appendChild(priceRow);
+
+            const storeRow = document.createElement('div');
+            storeRow.className = 'ai-deal-store';
+            storeRow.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+              '<circle cx="12" cy="12" r="10"></circle>' +
+              '<polyline points="12 6 12 12 16 14"></polyline>' +
+              '</svg>' +
+              '<span>' + (p.championStore || 'Takealot') + ' • In Stock • ' + (p.deliveryNote || 'Free Door Delivery Available') + '</span>';
+            dealCard.appendChild(storeRow);
+
+            const ctaBtn = document.createElement('button');
+            ctaBtn.className = 'ai-deal-cta';
+            ctaBtn.type = 'button';
+            ctaBtn.textContent = 'Compare All 7 Retailers';
+            ctaBtn.onclick = function() {
+              if (typeof openProductDetail === 'function') {
+                openProductDetail(p.id);
+              }
+            };
+            dealCard.appendChild(ctaBtn);
+
+            assistantBubble.appendChild(dealCard);
+          }
+
           chatBody.appendChild(assistantBubble);
           chatBody.scrollTop = chatBody.scrollHeight;
           return;
         }
+      } catch (err) {
+        console.warn('Live AI endpoint unreachable, using local grounding fallback:', err);
+      }
 
-        // 2. Search catalog products
-        const terms = qLower.split(/\s+/).filter(t => t.length > 1);
-        let matches = [];
+      // 4. Local grounding fallback engine (circuit breaker)
+      removeTyping();
+      runLocalGroundingFallback(query, chatBody);
+    }
 
-        if (typeof PRODUCTS !== 'undefined' && Array.isArray(PRODUCTS)) {
-          matches = PRODUCTS.filter(p => {
-            const haystack = [
-              p.title || '',
-              p.brand || '',
-              p.category || '',
-              p.model || '',
-              ...(p.keywords || [])
-            ].join(' ').toLowerCase();
+    function runLocalGroundingFallback(query, chatBody) {
+      const qLower = query.toLowerCase();
 
-            return terms.some(term => haystack.includes(term));
-          });
-        }
-
-        if (matches.length > 0) {
-          // Sort by highest savings or lowest price
-          matches.sort((a, b) => {
-            const mA = typeof computePriceMetrics === 'function' ? computePriceMetrics(a) : { lowestLanded: 999999 };
-            const mB = typeof computePriceMetrics === 'function' ? computePriceMetrics(b) : { lowestLanded: 999999 };
-            return (mB.savings || 0) - (mA.savings || 0);
-          });
-
-          const p = matches[0];
-          const metrics = typeof computePriceMetrics === 'function' ? computePriceMetrics(p) : null;
-          const lowestLanded = metrics && metrics.lowestLanded ? formatZAR(metrics.lowestLanded) : 'View offers';
-          const champStore = metrics && metrics.champion ? metrics.champion.name : 'Takealot';
-          const savingsText = metrics && metrics.savings > 0 ? ('Lowest Landed (Save ' + formatZAR(metrics.savings) + ')') : 'Verified Champion Deal';
-
-          const assistantBubble = document.createElement('div');
-          assistantBubble.className = 'ai-bubble ai-bubble-assistant';
-          
-          const intro = document.createElement('div');
-          intro.textContent = 'Found ' + matches.length + ' matching item' + (matches.length > 1 ? 's' : '') + '. Here is today\'s verified champion offer:';
-          assistantBubble.appendChild(intro);
-
-          const dealCard = document.createElement('div');
-          dealCard.className = 'ai-deal-card';
-
-          const titleDiv = document.createElement('div');
-          titleDiv.className = 'ai-deal-title';
-          titleDiv.textContent = p.title;
-          dealCard.appendChild(titleDiv);
-
-          const priceRow = document.createElement('div');
-          priceRow.className = 'ai-deal-price-row';
-          priceRow.innerHTML = '<span class="ai-deal-price">' + lowestLanded + '</span>' +
-            '<span class="ai-deal-badge">' + savingsText + '</span>';
-          dealCard.appendChild(priceRow);
-
-          const storeRow = document.createElement('div');
-          storeRow.className = 'ai-deal-store';
-          storeRow.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-            '<circle cx="12" cy="12" r="10"></circle>' +
-            '<polyline points="12 6 12 12 16 14"></polyline>' +
-            '</svg>' +
-            '<span>' + champStore + ' • In Stock • Free Door Delivery Available</span>';
-          dealCard.appendChild(storeRow);
-
-          const ctaBtn = document.createElement('button');
-          ctaBtn.className = 'ai-deal-cta';
-          ctaBtn.type = 'button';
-          ctaBtn.textContent = 'Compare All 7 Retailers';
-          ctaBtn.onclick = function() {
-            if (typeof openProductDetail === 'function') {
-              openProductDetail(p.id);
-            }
-          };
-          dealCard.appendChild(ctaBtn);
-
-          assistantBubble.appendChild(dealCard);
-          chatBody.appendChild(assistantBubble);
-        } else {
-          const assistantBubble = document.createElement('div');
-          assistantBubble.className = 'ai-bubble ai-bubble-assistant';
-          assistantBubble.innerHTML = 'I could not find an exact match for that query in our current verified catalog.<br><br>' +
-            'Try asking for popular items like <em>PS5 Slim</em>, <em>AirPods Pro</em>, <em>EcoFlow River 2</em>, <em>Philips Airfryer</em>, or <em>LG OLED TV</em>.';
-          chatBody.appendChild(assistantBubble);
-        }
-
+      // Check delivery queries
+      if (qLower.includes('delivery') || qLower.includes('shipping') || qLower.includes('courier') || qLower.includes('fee')) {
+        const assistantBubble = document.createElement('div');
+        assistantBubble.className = 'ai-bubble ai-bubble-assistant';
+        assistantBubble.innerHTML = '<strong>South African Retailer Delivery Fee Comparison:</strong><br><br>' +
+          '• <strong>Takealot:</strong> Free Door Courier over R650 (or R70 standard). Pargo pickup points from R35.<br>' +
+          '• <strong>Amazon SA:</strong> Free Delivery over R500 on qualifying items (or R70 standard).<br>' +
+          '• <strong>Makro SA:</strong> Free Delivery over R500 on selected small parcels, or Free Click & Collect in-store.<br>' +
+          '• <strong>Incredible & HiFi Corp:</strong> Free delivery on selected promotions or Free In-Store Pickup.<br>' +
+          '• <strong>Hirsch\'s:</strong> Regional store-to-door courier calculated at checkout.';
+        chatBody.appendChild(assistantBubble);
         chatBody.scrollTop = chatBody.scrollHeight;
-      }, 300);
+        return;
+      }
+
+      // Search catalog products
+      const terms = qLower.split(/\s+/).filter(t => t.length > 1);
+      let matches = [];
+
+      if (typeof PRODUCTS !== 'undefined' && Array.isArray(PRODUCTS)) {
+        matches = PRODUCTS.filter(p => {
+          const haystack = [
+            p.title || '',
+            p.brand || '',
+            p.category || '',
+            p.model || '',
+            ...(p.keywords || [])
+          ].join(' ').toLowerCase();
+
+          return terms.some(term => haystack.includes(term));
+        });
+      }
+
+      if (matches.length > 0) {
+        matches.sort((a, b) => {
+          const mA = typeof computePriceMetrics === 'function' ? computePriceMetrics(a) : { lowestLanded: 999999 };
+          const mB = typeof computePriceMetrics === 'function' ? computePriceMetrics(b) : { lowestLanded: 999999 };
+          return (mB.savings || 0) - (mA.savings || 0);
+        });
+
+        const p = matches[0];
+        const metrics = typeof computePriceMetrics === 'function' ? computePriceMetrics(p) : null;
+        const lowestLanded = metrics && metrics.lowestLanded ? formatZAR(metrics.lowestLanded) : 'View offers';
+        const champStore = metrics && metrics.champion ? metrics.champion.name : 'Takealot';
+        const savingsText = metrics && metrics.savings > 0 ? ('Lowest Landed (Save ' + formatZAR(metrics.savings) + ')') : 'Verified Champion Deal';
+
+        const assistantBubble = document.createElement('div');
+        assistantBubble.className = 'ai-bubble ai-bubble-assistant';
+
+        const intro = document.createElement('div');
+        intro.textContent = 'Found ' + matches.length + ' matching item' + (matches.length > 1 ? 's' : '') + '. Here is today\'s verified champion offer:';
+        assistantBubble.appendChild(intro);
+
+        const dealCard = document.createElement('div');
+        dealCard.className = 'ai-deal-card';
+
+        const titleDiv = document.createElement('div');
+        titleDiv.className = 'ai-deal-title';
+        titleDiv.textContent = p.title;
+        dealCard.appendChild(titleDiv);
+
+        const priceRow = document.createElement('div');
+        priceRow.className = 'ai-deal-price-row';
+        priceRow.innerHTML = '<span class="ai-deal-price">' + lowestLanded + '</span>' +
+          '<span class="ai-deal-badge">' + savingsText + '</span>';
+        dealCard.appendChild(priceRow);
+
+        const storeRow = document.createElement('div');
+        storeRow.className = 'ai-deal-store';
+        storeRow.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+          '<circle cx="12" cy="12" r="10"></circle>' +
+          '<polyline points="12 6 12 12 16 14"></polyline>' +
+          '</svg>' +
+          '<span>' + champStore + ' • In Stock • Free Door Delivery Available</span>';
+        dealCard.appendChild(storeRow);
+
+        const ctaBtn = document.createElement('button');
+        ctaBtn.className = 'ai-deal-cta';
+        ctaBtn.type = 'button';
+        ctaBtn.textContent = 'Compare All 7 Retailers';
+        ctaBtn.onclick = function() {
+          if (typeof openProductDetail === 'function') {
+            openProductDetail(p.id);
+          }
+        };
+        dealCard.appendChild(ctaBtn);
+
+        assistantBubble.appendChild(dealCard);
+        chatBody.appendChild(assistantBubble);
+      } else {
+        const assistantBubble = document.createElement('div');
+        assistantBubble.className = 'ai-bubble ai-bubble-assistant';
+        assistantBubble.innerHTML = 'I could not find an exact match for that query in our current verified catalog.<br><br>' +
+          'Try asking for popular items like <em>PS5 Slim</em>, <em>AirPods Pro</em>, <em>EcoFlow River 2</em>, <em>Philips Airfryer</em>, or <em>LG OLED TV</em>.';
+        chatBody.appendChild(assistantBubble);
+      }
+
+      chatBody.scrollTop = chatBody.scrollHeight;
     }
 
   </script>

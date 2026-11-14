@@ -13,3 +13,7 @@ database_id = "885d4174-92e9-4783-9f63-9035ea1fb3a8"
 [[kv_namespaces]]
 binding = "CACHE"
 id = "c943da7eab0f4b02a8b9047cc23aa3e6"
+
+# Cloudflare Workers AI Binding
+[ai]
+binding = "AI"
