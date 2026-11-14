@@ -5056,6 +5056,62 @@
     .ai-deal-cta:active {
       transform: translateY(1px);
     }
+    .ai-product-context {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 6px 12px;
+      background: var(--color-background-muted, #f8fafc);
+      border-top: 1px solid var(--color-border-subtle, #f1f5f9);
+      border-bottom: 1px solid var(--color-border-subtle, #f1f5f9);
+      font-size: 11px;
+    }
+    .ai-context-info {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--color-text-primary, #0f172a);
+      flex: 1;
+      min-width: 0;
+    }
+    .ai-context-badge {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: rgba(0, 122, 61, 0.1);
+      color: var(--color-brand-primary, #007a3d);
+      padding: 2px 6px;
+      border-radius: var(--radius-xs, 4px);
+      flex-shrink: 0;
+    }
+    .ai-context-title {
+      font-weight: 600;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--color-text-primary, #0f172a);
+    }
+    .ai-context-clear {
+      background: none;
+      border: none;
+      color: var(--color-text-muted, #94a3b8);
+      padding: 2px 4px;
+      cursor: pointer;
+      border-radius: var(--radius-xs, 4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: color 0.15s ease;
+    }
+    .ai-context-clear:hover {
+      color: var(--color-text-primary, #0f172a);
+    }
     .ai-chips-tray {
       padding: 6px 12px;
       background: #ffffff;
@@ -5913,8 +5969,22 @@
       </div>
     </div>
 
+    <!-- Active Product Context Pill -->
+    <div class="ai-product-context" id="aiProductContext">
+      <div class="ai-context-info">
+        <span class="ai-context-badge">Viewing</span>
+        <span class="ai-context-title" id="aiContextTitle">Product</span>
+      </div>
+      <button type="button" class="ai-context-clear" onclick="clearAiProductContext()" aria-label="Clear active product context">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
     <!-- Quick Suggestion Chips -->
-    <div class="ai-chips-tray">
+    <div class="ai-chips-tray" id="aiChipsTray">
       <button type="button" class="ai-prompt-chip" onclick="askAiPrompt('Cheapest PS5')">Cheapest PS5</button>
       <button type="button" class="ai-prompt-chip" onclick="askAiPrompt('Best Airfryer Deal')">Best Airfryer Deal</button>
       <button type="button" class="ai-prompt-chip" onclick="askAiPrompt('Delivery Fees')">Delivery Fees</button>
@@ -23659,6 +23729,10 @@
 
       currentDetailProduct = prod;
 
+      if (typeof setAiProductContext === 'function') {
+        setAiProductContext(prod);
+      }
+
       currentDeliveryMode = 'door';
 
       const doorBtn = document.getElementById('modeDoorBtn');
@@ -24122,6 +24196,12 @@
       document.getElementById('comparisonView').classList.remove('active');
 
       document.getElementById('catalogView').classList.remove('hidden');
+
+      currentDetailProduct = null;
+
+      if (typeof clearAiProductContext === 'function') {
+        clearAiProductContext();
+      }
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
 
@@ -25006,6 +25086,75 @@
     // ASTRYX FLOATING AI HELP CARD CONTROLLER (ZERO EMOJIS)
     // ==========================================================
     let aiChatHistory = [];
+    let currentAiProduct = null;
+
+    function setAiProductContext(prod) {
+      if (!prod) return;
+      currentAiProduct = prod;
+
+      const contextBar = document.getElementById('aiProductContext');
+      const contextTitle = document.getElementById('aiContextTitle');
+      if (contextBar && contextTitle) {
+        contextTitle.textContent = prod.title;
+        contextBar.style.display = 'flex';
+      }
+
+      renderAiSuggestionChips(prod);
+    }
+
+    function clearAiProductContext() {
+      currentAiProduct = null;
+
+      const contextBar = document.getElementById('aiProductContext');
+      if (contextBar) {
+        contextBar.style.display = 'none';
+      }
+
+      renderAiSuggestionChips(null);
+    }
+
+    function renderAiSuggestionChips(prod) {
+      const tray = document.getElementById('aiChipsTray');
+      if (!tray) return;
+
+      if (prod) {
+        tray.innerHTML = `
+          <button type="button" class="ai-prompt-chip" onclick="askAiProductPrompt('cheapest', '${prod.id}')">Cheapest store for this</button>
+          <button type="button" class="ai-prompt-chip" onclick="askAiProductPrompt('delivery', '${prod.id}')">Free delivery check</button>
+          <button type="button" class="ai-prompt-chip" onclick="askAiProductPrompt('pickup', '${prod.id}')">In-store pickup</button>
+          <button type="button" class="ai-prompt-chip" onclick="askAiProductPrompt('payflex', '${prod.id}')">Payflex installments</button>
+        `;
+      } else {
+        tray.innerHTML = `
+          <button type="button" class="ai-prompt-chip" onclick="askAiPrompt('Cheapest PS5')">Cheapest PS5</button>
+          <button type="button" class="ai-prompt-chip" onclick="askAiPrompt('Best Airfryer Deal')">Best Airfryer Deal</button>
+          <button type="button" class="ai-prompt-chip" onclick="askAiPrompt('Delivery Fees')">Delivery Fees</button>
+          <button type="button" class="ai-prompt-chip" onclick="askAiPrompt('Load-Shedding Power')">Load-Shedding Power</button>
+        `;
+      }
+    }
+
+    function askAiProductPrompt(action, productId) {
+      const prod = currentAiProduct || (typeof PRODUCTS !== 'undefined' ? PRODUCTS.find(p => p.id === productId) : null);
+      const title = prod ? prod.title : 'this product';
+
+      let query = '';
+      if (action === 'cheapest') {
+        query = `Which store has ${title} at the cheapest price?`;
+      } else if (action === 'delivery') {
+        query = `What are the delivery fees and free delivery thresholds for ${title}?`;
+      } else if (action === 'pickup') {
+        query = `Can I collect ${title} in-store or at a pickup point today?`;
+      } else if (action === 'payflex') {
+        query = `What are the 4-month Payflex installment options for ${title}?`;
+      } else {
+        query = `Tell me about deals for ${title}`;
+      }
+
+      const input = document.getElementById('aiChatInput');
+      if (input) input.value = query;
+      sendAiMessage();
+    }
 
     function toggleAiCard() {
       const card = document.getElementById('aiCard');
@@ -25073,10 +25222,15 @@
 
       // 3. Query Cloudflare Workers AI edge grounding API
       try {
+        const activeProd = currentAiProduct || (typeof currentDetailProduct !== 'undefined' ? currentDetailProduct : null);
         const res = await fetch(`${API_BASE}/api/ai/chat`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: query, history: aiChatHistory })
+          body: JSON.stringify({
+            message: query,
+            history: aiChatHistory,
+            productId: activeProd ? activeProd.id : null
+          })
         });
 
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -25153,6 +25307,24 @@
 
     function runLocalGroundingFallback(query, chatBody) {
       const qLower = query.toLowerCase();
+      const activeProd = currentAiProduct || (typeof currentDetailProduct !== 'undefined' ? currentDetailProduct : null);
+
+      // Check installments for active product
+      if (activeProd && (qLower.includes('payflex') || qLower.includes('installment') || qLower.includes('mobicred'))) {
+        const metrics = typeof computePriceMetrics === 'function' ? computePriceMetrics(activeProd) : null;
+        const lowestLanded = metrics && metrics.lowestLanded ? metrics.lowestLanded : 0;
+        const installment = Math.round(lowestLanded / 4);
+        const assistantBubble = document.createElement('div');
+        assistantBubble.className = 'ai-bubble ai-bubble-assistant';
+        assistantBubble.innerHTML = '<strong>Payflex 4-Month Installment Breakdown:</strong><br><br>' +
+          'For <strong>' + activeProd.title + '</strong> (Lowest landed ' + formatZAR(lowestLanded) + ' at ' + (metrics && metrics.champion ? metrics.champion.name : 'Takealot') + '):<br><br>' +
+          '• <strong>4 Interest-Free Payments of ' + formatZAR(installment) + '</strong> every 2 weeks.<br>' +
+          '• Zero interest, zero fees when paid on time.<br>' +
+          '• Payflex and Mobicred options supported at checkout.';
+        chatBody.appendChild(assistantBubble);
+        chatBody.scrollTop = chatBody.scrollHeight;
+        return;
+      }
 
       // Check delivery queries
       if (qLower.includes('delivery') || qLower.includes('shipping') || qLower.includes('courier') || qLower.includes('fee')) {

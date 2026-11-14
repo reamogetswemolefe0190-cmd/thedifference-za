@@ -748,6 +748,7 @@ export default {
         }
 
         // C. Grounding Retrieval: Query D1 for matching products
+        const requestedProductId = (body.productId || body.product_id || "").toString().trim();
         const qLower = cleanQuery.toLowerCase();
         const isDeliveryQuery = qLower.includes("delivery") || qLower.includes("shipping") || qLower.includes("courier") || qLower.includes("fee") || qLower.includes("pargo") || qLower.includes("collect");
 
@@ -762,7 +763,7 @@ export default {
 
         let matchedProducts = [];
 
-        if (env.DB && searchTokens.size > 0) {
+        if (env.DB && (searchTokens.size > 0 || requestedProductId)) {
           try {
             // Retrieve products from D1
             const allProductsQuery = await env.DB.prepare(
@@ -786,16 +787,17 @@ export default {
             const candidates = [];
 
             for (const prod of (allProductsQuery.results || [])) {
+              const isTargetProduct = requestedProductId && prod.id === requestedProductId;
               const fullSearchable = `${prod.title} ${prod.brand} ${prod.model_number || ""} ${prod.category}`.toLowerCase();
               const prodWords = new Set(fullSearchable.split(/[^a-z0-9]+/));
-              let matchCount = 0;
+              let matchCount = isTargetProduct ? 100 : 0;
               for (const token of searchTokens) {
                 if (prodWords.has(token) || (token.length >= 4 && fullSearchable.includes(token))) {
                   matchCount++;
                 }
               }
 
-              if (matchCount > 0) {
+              if (matchCount > 0 || isTargetProduct) {
                 const rawOffers = offersByProduct[prod.id] || [];
                 if (rawOffers.length === 0) continue;
 
