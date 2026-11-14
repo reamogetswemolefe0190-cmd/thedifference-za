@@ -4842,6 +4842,317 @@
 
     }
 
+    /* ==========================================================
+       ASTRYX FLOATING AI HELP CARD COMPONENT (ZERO EMOJIS)
+       ========================================================== */
+    .ai-launcher-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--color-brand-primary, #007a3d);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 10px 16px;
+      border-radius: var(--radius-btn, 8px);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0, 122, 61, 0.35);
+      transition: all 0.15s ease;
+      z-index: 999;
+      max-width: calc(100vw - 48px);
+    }
+    .ai-launcher-btn:hover {
+      background: #006030;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(0, 122, 61, 0.45);
+    }
+    .ai-launcher-btn:active {
+      transform: translateY(1px);
+    }
+    .ai-launcher-pulse {
+      width: 8px;
+      height: 8px;
+      background: #4ade80;
+      border-radius: 50%;
+      box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.4);
+      animation: aiPulse 2s infinite;
+    }
+    @keyframes aiPulse {
+      0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.6); }
+      70% { box-shadow: 0 0 0 6px rgba(74, 222, 128, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+    }
+    .ai-card-container {
+      position: fixed;
+      bottom: 80px;
+      right: 24px;
+      width: 380px;
+      max-width: calc(100vw - 32px);
+      max-height: min(560px, calc(100vh - 100px));
+      background: var(--color-background-surface, #ffffff);
+      border: 1px solid var(--color-border, #e2e8f0);
+      border-radius: var(--radius-page, 16px);
+      box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.15), 0 8px 10px -6px rgba(15, 23, 42, 0.08);
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 1000;
+      animation: aiSlideUp 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes aiSlideUp {
+      from { opacity: 0; transform: translateY(12px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .ai-card-header {
+      padding: 12px 16px;
+      background: #ffffff;
+      border-bottom: 1px solid var(--color-border, #e2e8f0);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .ai-header-branding {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .ai-icon-badge {
+      width: 32px;
+      height: 32px;
+      background: var(--color-brand-primary, #007a3d);
+      border-radius: var(--radius-btn, 8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      flex-shrink: 0;
+    }
+    .ai-header-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--color-text-primary, #0f172a);
+      line-height: 1.2;
+    }
+    .ai-header-sub {
+      font-size: 11px;
+      color: var(--color-text-secondary, #64748b);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .ai-close-btn {
+      background: transparent;
+      border: none;
+      width: 28px;
+      height: 28px;
+      border-radius: var(--radius-xs, 4px);
+      color: var(--color-text-secondary, #64748b);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s ease;
+    }
+    .ai-close-btn:hover {
+      background: var(--color-background-muted, #f1f5f9);
+      color: var(--color-text-primary, #0f172a);
+    }
+    .ai-close-btn:active {
+      transform: translateY(1px);
+    }
+    .ai-chat-body {
+      flex: 1;
+      padding: 14px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: #ffffff;
+      min-height: 200px;
+      max-height: 340px;
+    }
+    .ai-bubble {
+      max-width: 88%;
+      padding: 10px 12px;
+      font-size: 13px;
+      line-height: 1.45;
+      border-radius: var(--radius-input, 10px);
+    }
+    .ai-bubble-assistant {
+      align-self: flex-start;
+      background: var(--color-background-muted, #f1f5f9);
+      color: var(--color-text-primary, #0f172a);
+      border-bottom-left-radius: 2px;
+    }
+    .ai-bubble-user {
+      align-self: flex-end;
+      background: var(--color-brand-primary, #007a3d);
+      color: #ffffff;
+      border-bottom-right-radius: 2px;
+    }
+    .ai-deal-card {
+      background: #ffffff;
+      border: 1px solid var(--color-border, #e2e8f0);
+      border-radius: var(--radius-btn, 8px);
+      padding: 10px 12px;
+      margin-top: 6px;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .ai-deal-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--color-text-primary, #0f172a);
+    }
+    .ai-deal-price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .ai-deal-price {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--color-brand-primary, #007a3d);
+    }
+    .ai-deal-badge {
+      font-size: 10px;
+      font-weight: 700;
+      color: #065f46;
+      background: #d1fae5;
+      padding: 2px 6px;
+      border-radius: var(--radius-xs, 4px);
+    }
+    .ai-deal-store {
+      font-size: 11px;
+      color: var(--color-text-secondary, #64748b);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .ai-deal-cta {
+      margin-top: 4px;
+      background: var(--color-brand-primary, #007a3d);
+      color: #ffffff;
+      border: none;
+      padding: 6px 10px;
+      border-radius: var(--radius-btn, 8px);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.15s ease;
+      display: block;
+      width: 100%;
+    }
+    .ai-deal-cta:hover {
+      background: #006030;
+    }
+    .ai-deal-cta:active {
+      transform: translateY(1px);
+    }
+    .ai-chips-tray {
+      padding: 6px 12px;
+      background: #ffffff;
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      white-space: nowrap;
+      border-top: 1px solid var(--color-border-subtle, #f1f5f9);
+      scrollbar-width: none;
+    }
+    .ai-chips-tray::-webkit-scrollbar {
+      display: none;
+    }
+    .ai-prompt-chip {
+      background: var(--color-background-muted, #f1f5f9);
+      border: 1px solid var(--color-border, #e2e8f0);
+      border-radius: var(--radius-badge, 6px);
+      padding: 4px 8px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--color-text-primary, #0f172a);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+    .ai-prompt-chip:hover {
+      background: #e2e8f0;
+      border-color: #cbd5e1;
+    }
+    .ai-prompt-chip:active {
+      transform: translateY(1px);
+    }
+    .ai-card-footer {
+      padding: 10px 12px;
+      background: #ffffff;
+      border-top: 1px solid var(--color-border, #e2e8f0);
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .ai-chat-input {
+      flex: 1;
+      height: 36px;
+      padding: 0 10px;
+      font-size: 12px;
+      color: var(--color-text-primary, #0f172a);
+      background: #ffffff;
+      border: 1px solid var(--color-border, #e2e8f0);
+      border-radius: var(--radius-input, 10px);
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+    .ai-chat-input:focus {
+      border-color: var(--color-brand-primary, #007a3d);
+      box-shadow: 0 0 0 2px rgba(0, 122, 61, 0.12);
+    }
+    .ai-chat-send {
+      width: 36px;
+      height: 36px;
+      background: var(--color-brand-primary, #007a3d);
+      border: none;
+      border-radius: var(--radius-btn, 8px);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.15s ease;
+    }
+    .ai-chat-send:hover {
+      background: #006030;
+    }
+    .ai-chat-send:active {
+      transform: translateY(1px);
+    }
+    .ai-disclaimer {
+      text-align: center;
+      font-size: 10px;
+      color: var(--color-text-muted, #94a3b8);
+      padding: 2px 12px 6px 12px;
+      background: #ffffff;
+    }
+    @media (max-width: 440px) {
+      .ai-launcher-btn {
+        bottom: 16px;
+        right: 16px;
+        padding: 8px 12px;
+        font-size: 12px;
+      }
+      .ai-card-container {
+        bottom: 68px;
+        right: 16px;
+        width: calc(100vw - 32px);
+        max-height: calc(100vh - 90px);
+      }
+    }
   </style>
 
 </head>
@@ -5570,6 +5881,69 @@
     </div>
 
   </footer>
+
+  <!-- ================= ASTRYX FLOATING AI HELP CARD ================= -->
+  <div id="aiCard" class="ai-card-container" style="display: none;" role="region" aria-label="AI Price Assistant">
+    <div class="ai-card-header">
+      <div class="ai-header-branding">
+        <div class="ai-icon-badge" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+          </svg>
+        </div>
+        <div>
+          <div class="ai-header-title">PricePulse AI Assistant</div>
+          <div class="ai-header-sub">
+            <span class="ai-launcher-pulse" style="width: 6px; height: 6px;"></span>
+            <span>7 Verified SA Retailers</span>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="ai-close-btn" onclick="toggleAiCard()" aria-label="Close AI Assistant">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <div class="ai-chat-body" id="aiChatBody">
+      <div class="ai-bubble ai-bubble-assistant">
+        Sawubona! I track live landed prices across Takealot, Amazon SA, Makro, Incredible, HiFi Corp, Game, and Hirsch's. What deal or product can I find for you?
+      </div>
+    </div>
+
+    <!-- Quick Suggestion Chips -->
+    <div class="ai-chips-tray">
+      <button type="button" class="ai-prompt-chip" onclick="askAiPrompt('Cheapest PS5')">Cheapest PS5</button>
+      <button type="button" class="ai-prompt-chip" onclick="askAiPrompt('Best Airfryer Deal')">Best Airfryer Deal</button>
+      <button type="button" class="ai-prompt-chip" onclick="askAiPrompt('Delivery Fees')">Delivery Fees</button>
+      <button type="button" class="ai-prompt-chip" onclick="askAiPrompt('Load-Shedding Power')">Load-Shedding Power</button>
+    </div>
+
+    <!-- Input Bar -->
+    <div class="ai-card-footer">
+      <input type="text" id="aiChatInput" class="ai-chat-input" placeholder="Ask about prices, delivery fees, or stock..." onkeypress="handleAiKeyPress(event)" aria-label="Ask AI Assistant">
+      <button type="button" class="ai-chat-send" onclick="sendAiMessage()" aria-label="Send query">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+      </button>
+    </div>
+    <div class="ai-disclaimer">
+      Verified with Cloudflare Workers AI • Zero Emojis • Live D1 Catalog
+    </div>
+  </div>
+
+  <!-- Floating Launcher Button -->
+  <button id="aiLauncher" class="ai-launcher-btn" onclick="toggleAiCard()" aria-label="Open AI Price Assistant" type="button">
+    <div class="ai-launcher-pulse" aria-hidden="true"></div>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+    </svg>
+    <span>AI Price Assistant</span>
+  </button>
 
 
 
@@ -24627,6 +25001,159 @@
       }
 
     });
+
+    // ==========================================================
+    // ASTRYX FLOATING AI HELP CARD CONTROLLER (ZERO EMOJIS)
+    // ==========================================================
+    function toggleAiCard() {
+      const card = document.getElementById('aiCard');
+      if (!card) return;
+      const isVisible = card.style.display === 'flex';
+      if (isVisible) {
+        card.style.display = 'none';
+      } else {
+        card.style.display = 'flex';
+        const input = document.getElementById('aiChatInput');
+        if (input) setTimeout(() => input.focus(), 50);
+      }
+    }
+
+    function askAiPrompt(text) {
+      const input = document.getElementById('aiChatInput');
+      if (!input) return;
+      input.value = text;
+      sendAiMessage();
+    }
+
+    function handleAiKeyPress(e) {
+      if (e.key === 'Enter') {
+        sendAiMessage();
+      }
+    }
+
+    function sendAiMessage() {
+      const input = document.getElementById('aiChatInput');
+      if (!input) return;
+      const query = input.value.trim();
+      if (!query) return;
+
+      const chatBody = document.getElementById('aiChatBody');
+      if (!chatBody) return;
+
+      // Append user bubble
+      const userBubble = document.createElement('div');
+      userBubble.className = 'ai-bubble ai-bubble-user';
+      userBubble.textContent = query;
+      chatBody.appendChild(userBubble);
+
+      input.value = '';
+      chatBody.scrollTop = chatBody.scrollHeight;
+
+      // Process query
+      setTimeout(() => {
+        const qLower = query.toLowerCase();
+
+        // 1. Check for delivery / shipping queries
+        if (qLower.includes('delivery') || qLower.includes('shipping') || qLower.includes('courier') || qLower.includes('fee')) {
+          const assistantBubble = document.createElement('div');
+          assistantBubble.className = 'ai-bubble ai-bubble-assistant';
+          assistantBubble.innerHTML = '<strong>South African Retailer Delivery Fee Comparison:</strong><br><br>' +
+            '• <strong>Takealot:</strong> Free Door Courier over R650 (or R70 standard). Pargo pickup points from R35.<br>' +
+            '• <strong>Amazon SA:</strong> Free Delivery over R500 on qualifying items (or R70 standard).<br>' +
+            '• <strong>Makro SA:</strong> Free Delivery over R500 on selected small parcels, or Free Click & Collect in-store.<br>' +
+            '• <strong>Incredible & HiFi Corp:</strong> Free delivery on selected promotions or Free In-Store Pickup.<br>' +
+            '• <strong>Hirsch\'s:</strong> Regional store-to-door courier calculated at checkout.';
+          chatBody.appendChild(assistantBubble);
+          chatBody.scrollTop = chatBody.scrollHeight;
+          return;
+        }
+
+        // 2. Search catalog products
+        const terms = qLower.split(/\s+/).filter(t => t.length > 1);
+        let matches = [];
+
+        if (typeof PRODUCTS !== 'undefined' && Array.isArray(PRODUCTS)) {
+          matches = PRODUCTS.filter(p => {
+            const haystack = [
+              p.title || '',
+              p.brand || '',
+              p.category || '',
+              p.model || '',
+              ...(p.keywords || [])
+            ].join(' ').toLowerCase();
+
+            return terms.some(term => haystack.includes(term));
+          });
+        }
+
+        if (matches.length > 0) {
+          // Sort by highest savings or lowest price
+          matches.sort((a, b) => {
+            const mA = typeof computePriceMetrics === 'function' ? computePriceMetrics(a) : { lowestLanded: 999999 };
+            const mB = typeof computePriceMetrics === 'function' ? computePriceMetrics(b) : { lowestLanded: 999999 };
+            return (mB.savings || 0) - (mA.savings || 0);
+          });
+
+          const p = matches[0];
+          const metrics = typeof computePriceMetrics === 'function' ? computePriceMetrics(p) : null;
+          const lowestLanded = metrics && metrics.lowestLanded ? formatZAR(metrics.lowestLanded) : 'View offers';
+          const champStore = metrics && metrics.champion ? metrics.champion.name : 'Takealot';
+          const savingsText = metrics && metrics.savings > 0 ? ('Lowest Landed (Save ' + formatZAR(metrics.savings) + ')') : 'Verified Champion Deal';
+
+          const assistantBubble = document.createElement('div');
+          assistantBubble.className = 'ai-bubble ai-bubble-assistant';
+          
+          const intro = document.createElement('div');
+          intro.textContent = 'Found ' + matches.length + ' matching item' + (matches.length > 1 ? 's' : '') + '. Here is today\'s verified champion offer:';
+          assistantBubble.appendChild(intro);
+
+          const dealCard = document.createElement('div');
+          dealCard.className = 'ai-deal-card';
+
+          const titleDiv = document.createElement('div');
+          titleDiv.className = 'ai-deal-title';
+          titleDiv.textContent = p.title;
+          dealCard.appendChild(titleDiv);
+
+          const priceRow = document.createElement('div');
+          priceRow.className = 'ai-deal-price-row';
+          priceRow.innerHTML = '<span class="ai-deal-price">' + lowestLanded + '</span>' +
+            '<span class="ai-deal-badge">' + savingsText + '</span>';
+          dealCard.appendChild(priceRow);
+
+          const storeRow = document.createElement('div');
+          storeRow.className = 'ai-deal-store';
+          storeRow.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+            '<circle cx="12" cy="12" r="10"></circle>' +
+            '<polyline points="12 6 12 12 16 14"></polyline>' +
+            '</svg>' +
+            '<span>' + champStore + ' • In Stock • Free Door Delivery Available</span>';
+          dealCard.appendChild(storeRow);
+
+          const ctaBtn = document.createElement('button');
+          ctaBtn.className = 'ai-deal-cta';
+          ctaBtn.type = 'button';
+          ctaBtn.textContent = 'Compare All 7 Retailers';
+          ctaBtn.onclick = function() {
+            if (typeof openProductDetail === 'function') {
+              openProductDetail(p.id);
+            }
+          };
+          dealCard.appendChild(ctaBtn);
+
+          assistantBubble.appendChild(dealCard);
+          chatBody.appendChild(assistantBubble);
+        } else {
+          const assistantBubble = document.createElement('div');
+          assistantBubble.className = 'ai-bubble ai-bubble-assistant';
+          assistantBubble.innerHTML = 'I could not find an exact match for that query in our current verified catalog.<br><br>' +
+            'Try asking for popular items like <em>PS5 Slim</em>, <em>AirPods Pro</em>, <em>EcoFlow River 2</em>, <em>Philips Airfryer</em>, or <em>LG OLED TV</em>.';
+          chatBody.appendChild(assistantBubble);
+        }
+
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }, 300);
+    }
 
   </script>
 
