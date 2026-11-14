@@ -531,6 +531,10 @@
 
     }
 
+    .icon-12 { width: 12px !important; height: 12px !important; min-width: 12px; min-height: 12px; flex-shrink: 0; }
+
+    .icon-14 { width: 14px !important; height: 14px !important; min-width: 14px; min-height: 14px; flex-shrink: 0; }
+
     .icon-16 { width: 16px !important; height: 16px !important; min-width: 16px; min-height: 16px; }
 
     .icon-20 { width: 20px !important; height: 20px !important; min-width: 20px; min-height: 20px; }
@@ -6871,6 +6875,7 @@
         stockState: stockInfo.state,
         stockRaw: stockInfo.raw,
         stockLabel: stockInfo.label,
+        stockText: stockInfo.label || st.stockText || stockInfo.raw || (inStock ? "In Stock" : "Out of Stock"),
         inStock: inStock,
         freshness: freshInfo.freshness,
         freshnessLabel: freshInfo.freshnessLabel,
@@ -24747,6 +24752,7 @@
         const effectiveShippingNote = isPickup ? `Free In-Store Collection (${st.name} branch / Pargo point)` : (st.shippingNote || 'Standard Courier');
         const freshness = st.freshness || (st.inStock ? 'verified' : 'unavailable');
         const freshnessLabel = st.freshnessLabel || (st.inStock ? 'Verified today' : 'Out of Stock');
+        const stockText = st.stockText || st.stockLabel || st.stock_status || (st.inStock ? 'In Stock' : 'Out of Stock');
         return {
           ...st,
           effectiveShipping,
@@ -24754,7 +24760,8 @@
           effectiveEstimate,
           effectiveShippingNote,
           freshness,
-          freshnessLabel
+          freshnessLabel,
+          stockText
         };
       }).sort((a, b) => a.totalLanded - b.totalLanded);
 
@@ -25060,7 +25067,7 @@
 
                 <span class="status-dot" style="background:${st.inStock ? '#108910' : '#e11d48'}"></span>
 
-                <span>${st.stockText}</span>
+                <span>${st.stockText || st.stockLabel || 'In Stock'}</span>
 
                 <span class="stock-sep">&bull;</span>
 

@@ -395,6 +395,7 @@
         stockState: stockInfo.state,
         stockRaw: stockInfo.raw,
         stockLabel: stockInfo.label,
+        stockText: stockInfo.label || st.stockText || stockInfo.raw || (inStock ? "In Stock" : "Out of Stock"),
         inStock: inStock,
         freshness: freshInfo.freshness,
         freshnessLabel: freshInfo.freshnessLabel,
