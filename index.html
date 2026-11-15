@@ -11,6 +11,27 @@
   <title>The Difference | thedifference.co.za — Know the difference</title>
 
   <meta name="description" content="Compare verified landed prices across Takealot, Makro, Amazon SA, Incredible Connection, and Hirsch's.">
+  <link rel="canonical" href="https://thedifference-za.pages.dev/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="The Difference">
+  <meta property="og:title" content="The Difference — Know the difference">
+  <meta property="og:description" content="Compare verified landed prices across Takealot, Makro, Amazon SA, Incredible Connection, and Hirsch's.">
+  <meta property="og:url" content="https://thedifference-za.pages.dev/">
+  <meta property="og:image" content="https://thedifference-za.pages.dev/images/og-cover.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The Difference — Know the difference">
+  <meta name="twitter:description" content="Compare verified landed prices across Takealot, Makro, Amazon SA, Incredible Connection, and Hirsch's.">
+  <meta name="twitter:image" content="https://thedifference-za.pages.dev/images/og-cover.png">
+  <meta name="theme-color" content="#0f172a">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "The Difference",
+    "url": "https://thedifference-za.pages.dev/",
+    "description": "Compare verified landed prices across Takealot, Makro, Amazon SA, Incredible Connection, and Hirsch's."
+  }
+  </script>
 
   
 
@@ -1458,6 +1479,12 @@
 
       will-change: transform;
 
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .bf-ticker-track {
+        animation: none;
+      }
     }
 
     .bf-live-ticker:hover .bf-ticker-track {
@@ -5754,6 +5781,11 @@
 
 
 <body>
+  <noscript>
+    <div style="padding:24px;font-family:sans-serif;text-align:center;">
+      PricePulse needs JavaScript to compare live retailer prices. Please enable JavaScript to continue.
+    </div>
+  </noscript>
 
 
 
@@ -6133,7 +6165,7 @@
 
       <!-- PRODUCT GRID (2 cols on mobile, 4 on desktop) -->
 
-      <div id="productGrid" class="product-grid">
+      <div id="productGrid" class="product-grid" aria-live="polite">
 
         <!-- Injected by JavaScript -->
 
@@ -6300,7 +6332,7 @@
 
         <div class="detail-hero-box">
 
-          <img id="detailHeroImage" src="" alt="Product Photo" class="detail-hero-img">
+          <img id="detailHeroImage" alt="Product Photo" class="detail-hero-img">
 
           <div id="detailSavingsBadge" class="detail-savings-tag">Save R1,800</div>
 
@@ -6695,7 +6727,7 @@
       </button>
     </div>
 
-    <div class="ai-chat-body" id="aiChatBody">
+    <div class="ai-chat-body" id="aiChatBody" aria-live="polite">
       <div class="ai-bubble ai-bubble-assistant">
         Sawubona! I track live landed prices across Takealot, Amazon SA, Makro, Incredible, HiFi Corp, Game, and Hirsch's. What deal or product can I find for you?
       </div>
@@ -24169,9 +24201,26 @@
       'images/products/prod-galaxy-s24-ultra.png': 'images/products/prod-samsung-galaxy-s24.png'
     };
 
-    function productImageSrc(image) {
-      return PRODUCT_IMAGE_OVERRIDES[image] || image;
+    function escapeHtml(value) {
+      return String(value == null ? '' : value)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
     }
+
+    function productImageSrc(image) {
+      const mapped = PRODUCT_IMAGE_OVERRIDES[image] || image;
+      return typeof mapped === 'string' ? mapped.replace(/\.png$/, '.webp') : mapped;
+    }
+
+    /* If a WebP variant is missing (e.g. a product added after the conversion),
+       fall back to the original PNG so no product ever renders without an image. */
+    document.addEventListener('error', function(event) {
+      const el = event.target;
+      if (el && el.tagName === 'IMG' && /\.webp(\?|$)/.test(el.src) && !el.dataset.pngFallback) {
+        el.dataset.pngFallback = '1';
+        el.src = el.src.replace(/\.webp(\?|$)/, '.png$1');
+      }
+    }, true);
 
 
 
@@ -24325,7 +24374,7 @@
 
           <div class="card-thumb-wrap">
 
-            <img src="${productImageSrc(prod.image)}" alt="${prod.title}" class="card-thumb-img" loading="lazy">
+            <img src="${productImageSrc(prod.image)}" alt="${escapeHtml(prod.title)}" class="card-thumb-img" loading="lazy">
 
             <div class="card-thumb-fade"></div>
 
@@ -24389,9 +24438,9 @@
 
 
 
-            <div class="card-title">${prod.title}</div>
+            <div class="card-title">${escapeHtml(prod.title)}</div>
 
-            <div class="card-specs">${prod.category} • ${prod.model}</div>
+            <div class="card-specs">${escapeHtml(prod.category)} • ${escapeHtml(prod.model)}</div>
 
           </div>
 
@@ -24687,7 +24736,7 @@
 
           const modelStr = p.model || '';
 
-          const corpus = `${p.id} ${idClean} ${p.title} ${p.brand} ${p.category} ${modelStr} ${storesStr} ${keywordsStr}`.toLowerCase();
+          const corpus = `${p.id} ${idClean} ${escapeHtml(p.title)} ${p.brand} ${p.category} ${modelStr} ${storesStr} ${keywordsStr}`.toLowerCase();
 
           const corpusNorm = corpus.replace(/['\-_/()\s]/g, '');
 
@@ -25001,9 +25050,9 @@
 
         <div class="spec-item">
 
-          <span class="spec-key">${key}</span>
+          <span class="spec-key">${escapeHtml(key)}</span>
 
-          <span class="spec-val">${val}</span>
+          <span class="spec-val">${escapeHtml(val)}</span>
 
         </div>
 
@@ -25037,7 +25086,7 @@
         const effectiveShipping = isPickup ? 0 : (st.shippingFee || 0);
         const totalLanded = (st.itemPrice || 0) + effectiveShipping;
         const effectiveEstimate = isPickup ? 'Ready in 2-4 Hours (Same Day)' : (st.deliveryEstimate || '2-4 Business Days');
-        const effectiveShippingNote = isPickup ? `Free In-Store Collection (${st.name} branch / Pargo point)` : (st.shippingNote || 'Standard Courier');
+        const effectiveShippingNote = isPickup ? `Free In-Store Collection (${escapeHtml(st.name)} branch / Pargo point)` : (st.shippingNote || 'Standard Courier');
         const freshness = st.freshness || (st.inStock ? 'verified' : 'unavailable');
         const freshnessLabel = st.freshnessLabel || (st.inStock ? 'Verified today' : 'Out of Stock');
         const stockText = st.stockText || st.stockLabel || st.stock_status || (st.inStock ? 'In Stock' : 'Out of Stock');
@@ -25100,9 +25149,9 @@
       if (ctaEl) {
         if (champion) {
           ctaEl.innerHTML = `
-            <a href="${champion.affiliateUrl}" target="_blank" rel="noopener noreferrer" class="cta-best-btn">
+            <a href="${escapeHtml(champion.affiliateUrl)}" target="_blank" rel="noopener noreferrer" class="cta-best-btn">
               ${getStoreLogoHTML(champion.name, 'store-inline-img')}
-              <span>Go to Lowest Price (${champion.name})</span>
+              <span>Go to Lowest Price (${escapeHtml(champion.name)})</span>
               <svg class="icon-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
               </svg>
@@ -25166,9 +25215,9 @@
             ? 'R 0 Pickup'
             : (champion.effectiveShipping === 0 ? 'R 0 Courier' : formatZAR(champion.effectiveShipping));
           const fulfillmentDelta = isPickup
-            ? `Ready in 2-4 hrs (${champion.name})`
+            ? `Ready in 2-4 hrs (${escapeHtml(champion.name)})`
             : (champion.effectiveShipping === 0
-                ? `Free door delivery at ${champion.name}`
+                ? `Free door delivery at ${escapeHtml(champion.name)}`
                 : `Click & Collect saves ${formatZAR(champion.effectiveShipping)}`);
 
           aiCardEl.innerHTML = `
@@ -25196,9 +25245,9 @@
             <div class="astryx-layout-content">
               <div class="astryx-progress-bar" data-variant="success">
                 <div class="astryx-progress-bar-header">
-                  <span class="astryx-low-val">Lowest: ${formatZAR(lowestLanded)} (${champion.name})</span>
+                  <span class="astryx-low-val">Lowest: ${formatZAR(lowestLanded)} (${escapeHtml(champion.name)})</span>
                   <span>Store Avg: <strong>${formatZAR(avgLanded)}</strong></span>
-                  <span>High: <strong>${formatZAR(highestLanded)}</strong> (${highestStore.name})</span>
+                  <span>High: <strong>${formatZAR(highestLanded)}</strong> (${escapeHtml(highestStore.name)})</span>
                 </div>
                 <div class="astryx-progress-bar-track" role="progressbar" aria-label="Landed price position vs store market average" aria-valuenow="${efficiencyScore}" aria-valuemin="0" aria-valuemax="100">
                   <div class="astryx-progress-bar-fill" data-variant="success" style="width: ${efficiencyScore}%;"></div>
@@ -25236,7 +25285,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 <p class="astryx-footer-verdict">
-                  <strong>Recommendation:</strong> Buy from <strong>${champion.name}</strong> at <strong>${formatZAR(lowestLanded)}</strong> (${isPickup ? 'Click & Collect' : 'Door Delivery'}) to save <strong>${formatZAR(savings)}</strong> vs. ${highestStore.name} and <strong>${formatZAR(vsAvgSavings)}</strong> below the store average—or <strong>${formatZAR(Math.round(lowestLanded / 4))}/pm</strong> x 4 interest-free via Payflex.
+                  <strong>Recommendation:</strong> Buy from <strong>${escapeHtml(champion.name)}</strong> at <strong>${formatZAR(lowestLanded)}</strong> (${isPickup ? 'Click & Collect' : 'Door Delivery'}) to save <strong>${formatZAR(savings)}</strong> vs. ${escapeHtml(highestStore.name)} and <strong>${formatZAR(vsAvgSavings)}</strong> below the store average—or <strong>${formatZAR(Math.round(lowestLanded / 4))}/pm</strong> x 4 interest-free via Payflex.
                 </p>
               </div>
             </div>
@@ -25333,7 +25382,7 @@
 
           <div class="store-info-left">
 
-            <div class="store-badge-logo" title="${st.name}">
+            <div class="store-badge-logo" title="${escapeHtml(st.name)}">
 
               ${getStoreLogoHTML(st.name, 'store-logo-img')}
 
@@ -25343,7 +25392,7 @@
 
               <div class="store-name-line">
 
-                <span class="store-name">${st.name}</span>
+                <span class="store-name">${escapeHtml(st.name)}</span>
 
                 ${freshnessBadgeHtml}
 
@@ -25389,7 +25438,7 @@
 
 
 
-            <a href="${st.affiliateUrl}" target="_blank" rel="noopener noreferrer" class="store-go-btn">
+            <a href="${escapeHtml(st.affiliateUrl)}" target="_blank" rel="noopener noreferrer" class="store-go-btn">
 
               <span>View Store</span>
 
@@ -25718,9 +25767,9 @@
         const metrics = computePriceMetrics(p);
         return `
           <div class="alert-item" onclick="openTrackedAlertProduct('${p.id}')">
-            <img src="${productImageSrc(p.image)}" alt="${p.title}" class="alert-item-img">
+            <img src="${productImageSrc(p.image)}" alt="${escapeHtml(p.title)}" class="alert-item-img">
             <div class="alert-item-body">
-              <div class="alert-item-name">${p.title}</div>
+              <div class="alert-item-name">${escapeHtml(p.title)}</div>
               <div class="alert-item-meta">
                 <span class="alert-item-price">${formatZAR(metrics.lowestLanded)}</span>
                 <span>${metrics.bestStore ? 'on ' + metrics.bestStore.name : 'Out of Stock'}</span>
@@ -25932,7 +25981,7 @@
 
 
 
-            <h2 class="slide-title">${p.title}</h2>
+            <h2 class="slide-title">${escapeHtml(p.title)}</h2>
 
 
 
@@ -25947,7 +25996,7 @@
 
 
             <div class="slide-store-note">
-              <span>${bestStore ? `Lowest landed price on <strong>${bestStore.name}</strong> (${bestStore.shippingFee === 0 ? 'Free Delivery' : '+' + formatZAR(bestStore.shippingFee) + ' shipping'}) • Verified in Gauteng` : 'Compare listed store offers • Live verification'}</span>
+              <span>${bestStore ? `Lowest landed price on <strong>${escapeHtml(bestStore.name)}</strong> (${bestStore.shippingFee === 0 ? 'Free Delivery' : '+' + formatZAR(bestStore.shippingFee) + ' shipping'}) • Verified in Gauteng` : 'Compare listed store offers • Live verification'}</span>
             </div>
 
 
@@ -25970,7 +26019,7 @@
 
           <div class="slide-img-wrap">
 
-            <img src="${productImageSrc(p.image)}" alt="${p.title}" class="slide-img" loading="eager">
+            <img src="${productImageSrc(p.image)}" alt="${escapeHtml(p.title)}" class="slide-img" loading="eager">
 
             <div class="slide-img-overlay"></div>
 
