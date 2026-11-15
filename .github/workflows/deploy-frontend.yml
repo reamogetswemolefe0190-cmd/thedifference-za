@@ -8,6 +8,7 @@ on:
       - 'pricepulse.html'
       - 'images/**'
       - 'shared/**'
+      - '_redirects'
       - '.github/workflows/deploy-frontend.yml'
   workflow_dispatch:
 
@@ -33,7 +34,7 @@ jobs:
       - name: Assemble deploy bundle
         run: |
           mkdir -p dist
-          cp index.html pricepulse.html dist/
+          cp index.html pricepulse.html _redirects dist/
           cp -r images shared dist/
           echo "Bundle contents:"
           find dist -maxdepth 1 -exec du -sh {} \;
