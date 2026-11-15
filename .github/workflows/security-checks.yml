@@ -1,0 +1,27 @@
+name: Security & Integrity Checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  frontend-integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Frontend script syntax & DOM integrity
+        run: node scripts/verify-frontend.mjs
+
+  backend-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Backend unit tests (incl. AI hardening golden set)
+        run: npm --prefix backend run test:unit
