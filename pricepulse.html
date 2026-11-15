@@ -2530,6 +2530,12 @@
 
     .slide-img {
 
+      /* Absolutely anchored so an image's intrinsic size can never drive the stage height */
+
+      position: absolute;
+
+      inset: 0;
+
       width: 100%;
 
       height: 100%;
@@ -4941,13 +4947,6 @@
       color: var(--color-text-primary, #0f172a);
       line-height: 1.2;
     }
-    .ai-header-sub {
-      font-size: 11px;
-      color: var(--color-text-secondary, #64748b);
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
     .ai-close-btn {
       background: transparent;
       border: none;
@@ -6686,10 +6685,6 @@
         </div>
         <div>
           <div class="ai-header-title">PricePulse AI Assistant</div>
-          <div class="ai-header-sub">
-            <span class="ai-launcher-pulse" style="width: 6px; height: 6px;"></span>
-            <span>7 Verified SA Retailers</span>
-          </div>
         </div>
       </div>
       <button type="button" class="ai-close-btn" onclick="toggleAiCard()" aria-label="Close AI Assistant">
@@ -24168,6 +24163,18 @@
 
 
 
+    /* Known-bad product images served by the API (marketing banners, wrong products).
+       Maps the bad filename to the closest clean packshot available in the repo. */
+    const PRODUCT_IMAGE_OVERRIDES = {
+      'images/products/prod-galaxy-s24-ultra.png': 'images/products/prod-samsung-galaxy-s24.png'
+    };
+
+    function productImageSrc(image) {
+      return PRODUCT_IMAGE_OVERRIDES[image] || image;
+    }
+
+
+
     function computePriceMetrics(product) {
       if (typeof OfferPolicy !== 'undefined' && typeof OfferPolicy.evaluateProduct === 'function') {
         const mode = typeof currentDeliveryMode !== 'undefined' ? currentDeliveryMode : 'door';
@@ -24318,7 +24325,7 @@
 
           <div class="card-thumb-wrap">
 
-            <img src="${prod.image}" alt="${prod.title}" class="card-thumb-img" loading="lazy">
+            <img src="${productImageSrc(prod.image)}" alt="${prod.title}" class="card-thumb-img" loading="lazy">
 
             <div class="card-thumb-fade"></div>
 
@@ -24976,7 +24983,7 @@
 
 
 
-      document.getElementById('detailHeroImage').src = prod.image;
+      document.getElementById('detailHeroImage').src = productImageSrc(prod.image);
 
       document.getElementById('detailBrand').innerText = prod.brand;
 
@@ -25711,7 +25718,7 @@
         const metrics = computePriceMetrics(p);
         return `
           <div class="alert-item" onclick="openTrackedAlertProduct('${p.id}')">
-            <img src="${p.image}" alt="${p.title}" class="alert-item-img">
+            <img src="${productImageSrc(p.image)}" alt="${p.title}" class="alert-item-img">
             <div class="alert-item-body">
               <div class="alert-item-name">${p.title}</div>
               <div class="alert-item-meta">
@@ -25963,7 +25970,7 @@
 
           <div class="slide-img-wrap">
 
-            <img src="${p.image}" alt="${p.title}" class="slide-img" loading="eager">
+            <img src="${productImageSrc(p.image)}" alt="${p.title}" class="slide-img" loading="eager">
 
             <div class="slide-img-overlay"></div>
 
