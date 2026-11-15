@@ -1163,11 +1163,37 @@
 
       overflow: hidden;
 
+      opacity: 0;
+
+      transform: translateY(6px) scale(0.98);
+
+      transition:
+        opacity 0.18s ease,
+        transform 0.18s ease,
+        display 0.18s allow-discrete,
+        overlay 0.18s allow-discrete;
+
     }
 
     .alerts-popover.open {
 
       display: flex;
+
+      opacity: 1;
+
+      transform: none;
+
+    }
+
+    @starting-style {
+
+      .alerts-popover.open {
+
+        opacity: 0;
+
+        transform: translateY(6px) scale(0.98);
+
+      }
 
     }
 
@@ -1237,7 +1263,9 @@
 
       overflow-y: auto;
 
-      divide-y: 1px solid var(--color-background-muted);
+      scrollbar-gutter: stable;
+
+      overscroll-behavior: contain;
 
     }
 
@@ -3815,6 +3843,14 @@
 
     }
 
+    .alert-input:user-invalid {
+
+      border-color: #dc2626;
+
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+
+    }
+
     .alert-btn {
       height: 34px;
       padding: 0 12px;
@@ -5377,25 +5413,48 @@
       width: calc(100vw - 32px);
       color: var(--color-text-primary, #0f172a);
       overflow: hidden auto;
+      overscroll-behavior: contain;
       margin: auto;
-      animation: promoPopIn 0.3s cubic-bezier(0.23, 1, 0.32, 1) both;
+      opacity: 0;
+      transform: scale(0.95) translateY(12px);
+      transition:
+        opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+        transform 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+        overlay 0.3s allow-discrete,
+        display 0.3s allow-discrete;
+    }
+
+    .promo-dialog[open] {
+      opacity: 1;
+      transform: none;
+    }
+
+    @starting-style {
+      .promo-dialog[open] {
+        opacity: 0;
+        transform: scale(0.95) translateY(12px);
+      }
     }
 
     .promo-dialog::backdrop {
       background: rgba(11, 26, 22, 0.55);
       backdrop-filter: blur(5px);
       -webkit-backdrop-filter: blur(5px);
-      animation: promoBackdropFade 0.2s ease both;
+      opacity: 0;
+      transition:
+        opacity 0.2s ease,
+        overlay 0.3s allow-discrete,
+        display 0.3s allow-discrete;
     }
 
-    @keyframes promoPopIn {
-      from { opacity: 0; transform: scale(0.95) translateY(12px); }
-      to { opacity: 1; transform: scale(1) translateY(0); }
+    .promo-dialog[open]::backdrop {
+      opacity: 1;
     }
 
-    @keyframes promoBackdropFade {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    @starting-style {
+      .promo-dialog[open]::backdrop {
+        opacity: 0;
+      }
     }
 
     @keyframes promoRise {
@@ -5416,10 +5475,14 @@
 
     @media (prefers-reduced-motion: reduce) {
       .promo-dialog {
-        animation: promoBackdropFade 0.2s ease both;
+        transform: none;
+        transition:
+          opacity 0.2s ease,
+          overlay 0.3s allow-discrete,
+          display 0.3s allow-discrete;
       }
       .promo-dialog::backdrop {
-        animation: none;
+        transition: opacity 0.2s ease, overlay 0.3s allow-discrete, display 0.3s allow-discrete;
       }
       .promo-rise {
         animation: none;
@@ -5866,6 +5929,14 @@
               oninput="handleSearch(this.value)"
 
               autocomplete="off"
+
+              enterkeyhint="search"
+
+              autocapitalize="off"
+
+              autocorrect="off"
+
+              spellcheck="false"
 
             />
 
@@ -6340,7 +6411,7 @@
 
         <div class="detail-hero-box">
 
-          <img id="detailHeroImage" alt="Product Photo" class="detail-hero-img">
+          <img id="detailHeroImage" alt="Product Photo" class="detail-hero-img" decoding="async" fetchpriority="high">
 
           <div id="detailSavingsBadge" class="detail-savings-tag">Save R1,800</div>
 
@@ -6398,7 +6469,7 @@
 
           <form class="alert-form" onsubmit="handleAlertSubmit(event)">
 
-            <input type="email" required placeholder="your.email@example.com" class="alert-input">
+            <input type="email" required placeholder="your.email@example.com" class="alert-input" autocomplete="email">
 
             <button type="submit" class="alert-btn">Register Alert</button>
 
@@ -7537,7 +7608,7 @@
 
           <div class="card-thumb-wrap">
 
-            <img src="${productImageSrc(prod.image)}" alt="${escapeHtml(prod.title)}" class="card-thumb-img" loading="lazy">
+            <img src="${productImageSrc(prod.image)}" alt="${escapeHtml(prod.title)}" class="card-thumb-img" loading="lazy" decoding="async">
 
             <div class="card-thumb-fade"></div>
 
@@ -8161,6 +8232,22 @@
 
 
 
+    const prefersReducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    function swapCatalogViews(update) {
+
+      if (typeof document.startViewTransition === 'function' && !prefersReducedMotionQuery.matches) {
+
+        document.startViewTransition(update);
+
+      } else {
+
+        update();
+
+      }
+
+    }
+
     function openProductDetail(productId) {
 
       const prod = PRODUCTS.find(p => p.id === productId);
@@ -8227,9 +8314,13 @@
 
 
 
-      document.getElementById('catalogView').classList.add('hidden');
+      swapCatalogViews(() => {
 
-      document.getElementById('comparisonView').classList.add('active');
+        document.getElementById('catalogView').classList.add('hidden');
+
+        document.getElementById('comparisonView').classList.add('active');
+
+      });
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
 
@@ -8637,9 +8728,13 @@
 
       window.location.hash = 'catalog';
 
-      document.getElementById('comparisonView').classList.remove('active');
+      swapCatalogViews(() => {
 
-      document.getElementById('catalogView').classList.remove('hidden');
+        document.getElementById('comparisonView').classList.remove('active');
+
+        document.getElementById('catalogView').classList.remove('hidden');
+
+      });
 
       currentDetailProduct = null;
 
@@ -8675,7 +8770,31 @@
 
       }
 
-      renderProductGrid();
+      scheduleSearchRender();
+
+    }
+
+    let searchRenderTimer = null;
+
+    function scheduleSearchRender() {
+
+      if (searchRenderTimer) clearTimeout(searchRenderTimer);
+
+      searchRenderTimer = setTimeout(() => {
+
+        searchRenderTimer = null;
+
+        if (typeof scheduler !== 'undefined' && typeof scheduler.isInputPending === 'function' && scheduler.isInputPending()) {
+
+          scheduleSearchRender();
+
+          return;
+
+        }
+
+        renderProductGrid();
+
+      }, 120);
 
     }
 
@@ -8930,7 +9049,7 @@
         const metrics = computePriceMetrics(p);
         return `
           <div class="alert-item" onclick="openTrackedAlertProduct('${p.id}')">
-            <img src="${productImageSrc(p.image)}" alt="${escapeHtml(p.title)}" class="alert-item-img">
+            <img src="${productImageSrc(p.image)}" alt="${escapeHtml(p.title)}" class="alert-item-img" loading="lazy" decoding="async">
             <div class="alert-item-body">
               <div class="alert-item-name">${escapeHtml(p.title)}</div>
               <div class="alert-item-meta">
@@ -9078,6 +9197,8 @@
 
     let specialCarouselTimer = null;
 
+    let specialCarouselOnScreen = true;
+
     let specialProducts = [];
 
 
@@ -9182,7 +9303,7 @@
 
           <div class="slide-img-wrap">
 
-            <img src="${productImageSrc(p.image)}" alt="${escapeHtml(p.title)}" class="slide-img" loading="eager">
+            <img src="${productImageSrc(p.image)}" alt="${escapeHtml(p.title)}" class="slide-img" loading="eager" decoding="async"${idx === 0 ? ' fetchpriority="high"' : ''}>
 
             <div class="slide-img-overlay"></div>
 
@@ -9292,6 +9413,8 @@
 
     function startSpecialCarousel() {
 
+      if (document.hidden || !specialCarouselOnScreen) return;
+
       pauseSpecialCarousel();
 
       specialCarouselTimer = setInterval(() => {
@@ -9311,6 +9434,48 @@
         clearInterval(specialCarouselTimer);
 
         specialCarouselTimer = null;
+
+      }
+
+    }
+
+
+
+    document.addEventListener('visibilitychange', () => {
+
+      if (document.hidden) {
+
+        pauseSpecialCarousel();
+
+      } else {
+
+        startSpecialCarousel();
+
+      }
+
+    });
+
+    if ('IntersectionObserver' in window) {
+
+      const carouselWrap = document.getElementById('specialsCarouselWrap');
+
+      if (carouselWrap) {
+
+        new IntersectionObserver((entries) => {
+
+          specialCarouselOnScreen = entries.some(entry => entry.isIntersecting);
+
+          if (specialCarouselOnScreen && !document.hidden) {
+
+            startSpecialCarousel();
+
+          } else {
+
+            pauseSpecialCarousel();
+
+          }
+
+        }, { threshold: 0.15 }).observe(carouselWrap);
 
       }
 
