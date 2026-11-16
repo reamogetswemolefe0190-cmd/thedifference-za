@@ -9,6 +9,7 @@ import json
 import os
 import random
 import re
+from urllib.parse import quote
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BACKEND = os.path.join(ROOT, "backend")
@@ -34,6 +35,14 @@ STORES = {
                  "stock": "In Stock (Ready to dispatch)"},
 }
 STORE_ORDER = ["takealot", "amazon", "makro", "incredible", "hirschs", "hificorp"]
+SEARCH_URLS = {
+    "takealot": "https://www.takealot.com/search?search=",
+    "amazon": "https://www.amazon.co.za/s?k=",
+    "makro": "https://www.makro.co.za/search?q=",
+    "incredible": "https://www.incredible.co.za/search?q=",
+    "hirschs": "https://www.hirschs.co.za/search?q=",
+    "hificorp": "https://www.hificorp.co.za/search?q=",
+}
 BASE_URLS = {
     "takealot": "https://www.takealot.com",
     "amazon": "https://www.amazon.co.za",
@@ -228,7 +237,7 @@ def main():
             lines.append(
                 "INSERT OR REPLACE INTO store_offers (product_id, store_id, item_price, delivery_fee, delivery_note, stock_status, stock_state, collection_available, collection_note, product_url) "
                 "VALUES ('%s', '%s', %d, %d, '%s', '%s', 'in_stock', 1, 'Free In-Store Collection (Pargo / Store Branch)', '%s');"
-                % (pid, sid, item, fee, sql_escape(note), sql_escape(STORES[sid]["stock"]), BASE_URLS[sid]))
+                % (pid, sid, item, fee, sql_escape(note), sql_escape(STORES[sid]["stock"]), SEARCH_URLS[sid] + quote(title)))
             lines.append(
                 "INSERT OR IGNORE INTO price_history (product_id, store_id, landed_price, recorded_date) "
                 "VALUES ('%s', '%s', %d, DATE('now'));" % (pid, sid, landed))
