@@ -226,8 +226,8 @@ def main():
             fee, note = delivery(sid, item)
             landed = item + fee
             lines.append(
-                "INSERT OR REPLACE INTO store_offers (product_id, store_id, item_price, delivery_fee, delivery_note, stock_status, collection_available, collection_note, product_url) "
-                "VALUES ('%s', '%s', %d, %d, '%s', '%s', 1, 'Free In-Store Collection (Pargo / Store Branch)', '%s');"
+                "INSERT OR REPLACE INTO store_offers (product_id, store_id, item_price, delivery_fee, delivery_note, stock_status, stock_state, collection_available, collection_note, product_url) "
+                "VALUES ('%s', '%s', %d, %d, '%s', '%s', 'in_stock', 1, 'Free In-Store Collection (Pargo / Store Branch)', '%s');"
                 % (pid, sid, item, fee, sql_escape(note), sql_escape(STORES[sid]["stock"]), BASE_URLS[sid]))
             lines.append(
                 "INSERT OR IGNORE INTO price_history (product_id, store_id, landed_price, recorded_date) "
