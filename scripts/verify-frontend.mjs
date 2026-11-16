@@ -63,6 +63,28 @@ if (stack.length > 0) {
   console.log("ok - HTML tag balance valid");
 }
 
+// 3. Promo burner packshots: every referenced packshot must exist and carry
+// valid WebP magic bytes. shortcut: validates headers, not a full browser
+// decode; upgrade when CI runs a real browser.
+const packshots = [...new Set([...html.matchAll(/images\/products\/(prod-[a-z0-9-]+\.webp)/g)].map(m => m[1]))];
+for (const name of packshots) {
+  try {
+    const buf = readFileSync(join(root, "images", "products", name));
+    const isWebp = buf.length > 12 &&
+      buf.subarray(0, 4).toString("latin1") === "RIFF" &&
+      buf.subarray(8, 12).toString("latin1") === "WEBP";
+    if (!isWebp) {
+      failures++;
+      console.error(`FAIL: promo packshot ${name} is not a valid WebP file`);
+    } else {
+      console.log(`ok - promo packshot ${name} present and valid (${buf.length} bytes)`);
+    }
+  } catch {
+    failures++;
+    console.error(`FAIL: promo packshot ${name} referenced in index.html but missing from images/products/`);
+  }
+}
+
 if (failures > 0) {
   console.error(`\n${failures} integrity check(s) failed`);
   process.exit(1);
