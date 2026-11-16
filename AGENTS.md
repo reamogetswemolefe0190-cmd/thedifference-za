@@ -1,6 +1,6 @@
 # PricePulse South Africa — Workspace Memory & Development Guidelines
 
-This document serves as the permanent memory and development standard for the **PricePulse South Africa** codebase (`pricepulse.html`). All agents and contributors must adhere to these rules across all sessions.
+This document serves as the permanent memory and development standard for the **PricePulse South Africa** codebase (`index.html`). All agents and contributors must adhere to these rules across all sessions.
 
 ---
 

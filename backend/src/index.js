@@ -423,7 +423,6 @@ export default {
             stockState: o.stock_state,
             stockRaw: o.stock_raw || o.stock_status,
           stockText: o.stock_text || o.stock_raw || o.stock_status || "In Stock",
-            stockText: o.stock_text || o.stock_raw || o.stock_status || "In Stock",
             stock_source: o.stock_source,
             freshness: o.freshness_state,
             lastVerifiedAt: o.last_verified_at,
@@ -727,7 +726,7 @@ export default {
         return jsonResponse({
           success: true,
           created: true,
-          message: `Price-alert registered for ${email} on ${productExists.title || productId}`,
+          message: `Price-alert registered for ${email} on ${productId}`,
           alert: {
             product_id: productId,
             email: email,
@@ -874,7 +873,6 @@ export default {
                   stockState: o.stock_state,
                   stockRaw: o.stock_raw || o.stock_status,
           stockText: o.stock_text || o.stock_raw || o.stock_status || "In Stock",
-            stockText: o.stock_text || o.stock_raw || o.stock_status || "In Stock",
                   stock_source: o.stock_source,
                   freshness: o.freshness_state,
                   lastVerifiedAt: o.last_verified_at,

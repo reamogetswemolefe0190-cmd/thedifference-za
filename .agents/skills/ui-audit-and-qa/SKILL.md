@@ -5,7 +5,7 @@ description: Automated QA testing, visual regression auditing, zero-emoji verifi
 
 # UI Audit and QA Skill
 
-Use this skill whenever making changes to HTML, CSS, or UI logic in `pricepulse.html` to prevent regressions, horizontal overflows, or broken interactions.
+Use this skill whenever making changes to HTML, CSS, or UI logic in `index.html` to prevent regressions, horizontal overflows, or broken interactions.
 
 ---
 
@@ -32,7 +32,7 @@ When evaluating any UI change, verify:
 1. **Zero-Emoji Policy**:
    ```python
    import re
-   with open('pricepulse.html', 'r', encoding='utf-8') as f:
+   with open('index.html', 'r', encoding='utf-8') as f:
        text = f.read()
    emojis = re.findall(r'[\U00010000-\U0010ffff]', text)
    assert len(emojis) == 0, f"Found emojis: {emojis}"

@@ -5,13 +5,13 @@ description: Guide and schema standards for adding, editing, and managing produc
 
 # Retail Data Maintenance Skill
 
-Use this skill when adding new products, updating retailer pricing, adjusting delivery fees, or modifying product specifications in `pricepulse.html`.
+Use this skill when adding new products, updating retailer pricing, adjusting delivery fees, or modifying product specifications in `index.html`.
 
 ---
 
 ## 1. Product Object Schema Reference
 
-Every product in `pricepulse.html` is defined inside the `PRODUCTS_DATA` array. When adding or editing a product, use the following schema:
+Every product in `index.html` is defined inside the `PRODUCTS_DATA` array. When adding or editing a product, use the following schema:
 
 ```javascript
 {
@@ -57,7 +57,7 @@ Only use the 5 official verified South African retailers:
 4. `incredible` (Incredible Connection)
 5. `hirschs` (Hirsch's)
 
-Store logos are stored as SVG data URIs inside the `STORE_LOGOS` object in `pricepulse.html`. Never reference external image URLs for store logos.
+Store logos are stored as SVG data URIs inside the `STORE_LOGOS` object in `index.html`. Never reference external image URLs for store logos.
 
 ---
 
