@@ -85,6 +85,23 @@ for (const name of packshots) {
   }
 }
 
+const heroRef = html.match(/\.promo-hero-photo\s*\{[^}]*url\("([^"]+)"\)/);
+if (heroRef) {
+  try {
+    const buf = readFileSync(join(root, heroRef[1]));
+    const isJpeg = buf.length > 3 && buf[0] === 0xff && buf[1] === 0xd8;
+    if (!isJpeg) {
+      failures++;
+      console.error(`FAIL: promo hero image ${heroRef[1]} is not a valid JPEG file`);
+    } else {
+      console.log(`ok - promo hero image ${heroRef[1]} present and valid (${buf.length} bytes)`);
+    }
+  } catch {
+    failures++;
+    console.error(`FAIL: promo hero image ${heroRef[1]} referenced in index.html but missing`);
+  }
+}
+
 if (failures > 0) {
   console.error(`\n${failures} integrity check(s) failed`);
   process.exit(1);
