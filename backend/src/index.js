@@ -83,6 +83,27 @@ function findUngroundedPrices(reply, groundTruthContext) {
   return amounts.filter(a => !compactContext.includes(a.replace(/[\s,]/g, "")));
 }
 
+// Durable shadow-mode mismatch log: appends entries to a per-day KV key so
+// mismatches survive beyond ephemeral console output and are reviewable in the
+// Cloudflare dashboard (Storage & Databases > KV > CACHE).
+const SHADOW_MISMATCH_LOG_TTL = 60 * 60 * 24 * 30;
+const SHADOW_MISMATCH_LOG_CAP = 100;
+
+async function recordShadowMismatch(env, entry) {
+  if (!env.CACHE || typeof env.CACHE.put !== "function") return;
+  const dayKey = "shadow_price_mismatch_" + new Date().toISOString().slice(0, 10);
+  try {
+    let entries = [];
+    const existing = await env.CACHE.get(dayKey, "json");
+    if (Array.isArray(existing)) entries = existing;
+    entries.push(entry);
+    if (entries.length > SHADOW_MISMATCH_LOG_CAP) entries = entries.slice(-SHADOW_MISMATCH_LOG_CAP);
+    await env.CACHE.put(dayKey, JSON.stringify(entries), { expirationTtl: SHADOW_MISMATCH_LOG_TTL });
+  } catch (err) {
+    console.warn("Shadow mismatch log write failed:", err && err.message);
+  }
+}
+
 function formatZAR(num) {
   if (num === null || num === undefined || !Number.isFinite(Number(num))) return "N/A";
   return "R " + Math.round(Number(num)).toLocaleString("en-ZA");
@@ -119,7 +140,7 @@ function isPromptInjection(text) {
   return classifyInjection(text) !== null;
 }
 
-export { normalizeUntrustedText, isPromptInjection, classifyInjection, stripEmojis, findUngroundedPrices };
+export { normalizeUntrustedText, isPromptInjection, classifyInjection, stripEmojis, findUngroundedPrices, recordShadowMismatch };
 
 const RETAILER_DELIVERY_KNOWLEDGE = `
 VERIFIED SOUTH AFRICAN RETAILER DELIVERY & STORE POLICIES:
@@ -1019,6 +1040,17 @@ ${groundTruthContext}
         const ungroundedPrices = findUngroundedPrices(assistantReply, groundTruthContext);
         if (ungroundedPrices.length > 0) {
           console.warn("Price grounding mismatch (shadow):", JSON.stringify(ungroundedPrices), "engine:", aiModelUsed);
+          const logPromise = recordShadowMismatch(env, {
+            t: new Date().toISOString(),
+            engine: aiModelUsed,
+            amounts: ungroundedPrices,
+            q: cleanQuery.slice(0, 60)
+          });
+          if (ctx && typeof ctx.waitUntil === "function") {
+            ctx.waitUntil(logPromise);
+          } else {
+            await logPromise;
+          }
         }
 
         // H. Clean & Return Response

@@ -5,7 +5,8 @@ import {
   isPromptInjection,
   classifyInjection,
   stripEmojis,
-  findUngroundedPrices
+  findUngroundedPrices,
+  recordShadowMismatch
 } from "../../src/index.js";
 
 // ============================================================
@@ -143,4 +144,68 @@ test("classifyInjection: real questions return null tier", () => {
   for (const q of MUST_PASS_QUERIES) {
     assert.equal(classifyInjection(q), null, `False positive tier on: "${q}"`);
   }
+});
+
+class MockKVWithTtl {
+  constructor(initial = {}) {
+    this.map = new Map(Object.entries(initial));
+    this.ttls = {};
+  }
+  async get(k, type) {
+    if (!this.map.has(k)) return null;
+    const v = this.map.get(k);
+    return type === "json" ? JSON.parse(v) : v;
+  }
+  async put(k, v, opts = {}) {
+    this.map.set(k, v);
+    this.ttls[k] = opts.expirationTtl;
+  }
+}
+
+function todayKey() {
+  return "shadow_price_mismatch_" + new Date().toISOString().slice(0, 10);
+}
+
+test("recordShadowMismatch: appends entry under per-day KV key with 30-day TTL", async () => {
+  const kv = new MockKVWithTtl();
+  const entry = { t: new Date().toISOString(), engine: "test-engine", amounts: ["R 9 999"], q: "airfryer" };
+  await recordShadowMismatch({ CACHE: kv }, entry);
+  const stored = JSON.parse(kv.map.get(todayKey()));
+  assert.equal(stored.length, 1);
+  assert.equal(stored[0].engine, "test-engine");
+  assert.deepEqual(stored[0].amounts, ["R 9 999"]);
+  assert.equal(kv.ttls[todayKey()], 60 * 60 * 24 * 30);
+});
+
+test("recordShadowMismatch: appends to existing entries without overwriting", async () => {
+  const existing = [{ t: "earlier", engine: "first", amounts: ["R 1"], q: "q1" }];
+  const kv = new MockKVWithTtl({ [todayKey()]: JSON.stringify(existing) });
+  await recordShadowMismatch({ CACHE: kv }, { t: "later", engine: "second", amounts: ["R 2"], q: "q2" });
+  const stored = JSON.parse(kv.map.get(todayKey()));
+  assert.equal(stored.length, 2);
+  assert.equal(stored[0].engine, "first");
+  assert.equal(stored[1].engine, "second");
+});
+
+test("recordShadowMismatch: caps stored entries at 100 per day", async () => {
+  const existing = Array.from({ length: 100 }, (_, i) => ({ t: String(i), engine: "e", amounts: [], q: "q" }));
+  const kv = new MockKVWithTtl({ [todayKey()]: JSON.stringify(existing) });
+  await recordShadowMismatch({ CACHE: kv }, { t: "new", engine: "e", amounts: [], q: "q" });
+  const stored = JSON.parse(kv.map.get(todayKey()));
+  assert.equal(stored.length, 100);
+  assert.equal(stored[99].t, "new");
+});
+
+test("recordShadowMismatch: swallows KV failures so the chat response is unaffected", async () => {
+  const failingKv = {
+    async get() { throw new Error("kv down"); },
+    async put() { throw new Error("kv down"); }
+  };
+  await assert.doesNotReject(
+    recordShadowMismatch({ CACHE: failingKv }, { t: "x", engine: "e", amounts: [], q: "q" })
+  );
+});
+
+test("recordShadowMismatch: no-op when CACHE binding is missing", async () => {
+  await assert.doesNotReject(recordShadowMismatch({}, { t: "x", engine: "e", amounts: [], q: "q" }));
 });
