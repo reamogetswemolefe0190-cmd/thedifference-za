@@ -1,0 +1,44 @@
+name: Seed Production D1
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Which seed to apply"
+        required: true
+        default: "both"
+        type: choice
+        options:
+          - both
+          - budget-seed
+          - hero-fix
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install wrangler
+        run: npm install --no-save wrangler
+
+      - name: Apply budget seed (110 products)
+        if: inputs.target == 'both' || inputs.target == 'budget-seed'
+        run: npx wrangler d1 execute pricepulse-db --remote --file backend/seed_budget.sql
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+      - name: Apply hero image fixes (158 corrections)
+        if: inputs.target == 'both' || inputs.target == 'hero-fix'
+        run: npx wrangler d1 execute pricepulse-db --remote --file backend/fix_hero_images.sql
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+      - name: Verify production catalog
+        run: npx wrangler d1 execute pricepulse-db --remote --command "SELECT (SELECT COUNT(*) FROM products) AS products, (SELECT COUNT(*) FROM store_offers) AS offers, (SELECT COUNT(*) FROM products WHERE category = 'Audio & Wearables') AS audio_products"
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
