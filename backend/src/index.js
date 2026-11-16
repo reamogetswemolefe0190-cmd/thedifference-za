@@ -88,9 +88,14 @@ function formatZAR(num) {
   return "R " + Math.round(Number(num)).toLocaleString("en-ZA");
 }
 
-const INJECTION_PATTERNS = [
+// Tiered injection classifier.
+// HIGH precision: unmistakable attack signatures (token forgery, explicit
+// jailbreak phrases). Hard-blocked with a deflect response.
+// LOW precision: suspicious formatting that could also be legitimate pasted
+// content. The model never sees the query; the deterministic grounding
+// engine answers instead. No refusal, no dead-end for the user.
+const HIGH_PRECISION_INJECTION_PATTERNS = [
   /ignore\s+(all\s+)?(previous|prior|above)\s+instructions/i,
-  /^system\s*:/im,
   /<\|im_start\|>/i,
   /<\|system\|>/i,
   /<\|user\|>/i,
@@ -100,11 +105,21 @@ const INJECTION_PATTERNS = [
   /what\s+(is|are)\s+your\s+(system\s+)?instructions/i
 ];
 
-function isPromptInjection(text) {
-  return INJECTION_PATTERNS.some(rx => rx.test(text));
+const LOW_PRECISION_INJECTION_PATTERNS = [
+  /^system\s*:/im
+];
+
+function classifyInjection(text) {
+  if (HIGH_PRECISION_INJECTION_PATTERNS.some(rx => rx.test(text))) return "high";
+  if (LOW_PRECISION_INJECTION_PATTERNS.some(rx => rx.test(text))) return "low";
+  return null;
 }
 
-export { normalizeUntrustedText, isPromptInjection, stripEmojis, findUngroundedPrices };
+function isPromptInjection(text) {
+  return classifyInjection(text) !== null;
+}
+
+export { normalizeUntrustedText, isPromptInjection, classifyInjection, stripEmojis, findUngroundedPrices };
 
 const RETAILER_DELIVERY_KNOWLEDGE = `
 VERIFIED SOUTH AFRICAN RETAILER DELIVERY & STORE POLICIES:
@@ -763,8 +778,9 @@ export default {
         // Bounded length: Max 300 characters
         const cleanQuery = stripEmojis(normalizeUntrustedText(rawMessage.slice(0, 300)));
 
-        // Prompt Injection & Jailbreak Defense
-        if (isPromptInjection(cleanQuery)) {
+        // Prompt Injection & Jailbreak Defense (tiered)
+        const injectionTier = classifyInjection(cleanQuery);
+        if (injectionTier === "high") {
           return jsonResponse({
             success: true,
             reply: "I am the PricePulse Shopping Assistant, dedicated exclusively to helping you compare South African retailer prices, verify deals, and calculate landed delivery costs across Takealot, Amazon SA, Makro, Incredible, HiFi Corp, Hirsch's, and Game. How can I help you find a product or deal today?",
@@ -927,7 +943,7 @@ ${groundTruthContext}
         let aiModelUsed = null;
         let debugAiError = null;
 
-        if (env.AI && typeof env.AI.run === "function") {
+        if (injectionTier !== "low" && env.AI && typeof env.AI.run === "function") {
           try {
             const aiMessages = [
               { role: "system", content: systemPrompt }
@@ -1010,6 +1026,7 @@ ${groundTruthContext}
           success: true,
           reply: stripEmojis(assistantReply),
           price_validation: ungroundedPrices.length === 0 ? "pass" : "shadow_mismatch",
+          safety_flag: injectionTier === "low" ? "injection_degraded" : undefined,
           matched_products: matchedProducts.map(p => ({
             id: p.id,
             title: p.title,
