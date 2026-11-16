@@ -5498,6 +5498,14 @@
       overflow: hidden;
     }
 
+    .promo-hero-photo {
+      position: absolute;
+      inset: 0;
+      background: url("images/promo-hero.jpg") center / cover no-repeat;
+      mix-blend-mode: luminosity;
+      opacity: 0.4;
+    }
+
     .promo-hero-texture {
       position: absolute;
       inset: 0;
@@ -6675,6 +6683,7 @@
   <!-- ================= SEASONAL BLACK FRIDAY & FESTIVE ANNOUNCEMENT MODAL ================= -->
   <dialog id="promoAnnouncementModal" class="promo-dialog" aria-labelledby="promoModalTitle" aria-modal="true">
     <div class="promo-hero-banner">
+      <div class="promo-hero-photo" aria-hidden="true"></div>
       <div class="promo-hero-texture" aria-hidden="true"></div>
       <div class="promo-sparkle-glow" aria-hidden="true"></div>
       <div class="promo-glow-bottom" aria-hidden="true"></div>
