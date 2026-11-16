@@ -39,7 +39,7 @@
 
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
 
 
@@ -82,8 +82,8 @@
       --font-weight-bold: 700;
       --font-weight-extrabold: 800;
 
-      --font-family-body: 'Inter', 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      --font-family-heading: 'Plus Jakarta Sans', 'Figtree', 'Inter', sans-serif;
+      --font-family-body: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-family-heading: 'Space Grotesk', 'Figtree', sans-serif;
       --font-family-code: ui-monospace, 'SF Mono', Monaco, Consolas, monospace;
 
       --text-heading-1-size: var(--font-size-2xl);
@@ -117,14 +117,15 @@
       --duration-fast-max: 165ms;
       --duration-medium: 300ms;
       --duration-slow: 700ms;
+      --ease-out-quart: cubic-bezier(0.23, 1, 0.32, 1);
 
       /* Astryx Semantic Surfaces & Colors */
-      --color-background-body: #f8fafc;
+      --color-background-body: #f4f6f2;
       --color-background-surface: #ffffff;
       --color-background-card: #ffffff;
       --color-background-popover: #ffffff;
-      --color-background-muted: #f1f5f9;
-      --color-text-primary: #0f172a;
+      --color-background-muted: #edf0ea;
+      --color-text-primary: #0e1613;
       --color-text-secondary: #475569;
       --color-text-disabled: #94a3b8;
       --color-text-accent: #007a3d;
@@ -144,9 +145,9 @@
       --color-success-border: #a7f3d0;
       --color-brand-deep: #006030;
       --color-live: #34d399;
-      --color-ink: #0f172a;
+      --color-ink: #0e1613;
       --color-on-dark-muted: #94a3b8;
-      --color-border: #e2e8f0;
+      --color-border: #e2e6e0;
       --color-border-emphasized: #cbd5e1;
 
       /* Astryx Structured Radius Ladder (Anti-Pill-Overload) */
@@ -2081,7 +2082,7 @@
 
     .filter-chip:active {
 
-      transform: translateY(1px);
+      transform: scale(0.97);
 
     }
 
@@ -5782,6 +5783,48 @@
         font-size: 12px;
       }
     }
+
+    /* Press feedback: every pressable control acknowledges the press */
+    button,
+    .popular-chip,
+    .filter-chip {
+      transition: transform 150ms var(--ease-out-quart), background-color 150ms ease, border-color 150ms ease, color 150ms ease, box-shadow 150ms ease;
+    }
+    button:active,
+    .popular-chip:active,
+    .filter-chip:active {
+      transform: scale(0.97);
+    }
+
+    /* Staggered card reveal on grid render */
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .product-card {
+      animation: cardIn 300ms var(--ease-out-quart) backwards;
+    }
+    .product-card:nth-child(1) { animation-delay: 0ms; }
+    .product-card:nth-child(2) { animation-delay: 35ms; }
+    .product-card:nth-child(3) { animation-delay: 70ms; }
+    .product-card:nth-child(4) { animation-delay: 105ms; }
+    .product-card:nth-child(5) { animation-delay: 140ms; }
+    .product-card:nth-child(6) { animation-delay: 175ms; }
+    .product-card:nth-child(7) { animation-delay: 210ms; }
+    .product-card:nth-child(8) { animation-delay: 245ms; }
+    .product-card:nth-child(n+9) { animation-delay: 280ms; }
+    @media (prefers-reduced-motion: reduce) {
+      .product-card { animation: none; }
+    }
+
+    /* Prices are the hero: tabular numerals */
+    .card-price,
+    .price-big {
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.01em;
+    }
+    .card-price { font-size: 1.3rem; }
+
   </style>
 
 </head>

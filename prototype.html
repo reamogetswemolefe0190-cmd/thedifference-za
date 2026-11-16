@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PricePulse — iOS 27 Concept (Marketing)</title>
+<link rel="stylesheet" href="https://aiuxplayground.com/kits/ios-27/v1/ios.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; padding: 32px 16px; background: #f4f6f2; display: flex; flex-wrap: wrap; gap: 40px; justify-content: center; align-items: flex-start; font-family: 'Figtree', -apple-system, 'Segoe UI', sans-serif; }
+  .proto-header { width: 100%; text-align: center; margin-bottom: 8px; }
+  .proto-header h1 { font: 700 28px/1.2 'Space Grotesk', sans-serif; letter-spacing: -0.01em; color: #0e1613; margin: 0; }
+  .proto-header p { font: 500 14px/1.4 'Figtree', sans-serif; color: #475569; margin: 6px 0 0; }
+  .screen-wrap { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+  .screen-label { font: 600 12px/1 'Space Grotesk', sans-serif; letter-spacing: 0.06em; text-transform: uppercase; color: #065f46; }
+
+  /* PricePulse brand theme applied through the kit's custom-property API */
+  .ios-surface {
+    --ios-font: 'Figtree', -apple-system, 'Segoe UI', sans-serif;
+    --ios-tint: #108910;
+    --ios-blue: #108910;
+    --ios-green: #006030;
+  }
+  .ios-surface.dark {
+    --ios-tint: #34d399;
+    --ios-blue: #34d399;
+  }
+</style>
+</head>
+<body>
+
+<div class="proto-header">
+  <h1>PricePulse</h1>
+  <p>iOS 27 concept · Black Friday price tracking for SA retailers</p>
+</div>
+
+<!-- ============ SCREEN 1: DEALS (light) ============ -->
+<div class="screen-wrap">
+  <div class="ios-surface ios27">
+
+    <div class="ios-island"></div>
+    <div class="ios-statusbar">
+      <div class="ios-statusbar__row">
+        <span class="ios-statusbar__time">09:41</span>
+        <span class="ios-statusbar__island-gap"></span>
+        <span class="ios-statusbar__icons">
+          <i class="ios-icon ios-icon--cellular"></i>
+          <i class="ios-icon ios-icon--wifi"></i>
+          <span class="ios-battery" style="--level:78"><i></i></span>
+        </span>
+      </div>
+    </div>
+
+    <header class="ios-navbar">
+      <div class="ios-navbar__bar">
+        <div class="ios-navbar__leading">
+          <span class="ios-badged">
+            <button class="ios-barbutton" aria-label="Price alerts"><i class="ios-icon ios-icon--bell"></i></button>
+            <span class="ios-badge" data-dot style="--ring:var(--ios-grouped-background)"></span>
+          </span>
+        </div>
+        <h1 class="ios-navbar__inline-title">Deals</h1>
+        <div class="ios-navbar__trailing">
+          <button class="ios-barbutton" aria-label="AI assistant"><i class="ios-icon ios-icon--sparkles"></i></button>
+        </div>
+      </div>
+      <h1 class="ios-navbar__large-title">Black Friday Deals</h1>
+    </header>
+
+    <div style="padding:0 16px">
+      <label class="ios-search"><i class="ios-icon ios-icon--search"></i><input type="search" placeholder="Search 200 products" aria-label="Search deals"></label>
+    </div>
+
+    <div class="ios-chips" style="padding-top:12px;padding-bottom:4px">
+      <label class="ios-chip"><input type="radio" name="cat" checked>All Deals<small>200</small></label>
+      <label class="ios-chip"><input type="radio" name="cat">Backup Power<small>25</small></label>
+      <label class="ios-chip"><input type="radio" name="cat">Gaming<small>30</small></label>
+      <label class="ios-chip"><input type="radio" name="cat">Smartphones<small>35</small></label>
+      <label class="ios-chip"><input type="radio" name="cat">TVs &amp; Audio<small>30</small></label>
+    </div>
+
+    <div class="ios-list">
+      <section class="ios-list__section">
+        <h2 class="ios-list__header">Biggest drops today</h2>
+        <div class="ios-list__group">
+          <a href="#" class="ios-row" data-tall>
+            <span class="ios-row__icon" style="--bg:#108910"><i class="ios-icon ios-icon--power"></i></span>
+            <div class="ios-row__body">
+              <span class="ios-row__title">EcoFlow River 2</span>
+              <span class="ios-row__detail">R4,299 · Amazon SA</span>
+            </div>
+            <span class="ios-badge" data-inline data-tone="green">-28%</span>
+            <i class="ios-icon ios-icon--chevron-right"></i>
+          </a>
+          <a href="#" class="ios-row" data-tall>
+            <span class="ios-row__icon" style="--bg:#006030"><i class="ios-icon ios-icon--tv"></i></span>
+            <div class="ios-row__body">
+              <span class="ios-row__title">PS5 Slim Disc</span>
+              <span class="ios-row__detail">R12,799 · Amazon SA</span>
+            </div>
+            <span class="ios-badge" data-inline data-tone="green">-20%</span>
+            <i class="ios-icon ios-icon--chevron-right"></i>
+          </a>
+          <a href="#" class="ios-row" data-tall>
+            <span class="ios-row__icon" style="--bg:#065f46"><i class="ios-icon ios-icon--antenna"></i></span>
+            <div class="ios-row__body">
+              <span class="ios-row__title">iPhone 16 128GB</span>
+              <span class="ios-row__detail">R20,799 · Amazon SA</span>
+            </div>
+            <span class="ios-badge" data-inline data-tone="green">-10%</span>
+            <i class="ios-icon ios-icon--chevron-right"></i>
+          </a>
+          <a href="#" class="ios-row" data-tall>
+            <span class="ios-row__icon" style="--bg:var(--ios-gray)"><i class="ios-icon ios-icon--grid"></i></span>
+            <div class="ios-row__body">
+              <span class="ios-row__title">MacBook Air M3 13"</span>
+              <span class="ios-row__detail">R19,999 · Incredible Connection</span>
+            </div>
+            <span class="ios-badge" data-inline data-tone="green">-13%</span>
+            <i class="ios-icon ios-icon--chevron-right"></i>
+          </a>
+        </div>
+        <p class="ios-list__footer">Verified prices across SA retailers · Updated 4 min ago</p>
+      </section>
+    </div>
+
+    <div class="ios-activity-card" style="margin:12px 16px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <span style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:var(--ios-blue);color:#fff"><i class="ios-icon ios-icon--bell" style="--w:22px;--h:22px"></i></span>
+        <div style="flex:1"><div style="font:600 17px/22px var(--ios-font)">Tracking: PS5 Slim Disc</div><div style="font:400 15px/20px var(--ios-font);color:var(--ios-secondary-label)">Dropped below your R13,000 target</div></div>
+        <b style="font:600 28px/1 var(--ios-font)">-20%</b>
+      </div>
+      <div class="ios-progress" style="--value:80;--color:var(--ios-blue);background:var(--ios-quaternary-fill);margin-top:12px"><i></i></div>
+    </div>
+
+    <div style="padding:4px 16px 16px">
+      <button class="ios-button" data-variant="filled" data-size="lg" data-block>Track Price</button>
+    </div>
+
+    <nav class="ios-tabbar">
+      <div class="ios-tabbar__bar" style="--tabs:4">
+        <label class="ios-tab"><input type="radio" name="tabs" aria-label="Deals" checked><i class="ios-icon ios-icon--grid"></i><span>Deals</span></label>
+        <label class="ios-tab"><input type="radio" name="tabs" aria-label="Search"><i class="ios-icon ios-icon--search"></i><span>Search</span></label>
+        <label class="ios-tab"><input type="radio" name="tabs" aria-label="Alerts"><i class="ios-icon ios-icon--bell"></i><span>Alerts</span><span class="ios-badge" data-size="sm">3</span></label>
+        <label class="ios-tab"><input type="radio" name="tabs" aria-label="AI Assistant"><i class="ios-icon ios-icon--sparkles"></i><span>AI</span></label>
+      </div>
+    </nav>
+
+    <div class="ios-home-indicator"></div>
+  </div>
+  <span class="screen-label">Deals · Light</span>
+</div>
+
+<!-- ============ SCREEN 2: ALERTS (dark) ============ -->
+<div class="screen-wrap">
+  <div class="ios-surface ios27 dark" data-bg="grouped">
+
+    <div class="ios-island"></div>
+    <div class="ios-statusbar">
+      <div class="ios-statusbar__row">
+        <span class="ios-statusbar__time">09:41</span>
+        <span class="ios-statusbar__island-gap"></span>
+        <span class="ios-statusbar__icons">
+          <i class="ios-icon ios-icon--cellular"></i>
+          <i class="ios-icon ios-icon--wifi"></i>
+          <span class="ios-battery" style="--level:78"><i></i></span>
+        </span>
+      </div>
+    </div>
+
+    <header class="ios-navbar">
+      <div class="ios-navbar__bar">
+        <div class="ios-navbar__leading">
+          <button class="ios-barbutton" aria-label="Back to Deals"><i class="ios-icon ios-icon--chevron-left"></i></button>
+        </div>
+        <h1 class="ios-navbar__inline-title">Alerts</h1>
+        <div class="ios-navbar__trailing">
+          <button class="ios-barbutton" data-variant="prominent">Done</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="ios-notification-list" style="padding-top:8px">
+      <div class="ios-swipe">
+        <div class="ios-notification">
+          <span class="ios-notification__icon" style="background:linear-gradient(135deg,#108910,#006030);display:flex;align-items:center;justify-content:center"><i class="ios-icon ios-icon--bell" style="--w:22px;--h:22px;color:#fff"></i></span>
+          <div class="ios-notification__body">
+            <div class="ios-notification__head"><span class="ios-notification__title">PricePulse</span><span class="ios-notification__time">now</span></div>
+            <p class="ios-notification__text">Black Friday drop: PS5 Slim Disc now R12,799 at Amazon SA.</p>
+          </div>
+        </div>
+        <div class="ios-swipe__actions"><a class="ios-swipe__action" href="#">View</a><a class="ios-swipe__action" data-destructive href="#">Clear</a></div>
+      </div>
+      <div class="ios-notification-stack" data-stack="3"><div class="ios-notification">
+        <span class="ios-notification__icon" style="background:linear-gradient(135deg,#34d399,#006030);display:flex;align-items:center;justify-content:center"><i class="ios-icon ios-icon--heart-pulse" style="--w:22px;--h:22px;color:#fff"></i></span>
+        <div class="ios-notification__body">
+          <div class="ios-notification__head"><span class="ios-notification__title">PricePulse</span><span class="ios-notification__time">26m ago</span></div>
+          <div class="ios-notification__subtitle">3 tracked products on sale</div>
+          <p class="ios-notification__text">EcoFlow River 2, iPhone 16 and MacBook Air M3 all dropped below target today.</p>
+          <div class="ios-notification__footer">2 more notifications</div>
+        </div>
+      </div></div>
+    </div>
+
+    <nav class="ios-tabbar">
+      <div class="ios-tabbar__bar" style="--tabs:4">
+        <label class="ios-tab"><input type="radio" name="tabs2" aria-label="Deals"><i class="ios-icon ios-icon--grid"></i><span>Deals</span></label>
+        <label class="ios-tab"><input type="radio" name="tabs2" aria-label="Search"><i class="ios-icon ios-icon--search"></i><span>Search</span></label>
+        <label class="ios-tab"><input type="radio" name="tabs2" aria-label="Alerts" checked><i class="ios-icon ios-icon--bell"></i><span>Alerts</span></label>
+        <label class="ios-tab"><input type="radio" name="tabs2" aria-label="AI Assistant"><i class="ios-icon ios-icon--sparkles"></i><span>AI</span></label>
+      </div>
+    </nav>
+
+    <div class="ios-home-indicator"></div>
+  </div>
+  <span class="screen-label">Alerts · Dark</span>
+</div>
+
+<!-- ============ SCREEN 3: EMPTY STATE (light) ============ -->
+<div class="screen-wrap">
+  <div class="ios-surface ios27" data-bg="grouped">
+
+    <div class="ios-island"></div>
+    <div class="ios-statusbar">
+      <div class="ios-statusbar__row">
+        <span class="ios-statusbar__time">09:41</span>
+        <span class="ios-statusbar__island-gap"></span>
+        <span class="ios-statusbar__icons">
+          <i class="ios-icon ios-icon--cellular"></i>
+          <i class="ios-icon ios-icon--wifi"></i>
+          <span class="ios-battery" style="--level:78"><i></i></span>
+        </span>
+      </div>
+    </div>
+
+    <header class="ios-navbar">
+      <div class="ios-navbar__bar">
+        <div class="ios-navbar__leading">
+          <button class="ios-barbutton" aria-label="Back to Deals"><i class="ios-icon ios-icon--chevron-left"></i></button>
+        </div>
+        <h1 class="ios-navbar__inline-title">Alerts</h1>
+        <div class="ios-navbar__trailing"></div>
+      </div>
+    </header>
+
+    <div class="ios-empty" style="margin-top:8px">
+      <i class="ios-icon ios-icon--bell-off"></i>
+      <h2>No price alerts yet</h2>
+      <p>Track any product and we'll ping you the moment its Black Friday price drops.</p>
+      <a class="ios-button" data-variant="filled" href="#">Browse deals</a>
+    </div>
+
+    <div class="ios-list" style="margin-top:16px">
+      <section class="ios-list__section">
+        <h2 class="ios-list__header">Alert settings</h2>
+        <div class="ios-list__group">
+          <label class="ios-row">
+            <span class="ios-row__icon" style="--bg:#108910"><i class="ios-icon ios-icon--bell"></i></span>
+            <div class="ios-row__body"><span class="ios-row__title">Daily deal digest</span></div>
+            <input class="ios-switch" type="checkbox" role="switch" checked>
+          </label>
+          <label class="ios-row">
+            <span class="ios-row__icon" style="--bg:#006030"><i class="ios-icon ios-icon--checkmark"></i></span>
+            <div class="ios-row__body"><span class="ios-row__title">Only verified retailers</span></div>
+            <input class="ios-switch" type="checkbox" role="switch" checked>
+          </label>
+        </div>
+      </section>
+    </div>
+
+    <nav class="ios-tabbar">
+      <div class="ios-tabbar__bar" style="--tabs:4">
+        <label class="ios-tab"><input type="radio" name="tabs3" aria-label="Deals"><i class="ios-icon ios-icon--grid"></i><span>Deals</span></label>
+        <label class="ios-tab"><input type="radio" name="tabs3" aria-label="Search"><i class="ios-icon ios-icon--search"></i><span>Search</span></label>
+        <label class="ios-tab"><input type="radio" name="tabs3" aria-label="Alerts" checked><i class="ios-icon ios-icon--bell"></i><span>Alerts</span></label>
+        <label class="ios-tab"><input type="radio" name="tabs3" aria-label="AI Assistant"><i class="ios-icon ios-icon--sparkles"></i><span>AI</span></label>
+      </div>
+    </nav>
+
+    <div class="ios-home-indicator"></div>
+  </div>
+  <span class="screen-label">Alerts · Empty state</span>
+</div>
+
+</body>
+</html>
