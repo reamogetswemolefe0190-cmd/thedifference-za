@@ -155,6 +155,16 @@ P = [
  ("prod-amazfit-bip-5", "Amazfit Bip 5 Smartwatch", "Amazfit", "Audio & Wearables", "A2240", {"Display": "1.91-inch HD", "Battery": "Up to 10 days", "GPS": "Built-in GPS, Zepp OS", "Warranty": "1-Year Manufacturer"}, 4.3, 220, 1299, "prod-galaxy-watch-7"),
  ("prod-jbl-tune-flex", "JBL Tune Flex True Wireless Earbuds", "JBL", "Audio & Wearables", "JBLTFLEX", {"Audio": "JBL Pure Bass, 12mm drivers", "Battery": "8h + 24h case", "Feature": "Ambient Aware + TalkThru", "Warranty": "1-Year Manufacturer"}, 4.3, 300, 899, "prod-galaxy-buds-fe"),
  ("prod-skullcandy-dime-3", "Skullcandy Dime 3 True Wireless Earbuds", "Skullcandy", "Audio & Wearables", "S2DMW-L003", {"Audio": "6mm drivers, bass tuned", "Battery": "7h + 14h case", "Rating": "IPX4", "Warranty": "1-Year Manufacturer"}, 4.0, 170, 499, "prod-galaxy-buds-fe"),
+ ("prod-jbl-tune-520bt", "JBL Tune 520BT Wireless On-Ear Headphones", "JBL", "Audio & Wearables", "JBLT520BT", {"Audio": "JBL Pure Bass sound", "Battery": "Up to 57 hours", "Charge": "USB-C, 5-min quick charge (3 hours)", "Bluetooth": "5.3 multipoint"}, 4.4, 620, 799, "prod-sony-xm5"),
+ ("prod-jbl-tune-670nc", "JBL Tune 670NC Wireless ANC On-Ear Headphones", "JBL", "Audio & Wearables", "JBLT670NC", {"Audio": "Adaptive Noise Cancelling", "Battery": "Up to 70 hours", "Charge": "USB-C, 5-min quick charge (3 hours)", "Bluetooth": "5.3 multipoint"}, 4.5, 410, 1299, "prod-sony-xm5"),
+ ("prod-sony-wh-ch520", "Sony WH-CH520 Wireless On-Ear Headphones", "Sony", "Audio & Wearables", "WHCH520", {"Audio": "Sony bass, EQ via Headphones Connect", "Battery": "Up to 50 hours", "Charge": "USB-C, 3-min quick charge (1.5 hours)", "Multipoint": "Yes, 2 devices"}, 4.4, 530, 899, "prod-sony-xm5"),
+ ("prod-sony-wh-ch720n", "Sony WH-CH720N Wireless ANC Over-Ear Headphones", "Sony", "Audio & Wearables", "WHCH720N", {"Audio": "Noise Cancelling with Ambient mode", "Battery": "Up to 35 hours ANC on", "Charge": "USB-C, 3-min quick charge (1 hour)", "Weight": "192g lightweight"}, 4.5, 780, 1499, "prod-sony-xm5"),
+ ("prod-anker-soundcore-r50i", "Anker Soundcore R50i True Wireless Earbuds", "Anker", "Audio & Wearables", "A3949", {"Audio": "10mm drivers, bass-up EQ", "Battery": "10h + 20h case", "Rating": "IPX5 water resistant", "Bluetooth": "5.3"}, 4.3, 890, 399, "prod-airpods-4"),
+ ("prod-anker-soundcore-p20i", "Anker Soundcore P20i True Wireless Earbuds", "Anker", "Audio & Wearables", "A3948", {"Audio": "10mm drivers with 22 presets", "Battery": "10h + 20h case", "Rating": "IPX5 water resistant", "Bluetooth": "5.3"}, 4.3, 750, 299, "prod-airpods-4"),
+ ("prod-anker-soundcore-life-q30", "Anker Soundcore Life Q30 Wireless ANC Headphones", "Anker", "Audio & Wearables", "A3028", {"Audio": "40mm drivers, hybrid ANC", "Battery": "Up to 40 hours ANC on", "Charge": "USB-C fast charge", "Bluetooth": "5.0 multipoint"}, 4.6, 910, 1399, "prod-airpods-max-usbc"),
+ ("prod-logitech-h340-usb-headset", "Logitech H340 USB Stereo Headset", "Logitech", "Audio & Wearables", "H340", {"Audio": "Digital USB stereo", "Mic": "Rotating noise-cancelling boom", "Use": "Office calls and video meetings", "Warranty": "2-Year Manufacturer"}, 4.2, 240, 349, "prod-logitech-c920-webcam"),
+ ("prod-hyperx-cloud-stinger-2", "HyperX Cloud Stinger 2 Gaming Headset", "HyperX", "Gaming Consoles", "HX-HSCS2-BK", {"Audio": "40mm drivers, DTS spatial audio", "Mic": "Swivel-to-mute noise-cancelling", "Comfort": "Memory foam headband", "Warranty": "2-Year Manufacturer"}, 4.4, 350, 999, "prod-xbox-wireless-headset"),
+ ("prod-jbl-quantum-100", "JBL Quantum 100 Wired Gaming Headset", "JBL", "Gaming Consoles", "JBLQ100BLK", {"Audio": "40mm drivers, JBL QuantumSOUND", "Mic": "Detachable boom mic", "Use": "PC, PlayStation, Xbox, Switch", "Warranty": "1-Year Manufacturer"}, 4.3, 290, 599, "prod-xbox-wireless-headset"),
 ]
 
 def price_for(base, mult, rng):
@@ -193,7 +203,7 @@ def main():
         seen_ids.add(pid)
         seen_titles.add(norm)
 
-    assert len(P) == 100, f"expected 100 products, got {len(P)}"
+    assert len(P) == 110, f"expected 110 products, got {len(P)}"
 
     lines = ["-- ==========================================================",
              "-- PricePulse South Africa — 100 Budget-Tier Catalog Expansion",

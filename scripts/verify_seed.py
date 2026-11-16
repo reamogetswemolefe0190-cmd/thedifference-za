@@ -93,8 +93,8 @@ def main():
 
     # 1. Budget seed product rows
     prod_rows = parse_products(budget)
-    if len(prod_rows) != 100:
-        fail(f"expected 100 product INSERTs in seed_budget.sql, got {len(prod_rows)}")
+    if len(prod_rows) != 110:
+        fail(f"expected 110 product INSERTs in seed_budget.sql, got {len(prod_rows)}")
     ids = []
     for row in prod_rows:
         vals = unquote(row)
