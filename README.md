@@ -52,7 +52,7 @@ In South African e-commerce, **the advertised shelf price is rarely what a shopp
 ```mermaid
 flowchart TB
     subgraph Client["1. Client Layer (Cloudflare Pages — thedifference-za.pages.dev)"]
-        UI["Zero-Waterfall Single-Document App (pricepulse.html / index.html)"]
+        UI["Zero-Waterfall Single-Document App (index.html)"]
         Astryx["Meta Astryx Design System (@astryxdesign/core v0.7.11)"]
         VirtScroll["IntersectionObserver Virtual Pager (24 cards/batch)"]
         LocalStore["Stale-While-Revalidate Snapshot + localStorage Alert Registration State"]
@@ -94,8 +94,8 @@ flowchart TB
 | Engineering Domain | Implementation Details & Measurable Impact | Key Files |
 | :--- | :--- | :--- |
 | **Edge Compute & Distributed SQLite (`Cloudflare Workers` + `D1` + `KV`)** | Deployed to the Johannesburg (`JNB`) edge PoP. Executes parameterized SQL joins across 7 normalized tables (`products`, `stores`, `store_offers`, `price_history`, `price_alerts`, `price_anomalies`, `beta_feedback`) in **`< 1ms` SQL execution time**, backed by composite B-tree indexes and a 60s Cloudflare KV read-through cache with active cache invalidation and global cache purge support (`await env.CACHE.delete(key)`). | [`backend/src/index.js`](backend/src/index.js), [`backend/schema.sql`](backend/schema.sql) |
-| **Meta Astryx Design System (`@astryxdesign/core` v0.7.11)** | Implements CSS Cascade Layers (`@layer reset, astryx-base, astryx-theme`), scoped media contexts (`data-astryx-media="dark"` vs. `"light"`), and the official `@astryxdesign/cli` `CardWithInnerLayout` + `dashboard-scorecard` pattern with `ProgressBar` target marks and `tabular-nums` typography. | [`pricepulse.html`](pricepulse.html), [`.agents/skills/astryx/SKILL.md`](.agents/skills/astryx/SKILL.md) |
-| **Stale-While-Revalidate & Virtualized DOM Pagination** | Boots at **0ms network latency** from an embedded canonical snapshot and reconciles asynchronously with `/api/products`. Uses native `IntersectionObserver` pagination (`#catalogSentinel`) to mount 24 cards per scroll batch, maintaining 60fps across 200 products (1,006 offers). | [`pricepulse.html`](pricepulse.html) |
+| **Meta Astryx Design System (`@astryxdesign/core` v0.7.11)** | Implements CSS Cascade Layers (`@layer reset, astryx-base, astryx-theme`), scoped media contexts (`data-astryx-media="dark"` vs. `"light"`), and the official `@astryxdesign/cli` `CardWithInnerLayout` + `dashboard-scorecard` pattern with `ProgressBar` target marks and `tabular-nums` typography. | [`index.html`](index.html), [`.agents/skills/astryx/SKILL.md`](.agents/skills/astryx/SKILL.md) |
+| **Stale-While-Revalidate & Virtualized DOM Pagination** | Boots at **0ms network latency** from an embedded canonical snapshot and reconciles asynchronously with `/api/products`. Uses native `IntersectionObserver` pagination (`#catalogSentinel`) to mount 24 cards per scroll batch, maintaining 60fps across 200 products (1,006 offers). | [`index.html`](index.html) |
 | **Retailer Ingestion Pipeline, Resilience & Quarantine** | Multi-tier Python data-ingestion pipeline (`backend/scrapers/`) with active fast fetchers for 6 retailers (Takealot, Amazon SA, Makro SA, Incredible Connection, Hirsch's, HiFi Corp; Game scraper pending). Uses token-overlap scoring (`is_relevant_match`) to reject accessories/cases, per-domain circuit breakers, and an anomaly quarantine gate diverting >45% price spikes to `price_anomalies`. Automated refresh scheduling and production synchronization remain to be completed and verified. | [`backend/scrapers/fast_fetchers.py`](backend/scrapers/fast_fetchers.py), [`backend/tests/test_resilience_and_quarantine.py`](backend/tests/test_resilience_and_quarantine.py) |
 | **Non-Destructive Computer-Vision Packshot Pipeline (`NumPy` + `SciPy`)** | Replaces destructive brightness thresholding with topological border-connected flood fill (`scipy.ndimage.label`) + binary interior hole locking (`binary_fill_holes`) + bottom-22% gradient floor-shadow removal + edge color decontamination, preserving white product hardware (e.g., PS5 Slim faceplates). | [`backend/scrapers/fetch_all_actual_images.py`](backend/scrapers/fetch_all_actual_images.py), [`.agents/skills/product-asset-pipeline/SKILL.md`](.agents/skills/product-asset-pipeline/SKILL.md) |
 | **108-Assertion Automated Verification Suite** | End-to-end test battery verifying static Zero-Emoji compliance, offline SVG brand logos, XSS/SQLi search input resilience, financial landed-cost unit tests, active KV cache deletion, price-alert registration validation, 1,006 committed catalog offers, live Cloudflare Edge health, and zero horizontal overflow across `320px`, `375px`, `440px`, and `1280px` viewports. | [`.agents/teamwork/challenger_m1_2/test_suite.py`](.agents/teamwork/challenger_m1_2/test_suite.py), [`TEST_RESULTS.md`](TEST_RESULTS.md) |
@@ -120,7 +120,7 @@ All **108 automated test assertions** in the test harness ([`.agents/teamwork/ch
 ### 1. Run the Frontend Locally
 ```bash
 python -m http.server 8080
-# Open http://localhost:8080/pricepulse.html
+# Open http://localhost:8080/index.html
 ```
 
 ### 2. Run the Cloudflare Worker & D1 Edge API Locally
@@ -154,7 +154,6 @@ npx wrangler d1 execute pricepulse-db --remote --command "SELECT id, user_email,
 ```text
 thedifference-za/
 ├── index.html                                  # Production entry point (Cloudflare Pages)
-├── pricepulse.html                             # Canonical single-document application & Astryx UI
 ├── AGENTS.md                                   # Architectural standards & anti-AI aesthetic rules
 ├── TEST_RESULTS.md                             # Publication-grade 108-assertion test execution report
 ├── TEST_READY.md                               # Automated test coverage breakdown & feature checklist
