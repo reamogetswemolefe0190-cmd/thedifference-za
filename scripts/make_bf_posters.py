@@ -170,11 +170,9 @@ def product_hero(path, max_w, max_h):
     return stage
 
 
-def footer(draw, y=1196):
-    tracked(draw, (W / 2, y), "THE DIFFERENCE", black(38), ACID, tracking=6, anchor="ma")
-    t = "7 stores  ·  landed price  ·  delivery fees in  ·  zero surprises"
-    draw.text((W / 2, y + 56), t, font=medium(27), fill=GREY, anchor="mm")
-    tracked(draw, (W / 2, y + 108), "thedifference-za.pages.dev", bold(33), WHITE, tracking=1, anchor="ma")
+def footer(draw, y=1226):
+    tracked(draw, (W / 2, y), "THE DIFFERENCE", black(40), ACID, tracking=8, anchor="ma")
+    tracked(draw, (W / 2, y + 66), "thedifference-za.pages.dev", black(42), WHITE, tracking=2, anchor="ma")
 
 
 def deal_poster(line1, line2, sub, product_file, price, was, save, store_note, out):
@@ -187,25 +185,30 @@ def deal_poster(line1, line2, sub, product_file, price, was, save, store_note, o
     tracked(d, (72, 236), line1, black(86), WHITE, tracking=-3)
     tracked(d, (72, 336), line2, black(102), ACID, tracking=-3)
     if sub:
-        d.text((74, 452), sub, font=medium(32), fill=GREY)
+        d.text((74, 452), sub, font=medium(30), fill=(196, 204, 216))
 
     hero = product_hero(os.path.join(PRODUCTS, product_file), 640, 380)
     img.paste(hero, (int(W / 2 - hero.width / 2), 500), hero)
 
-    d.line([(72, 972), (W - 72, 972)], fill=(60, 68, 82), width=2)
+    store, note = store_note
+    f_chip = bold(26)
+    ct = f"{store} · {note}"
+    ctw = f_chip.getlength(ct) + 56
+    d.rounded_rectangle((74, 986, 74 + ctw, 986 + 52), radius=12, outline=ACID, width=2)
+    d.text((74 + 28, 986 + 26), ct, font=f_chip, fill=ACID, anchor="lm")
 
-    d.text((74, 1000), "LANDED PRICE · DELIVERY INCLUDED", font=bold(26), fill=ACID)
-    tracked(d, (72, 1030), price, black(136), WHITE, tracking=-6)
-    wt = d.textlength(was, font=bold(46))
-    d.text((W - 74 - wt, 1052), was, font=bold(46), fill=(120, 128, 140))
-    d.line([(W - 74 - wt, 1052 + 24), (W - 74, 1052 + 24)], fill=(120, 128, 140), width=4)
-    d.text((W - 74, 1110), "priciest store, delivered", font=regular(24), fill=DIM, anchor="ra")
-    d.text((74, 1170), store_note, font=regular(28), fill=GREY)
+    f_price = black(148)
+    px, py = 74, 1058
+    x_end = tracked(d, (px, py), price, f_price, WHITE, tracking=-6)
+    f_was = bold(48)
+    wx = x_end + 36
+    d.text((wx, py + 88), was, font=f_was, fill=(120, 128, 140))
+    d.line([(wx, py + 116), (wx + f_was.getlength(was), py + 116)], fill=(140, 148, 160), width=5)
 
-    burst = starburst(save, size=300)
-    img.paste(burst, (W - burst.width + 8, 988), burst)
+    burst = starburst(save, size=290)
+    img.paste(burst, (W - burst.width + 14, 1020), burst)
 
-    footer(d, 1204)
+    footer(d, 1226)
     img.save(os.path.join(OUT, out))
     print("wrote", out)
 
@@ -253,20 +256,20 @@ def main_poster():
 if __name__ == "__main__":
     deal_poster(
         "SAME LAPTOP.",
-        "R4 095 LESS.",
+        "R4 095 CHEAPER.",
         "Apple MacBook Air 13\" M3 · 256GB · compared across 7 stores",
         "prod-macbook-air-m3.png",
         "R19 999", "R24 094", "SAVE\nR4 095",
-        "Cheapest landed price: Incredible Connection · delivered",
+        ("INCREDIBLE CONNECTION", "DELIVERED"),
         "poster-bf-macbook.png",
     )
     deal_poster(
         "SAME PHONE.",
-        "R3 000 LESS.",
+        "R3 000 CHEAPER.",
         "iPhone 15 · 128GB · brand new, 5G · compared across 7 SA stores",
         "prod-iphone-15.png",
         "R13 999", "R16 999", "SAVE\nR3 000",
-        "Cheapest landed price: Takealot · delivered",
+        ("TAKEALOT", "DELIVERED"),
         "poster-bf-iphone.png",
     )
     deal_poster(
@@ -275,7 +278,7 @@ if __name__ == "__main__":
         "EcoFlow Delta Pro · 3600Wh · compared across 7 stores",
         "prod-ecoflow-delta-pro.png",
         "R48 999", "R52 999", "SAVE\nR4 000",
-        "Cheapest landed price: Amazon SA · delivered",
+        ("AMAZON SA", "DELIVERED"),
         "poster-bf-ecoflow.png",
     )
     main_poster()
