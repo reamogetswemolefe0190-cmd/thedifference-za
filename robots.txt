@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
+Sitemap: https://thedifference-za.pages.dev/sitemap-za.xml
 Sitemap: https://thedifference-za.pages.dev/sitemap.xml
