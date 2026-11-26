@@ -8,9 +8,9 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>The Difference | thedifference.co.za — Know the difference</title>
+  <title>Price Comparison South Africa | The Difference — 7 Stores, Delivery Fees Included</title>
 
-  <meta name="description" content="Compare verified landed prices across Takealot, Makro, Amazon SA, Incredible Connection, and Hirsch's.">
+  <meta name="description" content="Compare real prices across 7 South African stores before you buy. Item price plus delivery fees included for Takealot, Amazon SA, Makro, Game, Incredible Connection, Hirsch's and HiFi Corp. Black Friday prices verified.">
   <link rel="canonical" href="https://thedifference-za.pages.dev/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="The Difference">
@@ -6210,6 +6210,8 @@
 
   <main id="catalogView" class="view-catalog" data-astryx-media="light" style="flex:1; padding-bottom: 3rem;">
 
+    <h1 style="position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0;">Compare prices across 7 South African stores, delivery fees included</h1>
+
     
 
     <!-- FEATURED SPECIALS ROLLING CAROUSEL (END-TO-END ACROSS SCREEN) -->
@@ -8259,6 +8261,92 @@
 
     }
 
+    const SCHEMA_BASE = 'https://thedifference-za.pages.dev';
+
+    function setJsonLd(id, data) {
+
+      let el = document.getElementById(id);
+
+      if (el) el.remove();
+
+      el = document.createElement('script');
+
+      el.type = 'application/ld+json';
+
+      el.id = id;
+
+      el.textContent = JSON.stringify(data);
+
+      document.head.appendChild(el);
+
+    }
+
+    function injectCatalogSchema() {
+
+      if (!Array.isArray(PRODUCTS) || PRODUCTS.length === 0) return;
+
+      setJsonLd('ldCatalog', {
+
+        '@context': 'https://schema.org',
+
+        '@type': 'ItemList',
+
+        name: 'Price comparison catalog — The Difference South Africa',
+
+        numberOfItems: PRODUCTS.length,
+
+        itemListElement: PRODUCTS.slice(0, 24).map((p, i) => ({
+
+          '@type': 'ListItem',
+
+          position: i + 1,
+
+          url: `${SCHEMA_BASE}/?product=${p.id}`,
+
+          name: p.title
+
+        }))
+
+      });
+
+    }
+
+    function injectProductSchema(prod) {
+
+      const offers = (prod.stores || []).map(s => ({
+
+        '@type': 'Offer',
+
+        priceCurrency: 'ZAR',
+
+        price: s.itemPrice + (s.shippingFee || 0),
+
+        availability: s.inStock === false ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
+
+        seller: { '@type': 'Organization', name: s.name }
+
+      }));
+
+      setJsonLd('ldProduct', {
+
+        '@context': 'https://schema.org',
+
+        '@type': 'Product',
+
+        name: prod.title,
+
+        brand: { '@type': 'Brand', name: prod.brand },
+
+        image: `${SCHEMA_BASE}/${productImageSrc(prod.image)}`,
+
+        description: `Compare landed prices, delivery fees included, for the ${prod.title} across South African stores on The Difference.`,
+
+        offers: offers
+
+      });
+
+    }
+
     function openProductDetail(productId) {
 
       const prod = PRODUCTS.find(p => p.id === productId);
@@ -8268,6 +8356,8 @@
 
 
       currentDetailProduct = prod;
+
+      injectProductSchema(prod);
 
       if (typeof setAiProductContext === 'function') {
         setAiProductContext(prod);
@@ -9586,6 +9676,8 @@
 
           renderProductGrid();
 
+          injectCatalogSchema();
+
         }
 
       } catch (err) {
@@ -9733,6 +9825,8 @@
       renderSpecialsCarousel();
 
       renderProductGrid();
+
+      injectCatalogSchema();
 
       loadLiveProducts();
 
