@@ -1,190 +1,282 @@
 #!/usr/bin/env python3
-"""Generate Black Friday social posters for The Difference (1080x1350).
+"""Black Friday poster pack v2 for The Difference (1080x1350 social posters).
 
-Modern marketing principles applied:
-- One idea per poster: single hook, single number anchor, single CTA.
-- High contrast price anchoring (was/now gap makes the saving tangible).
-- Consistent brand system: slate #0f172a, brand green #007a3d/#059669,
-  light card surfaces #ffffff on #f8fafc, 8-16px radius ladder.
-- Product packshot as the visual hero; minimal text, mobile-legible sizes.
+Design system — modern Black Friday retail creative:
+- Deep black stage (#05060a) with acid-green accent (#a3e635), the high-contrast
+  palette that stops thumbs in a feed full of red BF ads.
+- Massive Roboto Black headlines with tight tracking (retail ad typography).
+- Product hero with radial glow, soft floor shadow and reflection.
+- Price anchor: giant landed price + strikethrough was-price + rotated starburst.
+- Texture: diagonal hazard stripes, vignette, film grain for depth.
 """
 
 import os
-from PIL import Image, ImageDraw, ImageFont
+import random
+import math
+from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PRODUCTS = os.path.join(ROOT, "images", "products")
+FONTS = os.path.join(ROOT, "scripts", "fonts")
 OUT = os.path.join(ROOT, "images", "promo", "posters")
 os.makedirs(OUT, exist_ok=True)
 
 W, H = 1080, 1350
-SLATE = (15, 23, 42)
-SLATE_90 = (15, 23, 42, 230)
-GREEN = (5, 150, 105)
-GREEN_DK = (0, 122, 61)
+BLACK = (5, 6, 10)
+PANEL = (12, 14, 20)
 WHITE = (255, 255, 255)
-OFFWHITE = (248, 250, 252)
-BORDER = (226, 232, 240)
-MUTED = (100, 116, 139)
-RED = (220, 38, 38)
+ACID = (163, 230, 53)
+GREEN = (5, 150, 105)
+GREY = (139, 148, 158)
+DIM = (86, 94, 105)
 
-import matplotlib
 
-FONT_DIRS = [
-    os.path.join(matplotlib.get_data_path(), "fonts", "ttf", "DejaVuSans-Bold.ttf"),
-    os.path.join(matplotlib.get_data_path(), "fonts", "ttf", "DejaVuSans.ttf"),
-]
+def F(name, size):
+    return ImageFont.truetype(os.path.join(FONTS, name), size)
 
-def font(bold=True, size=64):
-    path = FONT_DIRS[0] if bold else FONT_DIRS[1]
-    for p in (path, FONT_DIRS[1], FONT_DIRS[0]):
-        if os.path.exists(p):
-            return ImageFont.truetype(p if (bold if "Bold" in p else True) else p, size)
-    raise SystemExit("no fonts")
 
-def text(draw, xy, s, f, fill, anchor="la"):
-    draw.text(xy, s, font=f, fill=fill, anchor=anchor)
+def black(size):
+    return F("Roboto-Black.ttf", size)
 
-def rrect(draw, box, radius, fill=None, outline=None, width=1):
-    draw.rounded_rectangle(box, radius=radius, fill=fill, outline=outline, width=width)
 
-def packshot(path, max_w, max_h):
+def bold(size):
+    return F("Roboto-Bold.ttf", size)
+
+
+def medium(size):
+    return F("Roboto-Medium.ttf", size)
+
+
+def regular(size):
+    return F("Roboto-Regular.ttf", size)
+
+
+def tracked(draw, xy, s, f, fill, tracking=-2, anchor="la"):
+    """Draw text with letter tracking (negative = tight, retail-ad style)."""
+    x, y = xy
+    if anchor == "ma":
+        total = sum(f.getlength(c) + tracking for c in s) - tracking
+        x -= total / 2
+    elif anchor == "ra":
+        total = sum(f.getlength(c) + tracking for c in s) - tracking
+        x -= total
+    for c in s:
+        draw.text((x, y), c, font=f, fill=fill)
+        x += f.getlength(c) + tracking
+    return x
+
+
+def base_canvas():
+    """Black stage with radial acid glow, diagonal stripes, vignette, grain."""
+    img = Image.new("RGB", (W, H), BLACK)
+    glow = Image.new("L", (W, H), 0)
+    gd = ImageDraw.Draw(glow)
+    for r in range(700, 0, -8):
+        a = int(46 * (1 - r / 700))
+        gd.ellipse((W * 0.72 - r, 460 - r * 0.72, W * 0.72 + r, 460 + r * 0.72), fill=a)
+    img = Image.composite(
+        Image.new("RGB", (W, H), (24, 44, 8)), img, glow.point(lambda v: min(v, 46) * 5)
+    )
+    overlay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    od = ImageDraw.Draw(overlay)
+    step = 46
+    for i in range(-H, W + H, step):
+        od.line([(i, 0), (i - 260, H)], fill=(255, 255, 255, 7), width=13)
+    img = Image.alpha_composite(img.convert("RGBA"), overlay)
+
+    vign = Image.new("L", (W, H), 0)
+    vd = ImageDraw.Draw(vign)
+    vd.rectangle((0, 0, W, H), fill=90)
+    vd.rounded_rectangle((-140, -140, W + 140, H + 140), radius=520, fill=0)
+    vign = vign.filter(ImageFilter.GaussianBlur(90))
+    black_layer = Image.new("RGBA", (W, H), (0, 0, 0, 255))
+    img = Image.composite(black_layer, img, vign)
+
+    rng = random.Random(7)
+    noise = Image.new("L", (W, H), 0)
+    noise.putdata([rng.randint(0, 14) for _ in range(W * H)])
+    img = Image.alpha_composite(img, Image.merge("RGBA", (noise, noise, noise, Image.new("L", (W, H), 18))))
+    return img.convert("RGB")
+
+
+def hazard_band(draw, y, height, label_text):
+    """Acid ribbon with hazard-stripe ends, retail sale banner."""
+    band = Image.new("RGBA", (W, height), (0, 0, 0, 0))
+    bd = ImageDraw.Draw(band)
+    bd.rectangle((0, 0, W, height), fill=ACID)
+    stripes = Image.new("RGBA", (W, height), (0, 0, 0, 0))
+    sd = ImageDraw.Draw(stripes)
+    for x in range(-height, 160, 44):
+        sd.polygon([(x, height), (x + height, 0), (x + height + 20, 0), (x + 20, height)], fill=(0, 0, 0, 60))
+    band = Image.alpha_composite(band, stripes)
+    f = black(44)
+    tw = f.getlength(label_text)
+    bd2 = ImageDraw.Draw(band)
+    bd2.text(((W - tw) / 2, height / 2), label_text, font=f, fill=BLACK, anchor="mm")
+    return band
+
+
+def starburst(save="SAVE\nR4 095", size=340):
+    """Rotated sticker badge, like a sale tag."""
+    lines = save.split("\n")
+    img = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    cx, cy = size / 2, size / 2
+    pts = []
+    for i in range(28):
+        ang = i * math.pi / 14
+        r = (size / 2 - 8) if i % 2 == 0 else (size / 2 - 30)
+        pts.append((cx + r * math.cos(ang), cy + r * math.sin(ang)))
+    d.polygon(pts, fill=ACID)
+    f1 = black(34)
+    f2 = black(52)
+    d.text((cx, cy - 30), lines[0], font=f1, fill=BLACK, anchor="mm")
+    d.text((cx, cy + 26), lines[1], font=f2, fill=BLACK, anchor="mm")
+    return img.rotate(-12, expand=True, resample=Image.BICUBIC)
+
+
+def product_hero(path, max_w, max_h):
+    """Packshot with acid glow, floor shadow and reflection."""
     im = Image.open(path).convert("RGBA")
     im.thumbnail((max_w, max_h), Image.LANCZOS)
-    return im
+    w, h = im.size
 
-def paste_center(canvas, im, cx, cy):
-    canvas.paste(im, (int(cx - im.width / 2), int(cy - im.height / 2)), im)
+    stage = Image.new("RGBA", (w + 320, h + 260), (0, 0, 0, 0))
 
-def chip(draw, box, label, f, fill, fg, radius=12, pad=44):
-    tw = f.getlength(label)
-    if tw > (box[2] - box[0]) - 2 * pad:
-        mid = (box[0] + box[2]) / 2
-        box = (mid - tw / 2 - pad, box[1], mid + tw / 2 + pad, box[3])
-    rrect(draw, box, radius, fill=fill)
-    x = (box[0] + box[2]) / 2
-    y = (box[1] + box[3]) / 2
-    text(draw, (x, y), label, f, fg, anchor="mm")
+    glow = Image.new("RGBA", stage.size, (0, 0, 0, 0))
+    gd = ImageDraw.Draw(glow)
+    for r in range(int(min(w, h) * 0.85), 0, -10):
+        a = int(90 * (1 - r / (min(w, h) * 0.85)))
+        gd.ellipse((stage.width / 2 - r, stage.height / 2 - r * 0.6, stage.width / 2 + r, stage.height / 2 + r * 0.6), fill=(90, 140, 40, a))
+    glow = glow.filter(ImageFilter.GaussianBlur(40))
+    stage = Image.alpha_composite(stage, glow)
 
-def brand_footer(draw, tagline=True):
-    text(draw, (W / 2, H - 96), "thedifference-za.pages.dev", font(36), (148, 163, 184), "mm")
-    text(draw, (W / 2, H - 152), "THE DIFFERENCE", font(True, 40), GREEN, "mm")
-    if tagline:
-        text(draw, (W / 2, H - 44), "7 stores. Landed price. No surprises.", font(False, 30), (100, 116, 139), "mm")
+    px, py = (stage.width - w) // 2, (stage.height - h) // 2 - 30
+    stage.alpha_composite(im, (px, py))
 
-def dark_canvas():
-    img = Image.new("RGB", (W, H), SLATE)
+    shadow = Image.new("RGBA", stage.size, (0, 0, 0, 0))
+    sd = ImageDraw.Draw(shadow)
+    sd.ellipse((stage.width / 2 - w / 2, py + h + 6, stage.width / 2 + w / 2, py + h + 64), fill=(0, 0, 0, 140))
+    shadow = shadow.filter(ImageFilter.GaussianBlur(18))
+    stage = Image.alpha_composite(shadow, stage)
+
+    refl = im.transpose(Image.FLIP_TOP_BOTTOM).resize((w, int(h * 0.30)))
+    fade = Image.new("L", refl.size, 0)
+    fd = ImageDraw.Draw(fade)
+    for i in range(refl.size[1]):
+        fd.line([(0, i), (refl.size[0], i)], fill=int(52 * (1 - i / refl.size[1])))
+    refl.putalpha(fade)
+    stage.alpha_composite(refl, (px, py + h + 8))
+    return stage
+
+
+def footer(draw, y=1196):
+    tracked(draw, (W / 2, y), "THE DIFFERENCE", black(38), ACID, tracking=6, anchor="ma")
+    t = "7 stores  ·  landed price  ·  delivery fees in  ·  zero surprises"
+    draw.text((W / 2, y + 56), t, font=medium(27), fill=GREY, anchor="mm")
+    tracked(draw, (W / 2, y + 108), "thedifference-za.pages.dev", bold(33), WHITE, tracking=1, anchor="ma")
+
+
+def deal_poster(line1, line2, sub, product_file, price, was, save, store_note, out):
+    img = base_canvas()
     d = ImageDraw.Draw(img)
-    d.rectangle((0, 0, W, 12), fill=GREEN_DK)
-    return img, d
 
+    band = hazard_band(d, 0, 96, "BLACK FRIDAY  ·  28 NOVEMBER")
+    img.paste(band, (0, 60), band)
 
-def poster_main():
-    img, d = dark_canvas()
-    text(d, (W / 2, 150), "BLACK FRIDAY", font(True, 92), WHITE, "mm")
-    text(d, (W / 2, 248), "28 NOVEMBER", font(True, 44), GREEN, "mm")
-    text(d, (W / 2, 400), "Same product.", font(True, 72), WHITE, "mm")
-    text(d, (W / 2, 484), "7 different doors.", font(True, 72), WHITE, "mm")
-    text(d, (W / 2, 590), "Delivery fees in the price. Cheapest", font(False, 36), (148, 163, 184), "mm")
-    text(d, (W / 2, 640), "landed price wins, every time.", font(False, 36), (148, 163, 184), "mm")
+    tracked(d, (72, 236), line1, black(86), WHITE, tracking=-3)
+    tracked(d, (72, 336), line2, black(102), ACID, tracking=-3)
+    if sub:
+        d.text((74, 452), sub, font=medium(32), fill=GREY)
 
-    shots = ["prod-macbook-air-m3.png", "prod-iphone-15.png", "prod-ecoflow-delta-pro.png"]
-    for i, name in enumerate(shots):
-        im = packshot(os.path.join(PRODUCTS, name), 240, 160)
-        card = Image.new("RGBA", (300, 300), (0, 0, 0, 0))
-        cd = ImageDraw.Draw(card)
-        rrect(cd, (0, 0, 300, 300), 24, fill=(255, 255, 255, 255))
-        card.paste(im, (int(150 - im.width / 2), int(150 - im.height / 2)), im)
-        img.paste(card, (90 + i * 300, 740), card)
+    hero = product_hero(os.path.join(PRODUCTS, product_file), 640, 380)
+    img.paste(hero, (int(W / 2 - hero.width / 2), 500), hero)
 
-    chip(d, (W / 2 - 360, 1088, W / 2 + 360, 1162), "CHECK BEFORE YOU PAY  →", font(True, 34), GREEN_DK, WHITE, 16)
-    brand_footer(d)
-    img.save(os.path.join(OUT, "poster-bf-main.png"))
+    d.line([(72, 972), (W - 72, 972)], fill=(60, 68, 82), width=2)
 
+    d.text((74, 1000), "LANDED PRICE · DELIVERY INCLUDED", font=bold(26), fill=ACID)
+    tracked(d, (72, 1030), price, black(136), WHITE, tracking=-6)
+    wt = d.textlength(was, font=bold(46))
+    d.text((W - 74 - wt, 1052), was, font=bold(46), fill=(120, 128, 140))
+    d.line([(W - 74 - wt, 1052 + 24), (W - 74, 1052 + 24)], fill=(120, 128, 140), width=4)
+    d.text((W - 74, 1110), "priciest store, delivered", font=regular(24), fill=DIM, anchor="ra")
+    d.text((74, 1170), store_note, font=regular(28), fill=GREY)
 
-def fit_lines(draw, s, bold, size, max_w):
-    f = font(bold, size)
-    words = s.split()
-    lines, cur = [], ""
-    for w_ in words:
-        trial = (cur + " " + w_).strip()
-        if f.getlength(trial) <= max_w or not cur:
-            cur = trial
-        else:
-            lines.append(cur)
-            cur = w_
-    lines.append(cur)
-    while len(lines) > 2 and size > 40:
-        size -= 4
-        f = font(bold, size)
-        lines, cur = [], ""
-        for w_ in words:
-            trial = (cur + " " + w_).strip()
-            if f.getlength(trial) <= max_w or not cur:
-                cur = trial
-            else:
-                lines.append(cur)
-                cur = w_
-        lines.append(cur)
-    return lines, f
+    burst = starburst(save, size=300)
+    img.paste(burst, (W - burst.width + 8, 988), burst)
 
-
-def poster_deal(title_lines, product, price, was, store, hook, hook_sub, out):
-    img, d = dark_canvas()
-    chip(d, (84, 88, 84 + 320, 88 + 56), "BLACK FRIDAY · 28 NOV", font(True, 28), (30, 41, 59), WHITE, 14)
-    d.polygon([(84, 116), (84 + 320 + 18, 116), (84 + 320, 88 + 28), (84 + 320, 88 + 56)], fill=None)
-    hook_lines, hook_f = fit_lines(d, hook, True, 62, W - 2 * 84)
-    hy = 178
-    for line in hook_lines:
-        text(d, (84, hy), line, hook_f, WHITE, "la")
-        hy += hook_f.size + 12
-    y = hy + 14
-    for line in title_lines:
-        text(d, (84, y), line, font(True, 44), (203, 213, 225), "la")
-        y += 56
-
-    card_top, card_h = 440, 440
-    rrect(d, (84, card_top, W - 84, card_top + card_h), 28, fill=OFFWHITE)
-    shot = packshot(os.path.join(PRODUCTS, product), 620, 320)
-    paste_center(img, shot, W / 2, card_top + card_h / 2 - 14)
-    text(d, (W / 2, card_top + card_h - 36), store, font(False, 28), MUTED, "mm")
-
-    text(d, (84, 930), "LANDED PRICE · DELIVERY IN", font(True, 28), GREEN, "la")
-    text(d, (84, 960), price, font(True, 96), WHITE, "la")
-    text(d, (W - 84, 1000), was, font(False, 48), (100, 116, 139), "rm")
-    text(d, (W - 84, 1050), "priciest store's door", font(False, 28), (100, 116, 139), "rm")
-
-    chip(d, (84, 1108, 84 + 640, 1172), hook_sub, font(True, 34), GREEN_DK, WHITE, 16)
-    text(d, (84, 1210), "THE DIFFERENCE", font(True, 36), GREEN, "la")
-    text(d, (W / 2, 1268), "200+ products · 7 stores · fees included", font(False, 30), (148, 163, 184), "mm")
-    text(d, (W / 2, 1312), "thedifference-za.pages.dev", font(True, 34), WHITE, "mm")
+    footer(d, 1204)
     img.save(os.path.join(OUT, out))
+    print("wrote", out)
+
+
+def main_poster():
+    img = base_canvas()
+    d = ImageDraw.Draw(img)
+
+    band = hazard_band(d, 0, 96, "BLACK FRIDAY  ·  28 NOVEMBER")
+    img.paste(band, (0, 66), band)
+
+    tracked(d, (W / 2, 220), "SAME PRODUCT.", black(108), WHITE, tracking=-4, anchor="ma")
+    tracked(d, (W / 2, 330), "SEVEN DOORS.", black(108), ACID, tracking=-4, anchor="ma")
+    d.text((W / 2, 470), "Seven stores. One true price. Delivery fees in before you pay —", font=medium(33), fill=GREY, anchor="mm")
+    d.text((W / 2, 514), "no nasty surprises at the door.", font=medium(33), fill=GREY, anchor="mm")
+
+    cards = [
+        ("prod-macbook-air-m3.png", "MacBook Air M3", "R19 999", "R4 095 gap"),
+        ("prod-iphone-15.png", "iPhone 15", "R13 999", "R3 000 gap"),
+        ("prod-ecoflow-delta-pro.png", "EcoFlow Delta Pro", "R48 999", "R4 000 gap"),
+    ]
+    cw, ch, gap = 300, 400, 30
+    total = 3 * cw + 2 * gap
+    x0 = (W - total) / 2
+    for i, (fname, name, price, gap_lbl) in enumerate(cards):
+        x = x0 + i * (cw + gap)
+        card = Image.new("RGBA", (cw, ch), (0, 0, 0, 0))
+        cd = ImageDraw.Draw(card)
+        cd.rounded_rectangle((0, 0, cw - 1, ch - 1), radius=26, fill=(20, 24, 33, 255), outline=(48, 56, 72), width=1)
+        shot = Image.open(os.path.join(PRODUCTS, fname)).convert("RGBA")
+        shot.thumbnail((cw - 70, 190), Image.LANCZOS)
+        card.alpha_composite(shot, ((cw - shot.width) // 2, 26))
+        cd.text((cw / 2, 244), name, font=bold(30), fill=WHITE, anchor="mm")
+        cd.text((cw / 2, 286), price, font=black(46), fill=ACID, anchor="mm")
+        cd.text((cw / 2, 336), gap_lbl, font=medium(26), fill=GREY, anchor="mm")
+        img.paste(card, (int(x), 620), card)
+
+    d.text((W / 2, 1074), "Takealot  ·  Amazon SA  ·  Makro  ·  Game  ·  Incredible  ·  Hirsch's  ·  HiFi Corp", font=medium(27), fill=GREY, anchor="mm")
+
+    burst = starburst("LAND\nPRICE\nONLY")
+    img.paste(burst, (W - burst.width + 6, 96), burst)
+    footer(d, 1150)
 
 
 if __name__ == "__main__":
-    poster_main()
-    poster_deal(
-        ["MacBook Air 13\" M3", "256GB SSD"],
+    deal_poster(
+        "SAME LAPTOP.",
+        "R4 095 LESS.",
+        "Apple MacBook Air 13\" M3 · 256GB · compared across 7 stores",
         "prod-macbook-air-m3.png",
-        "R19 999", "R24 094",
-        "Incredible Connection · delivered price",
-        "Same laptop. R4 095 difference.",
-        "THE R4 095 GAP → SEE ALL 7 PRICES", "poster-bf-macbook.png",
+        "R19 999", "R24 094", "SAVE\nR4 095",
+        "Cheapest landed price: Incredible Connection · delivered",
+        "poster-bf-macbook.png",
     )
-    poster_deal(
-        ["iPhone 15 · 128GB", "Brand new, 5G"],
+    deal_poster(
+        "SAME PHONE.",
+        "R3 000 LESS.",
+        "iPhone 15 · 128GB · brand new, 5G · compared across 7 SA stores",
         "prod-iphone-15.png",
-        "R13 999", "R16 999",
-        "Takealot · delivered price",
-        "The 'deal' could have cost you R3 000 more.",
-        "SAVE R3 000 → SEE ALL 7 PRICES", "poster-bf-iphone.png",
+        "R13 999", "R16 999", "SAVE\nR3 000",
+        "Cheapest landed price: Takealot · delivered",
+        "poster-bf-iphone.png",
     )
-    poster_deal(
-        ["EcoFlow Delta Pro", "3600Wh · load-shedding proof"],
+    deal_poster(
+        "DON'T OVERPAY",
+        "FOR POWER.",
+        "EcoFlow Delta Pro · 3600Wh · compared across 7 stores",
         "prod-ecoflow-delta-pro.png",
-        "R48 999", "R52 999",
-        "Amazon SA · delivered price",
-        "Load-shedding season. Don't overpay for power.",
-        "SAVE R4 000 → SEE ALL 7 PRICES", "poster-bf-ecoflow.png",
+        "R48 999", "R52 999", "SAVE\nR4 000",
+        "Cheapest landed price: Amazon SA · delivered",
+        "poster-bf-ecoflow.png",
     )
-    print("Posters written to", OUT)
+    main_poster()
+    print("Poster pack v2 written to", OUT)
