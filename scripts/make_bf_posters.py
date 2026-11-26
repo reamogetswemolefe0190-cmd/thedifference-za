@@ -290,10 +290,10 @@ if __name__ == "__main__":
     )
     deal_poster(
         "SAME PHONE.",
-        "R3 000 CHEAPER.",
-        "iPhone 15 · 128GB · brand new, 5G · compared across 7 SA stores",
+        "R1 500 CHEAPER.",
+        "iPhone 15 · 128GB · brand new, 5G · compared across 7 stores",
         "prod-iphone-15.png",
-        "R13 999", "R16 999", "SAVE\nR3 000",
+        "R13 999", "R15 499", "SAVE\nR1 500",
         ("TAKEALOT", "DELIVERED"),
         "poster-bf-iphone.png",
     )
@@ -302,8 +302,8 @@ if __name__ == "__main__":
         "FOR POWER.",
         "EcoFlow Delta Pro · 3600Wh · compared across 7 stores",
         "prod-ecoflow-delta-pro.png",
-        "R48 999", "R52 999", "SAVE\nR4 000",
-        ("AMAZON SA", "DELIVERED"),
+        "R33 006", "R52 999", "SAVE\nR19 993",
+        ("TAKEALOT", "DELIVERED"),
         "poster-bf-ecoflow.png",
     )
     deal_poster(
@@ -317,10 +317,10 @@ if __name__ == "__main__":
     )
     deal_poster(
         "SAME OLED TV.",
-        "R2 350 CHEAPER.",
+        "R6 360 CHEAPER.",
         "LG 55\" 4K OLED evo C4 · compared across 7 stores",
         "prod-lg-55-c4-oled.png",
-        "R23 649", "R25 999", "SAVE\nR2 350",
+        "R23 649", "R30 009", "SAVE\nR6 360",
         ("AMAZON SA", "DELIVERED"),
         "poster-bf-lg-oled.png",
     )
@@ -329,62 +329,62 @@ if __name__ == "__main__":
         "R2 150 CHEAPER.",
         "EcoFlow Delta 2 · 1024Wh power station · compared across 7 stores",
         "prod-ecoflow-delta-2.png",
-        "R14 499", "R16 499", "SAVE\nR2 150",
+        "R14 499", "R16 649", "SAVE\nR2 150",
         ("AMAZON SA", "DELIVERED"),
         "poster-bf-ecoflow-delta2.png",
     )
     deal_poster(
         "BIG SOUND.",
-        "R2 150 CHEAPER.",
+        "R6 650 CHEAPER.",
         "JBL Bar 800 · 5.1.2ch Atmos with detachable speakers · across 7 stores",
         "prod-jbl-bar-800.png",
-        "R16 499", "R18 649", "SAVE\nR2 150",
-        ("AMAZON SA", "DELIVERED"),
+        "R11 999", "R18 649", "SAVE\nR6 650",
+        ("TAKEALOT", "DELIVERED"),
         "poster-bf-jbl.png",
     )
     deal_poster(
         "CLEAN FOR LESS.",
-        "R2 000 CHEAPER.",
+        "R2 510 CHEAPER.",
         "Dyson V12 Detect Slim · cordless vacuum · compared across 7 stores",
         "prod-dyson-v12-detect-slim.png",
-        "R12 499", "R14 499", "SAVE\nR2 000",
-        ("AMAZON SA", "DELIVERED"),
+        "R11 989", "R14 499", "SAVE\nR2 510",
+        ("TAKEALOT", "DELIVERED"),
         "poster-bf-dyson.png",
     )
     deal_poster(
         "STAY POWERED.",
-        "R2 000 CHEAPER.",
+        "R12 000 CHEAPER.",
         "Bluetti AC200P · 2000Wh power station · compared across 7 stores",
         "prod-bluetti-ac200p.png",
-        "R22 999", "R24 999", "SAVE\nR2 000",
-        ("AMAZON SA", "DELIVERED"),
+        "R12 999", "R24 999", "SAVE\nR12 000",
+        ("TAKEALOT", "DELIVERED"),
         "poster-bf-bluetti.png",
     )
     deal_poster(
         "STAY CHARGED.",
-        "R170 CHEAPER.",
+        "R220 CHEAPER.",
         "Romoss Sense 8+ · 30000mAh power bank · compared across 7 stores",
         "prod-romoss-sense-8-plus.png",
-        "R549", "R719", "SAVE\nR170",
-        ("AMAZON SA", "DELIVERED"),
+        "R499", "R719", "SAVE\nR220",
+        ("TAKEALOT", "DELIVERED"),
         "poster-bf-powerbank.png",
     )
     deal_poster(
         "GAME ON.",
-        "R300 CHEAPER.",
+        "R670 CHEAPER.",
         "Logitech G502 HERO gaming mouse · compared across 7 stores",
         "prod-logitech-g502-hero.png",
-        "R1099", "R1399", "SAVE\nR300",
-        ("AMAZON SA", "DELIVERED"),
+        "R729", "R1 399", "SAVE\nR670",
+        ("TAKEALOT", "DELIVERED"),
         "poster-bf-g502.png",
     )
     deal_poster(
         "RETRO KETTLE.",
-        "R245 CHEAPER.",
+        "R299 CHEAPER.",
         "Russell Hobbs 1.7L Retro Classic kettle · compared across 7 stores",
         "prod-russell-hobbs-retro-kettle.png",
-        "R949", "R1194", "SAVE\nR245",
-        ("AMAZON SA", "DELIVERED"),
+        "R895", "R1 194", "SAVE\nR299",
+        ("TAKEALOT", "DELIVERED"),
         "poster-bf-kettle.png",
     )
     deal_poster(
@@ -392,17 +392,17 @@ if __name__ == "__main__":
         "R295 CHEAPER.",
         "Russell Hobbs 20L mirror-door microwave · compared across 7 stores",
         "prod-russell-hobbs-microwave.png",
-        "R1199", "R1494", "SAVE\nR295",
+        "R1 199", "R1 494", "SAVE\nR295",
         ("AMAZON SA", "DELIVERED"),
         "poster-bf-microwave.png",
     )
     deal_poster(
         "WI-FI STAYS ON.",
-        "R170 CHEAPER.",
+        "R220 CHEAPER.",
         "Gizzu 30W Mini UPS · router & fibre backup · compared across 7 stores",
         "prod-gizzu-30w-mini-ups.png",
-        "R749", "R919", "SAVE\nR170",
-        ("AMAZON SA", "DELIVERED"),
+        "R699", "R919", "SAVE\nR220",
+        ("TAKEALOT", "DELIVERED"),
         "poster-bf-gizzu.png",
     )
     deal_poster(
@@ -410,53 +410,53 @@ if __name__ == "__main__":
         "R220 CHEAPER.",
         "Xbox Wireless Controller · Robot White · compared across 7 stores",
         "prod-xbox-controller.png",
-        "R1199", "R1419", "SAVE\nR220",
+        "R1 199", "R1 419", "SAVE\nR220",
         ("AMAZON SA", "DELIVERED"),
         "poster-bf-xbox.png",
     )
     deal_poster(
         "SILENCE, CHEAPER.",
-        "R1 795 LESS.",
+        "R3 595 LESS.",
         "Sony WH-1000XM5 · flagship ANC headphones · compared across 7 stores",
         "prod-sony-xm5.png",
-        "R6 799", "R8 594", "SAVE\nR1 795",
-        ("AMAZON SA", "DELIVERED"),
+        "R4 999", "R8 594", "SAVE\nR3 595",
+        ("TAKEALOT", "DELIVERED"),
         "poster-bf-sony-xm5.png",
     )
     deal_poster(
         "STILL LEGENDARY.",
-        "R800 CHEAPER.",
+        "R1 800 CHEAPER.",
         "Sony WH-1000XM4 · ANC headphones · compared across 7 stores",
         "prod-sony-xm4.png",
-        "R5 199", "R5 999", "SAVE\nR800",
+        "R5 199", "R6 999", "SAVE\nR1 800",
         ("AMAZON SA", "DELIVERED"),
         "poster-bf-sony-xm4.png",
     )
     deal_poster(
         "SAME BUDS.",
-        "R500 CHEAPER.",
+        "R800 CHEAPER.",
         "Samsung Galaxy Buds 3 Pro · ANC earbuds with case · across 7 stores",
         "prod-galaxy-buds-3-pro.png",
-        "R3 799", "R4 299", "SAVE\nR500",
-        ("AMAZON SA", "DELIVERED"),
+        "R3 499", "R4 299", "SAVE\nR800",
+        ("TAKEALOT", "DELIVERED"),
         "poster-bf-galaxy-buds.png",
     )
     deal_poster(
         "BASS BEAST.",
-        "R600 CHEAPER.",
+        "R1 400 CHEAPER.",
         "Sony ULT WEAR · bass-focused ANC headphones · compared across 7 stores",
         "prod-sony-ult-wear.png",
-        "R3 299", "R3 899", "SAVE\nR600",
-        ("AMAZON SA", "DELIVERED"),
+        "R2 499", "R3 899", "SAVE\nR1 400",
+        ("TAKEALOT", "DELIVERED"),
         "poster-bf-sony-ult.png",
     )
     deal_poster(
         "SAME AIRPODS.",
-        "R400 CHEAPER.",
+        "R900 CHEAPER.",
         "Apple AirPods 4 · USB-C charging case · compared across 7 stores",
         "prod-airpods-4.png",
-        "R3 199", "R3 599", "SAVE\nR400",
-        ("AMAZON SA", "DELIVERED"),
+        "R2 699", "R3 599", "SAVE\nR900",
+        ("TAKEALOT", "DELIVERED"),
         "poster-bf-airpods4.png",
     )
     deal_poster(
@@ -464,7 +464,7 @@ if __name__ == "__main__":
         "LIGHT ANYWHERE.",
         "Magneto 2.0 · 900-lumen rechargeable LED lantern · across 7 stores",
         "prod-magneto-900l-lantern.png",
-        "R349", "R389", "SAVE\nR40",
+        "R349", "R419", "SAVE\nR70",
         ("AMAZON SA", "DELIVERED"),
         "poster-bf-lantern.png",
     )
@@ -473,18 +473,90 @@ if __name__ == "__main__":
         "R349 LANDED.",
         "Magneto 10000mAh slim power bank · built-in cables · across 7 stores",
         "prod-magneto-10000-powerbank.png",
-        "R349", "R389", "SAVE\nR40",
+        "R349", "R599", "SAVE\nR250",
         ("AMAZON SA", "DELIVERED"),
         "poster-bf-magneto-powerbank.png",
     )
     deal_poster(
         "BRIGHT BARGAIN.",
-        "R399 LANDED.",
+        "R368 LANDED.",
         "Magneto 1200-lumen emergency LED lantern · solar input · across 7 stores",
         "prod-magneto-rechargeable-led.png",
-        "R399", "R494", "SAVE\nR95",
-        ("AMAZON SA", "DELIVERED"),
+        "R368", "R494", "SAVE\nR126",
+        ("TAKEALOT", "DELIVERED"),
         "poster-bf-magneto-lantern.png",
+    )
+    deal_poster(
+        "THE BIG ONE.",
+        "R24 500 CHEAPER.",
+        "Apple MacBook Pro 16\" M3 Pro · 18GB/512GB · compared across 7 stores",
+        "prod-macbook-pro-16-m3-pro.png",
+        "R46 499", "R70 999", "SAVE\nR24 500",
+        ("AMAZON SA", "DELIVERED"),
+        "poster-bf-macbook-pro16.png",
+    )
+    deal_poster(
+        "FOLD, DON'T FLEECE.",
+        "R16 000 CHEAPER.",
+        "Samsung Galaxy Z Fold 6 5G · 256GB · compared across 7 stores",
+        "prod-galaxy-z-fold-6.png",
+        "R23 999", "R39 999", "SAVE\nR16 000",
+        ("TAKEALOT", "DELIVERED"),
+        "poster-bf-zfold6.png",
+    )
+    deal_poster(
+        "SAME IPHONE.",
+        "R10 600 CHEAPER.",
+        "Apple iPhone 16 Pro · 128GB · Desert Titanium · across 7 stores",
+        "prod-iphone-16-pro.png",
+        "R16 899", "R27 499", "SAVE\nR10 600",
+        ("TAKEALOT", "DELIVERED"),
+        "poster-bf-iphone16pro.png",
+    )
+    deal_poster(
+        "GALAXY, LESS.",
+        "R10 539 CHEAPER.",
+        "Samsung Galaxy S24+ 5G · 256GB · compared across 7 stores",
+        "prod-galaxy-s24-plus.png",
+        "R10 460", "R20 999", "SAVE\nR10 539",
+        ("TAKEALOT", "DELIVERED"),
+        "poster-bf-s24plus.png",
+    )
+    deal_poster(
+        "SAME IPAD.",
+        "R10 500 CHEAPER.",
+        "Apple iPad Pro 11\" M4 · Wi-Fi, 256GB · compared across 7 stores",
+        "prod-ipad-pro-11-m4.png",
+        "R10 999", "R21 499", "SAVE\nR10 500",
+        ("TAKEALOT", "DELIVERED"),
+        "poster-bf-ipadpro.png",
+    )
+    deal_poster(
+        "ART TV, HALVED.",
+        "R11 200 CHEAPER.",
+        "Samsung 55\" The Frame QLED 4K · compared across 7 stores",
+        "prod-samsung-55-the-frame.png",
+        "R8 999", "R20 199", "SAVE\nR11 200",
+        ("AMAZON SA", "DELIVERED"),
+        "poster-bf-frame55.png",
+    )
+    deal_poster(
+        "2-IN-1 BARGAIN.",
+        "R13 500 CHEAPER.",
+        "Dell Inspiron 14 2-in-1 Touch · Core i5 · compared across 7 stores",
+        "prod-dell-inspiron-14-2in1.png",
+        "R16 499", "R29 999", "SAVE\nR13 500",
+        ("AMAZON SA", "DELIVERED"),
+        "poster-bf-dell.png",
+    )
+    deal_poster(
+        "MEGA POWER.",
+        "R16 500 CHEAPER.",
+        "EcoFlow Delta 2 Max · 2048Wh power station · compared across 7 stores",
+        "prod-ecoflow-delta-2-max.png",
+        "R26 499", "R42 999", "SAVE\nR16 500",
+        ("AMAZON SA", "DELIVERED"),
+        "poster-bf-ecoflow-d2max.png",
     )
     main_poster()
     print("Poster pack v2 written to", OUT)
