@@ -427,13 +427,13 @@ if __name__ == "__main__":
         "poster-bf-sony-xm4.png",
     )
     deal_poster(
-        "SAME AIRPODS.",
-        "R600 CHEAPER.",
-        "AirPods Pro 2 · MagSafe case, USB-C · compared across 7 stores",
-        "prod-airpods-pro-2.png",
-        "R4 899", "R5 499", "SAVE\nR600",
+        "SAME BUDS.",
+        "R500 CHEAPER.",
+        "Samsung Galaxy Buds 3 Pro · ANC earbuds with case · across 7 stores",
+        "prod-galaxy-buds-3-pro.png",
+        "R3 799", "R4 299", "SAVE\nR500",
         ("AMAZON SA", "DELIVERED"),
-        "poster-bf-airpods-pro.png",
+        "poster-bf-galaxy-buds.png",
     )
     deal_poster(
         "BASS BEAST.",
