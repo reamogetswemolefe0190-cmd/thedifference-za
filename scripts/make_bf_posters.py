@@ -396,5 +396,50 @@ if __name__ == "__main__":
         ("AMAZON SA", "DELIVERED"),
         "poster-bf-xbox.png",
     )
+    deal_poster(
+        "SILENCE, CHEAPER.",
+        "R1 795 LESS.",
+        "Sony WH-1000XM5 · flagship ANC headphones · compared across 7 stores",
+        "prod-sony-xm5.png",
+        "R6 799", "R8 594", "SAVE\nR1 795",
+        ("AMAZON SA", "DELIVERED"),
+        "poster-bf-sony-xm5.png",
+    )
+    deal_poster(
+        "STILL LEGENDARY.",
+        "R800 CHEAPER.",
+        "Sony WH-1000XM4 · ANC headphones · compared across 7 stores",
+        "prod-sony-xm4.png",
+        "R5 199", "R5 999", "SAVE\nR800",
+        ("AMAZON SA", "DELIVERED"),
+        "poster-bf-sony-xm4.png",
+    )
+    deal_poster(
+        "SAME AIRPODS.",
+        "R600 CHEAPER.",
+        "AirPods Pro 2 · MagSafe case, USB-C · compared across 7 stores",
+        "prod-airpods-pro-2.png",
+        "R4 899", "R5 499", "SAVE\nR600",
+        ("AMAZON SA", "DELIVERED"),
+        "poster-bf-airpods-pro.png",
+    )
+    deal_poster(
+        "BASS BEAST.",
+        "R600 CHEAPER.",
+        "Sony ULT WEAR · bass-focused ANC headphones · compared across 7 stores",
+        "prod-sony-ult-wear.png",
+        "R3 299", "R3 899", "SAVE\nR600",
+        ("AMAZON SA", "DELIVERED"),
+        "poster-bf-sony-ult.png",
+    )
+    deal_poster(
+        "SAME AIRPODS.",
+        "R400 CHEAPER.",
+        "Apple AirPods 4 · USB-C charging case · compared across 7 stores",
+        "prod-airpods-4.png",
+        "R3 199", "R3 599", "SAVE\nR400",
+        ("AMAZON SA", "DELIVERED"),
+        "poster-bf-airpods4.png",
+    )
     main_poster()
     print("Poster pack v2 written to", OUT)
