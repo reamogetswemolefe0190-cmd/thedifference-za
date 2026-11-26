@@ -100,19 +100,23 @@ def base_canvas():
 
 
 def hazard_band(draw, y, height, label_text):
-    """Acid ribbon with hazard-stripe ends, retail sale banner."""
+    """Acid sale banner: solid centre for the label, hazard stripes on the edges."""
     band = Image.new("RGBA", (W, height), (0, 0, 0, 0))
     bd = ImageDraw.Draw(band)
-    bd.rectangle((0, 0, W, height), fill=ACID)
-    stripes = Image.new("RGBA", (W, height), (0, 0, 0, 0))
-    sd = ImageDraw.Draw(stripes)
-    for x in range(-height, 160, 44):
-        sd.polygon([(x, height), (x + height, 0), (x + height + 20, 0), (x + 20, height)], fill=(0, 0, 0, 60))
-    band = Image.alpha_composite(band, stripes)
     f = black(44)
     tw = f.getlength(label_text)
-    bd2 = ImageDraw.Draw(band)
-    bd2.text(((W - tw) / 2, height / 2), label_text, font=f, fill=BLACK, anchor="mm")
+    mid = 110
+    core = (W - tw) / 2 - mid
+
+    bd.rectangle((0, 0, core, height), fill=ACID)
+    bd.rectangle((W - core, 0, W, height), fill=ACID)
+    for x in range(-height, int(core) + height, 44):
+        bd.polygon([(x, height), (x + height, 0), (x + height + 20, 0), (x + 20, height)], fill=(0, 0, 0, 110))
+    for x in range(int(W - core) - height, W, 44):
+        bd.polygon([(x, height), (x + height, 0), (x + height + 20, 0), (x + 20, height)], fill=(0, 0, 0, 110))
+
+    bd.rectangle((core, 0, W - core, height), fill=ACID)
+    bd.text((W / 2, height / 2), label_text, font=f, fill=BLACK, anchor="mm")
     return band
 
 
