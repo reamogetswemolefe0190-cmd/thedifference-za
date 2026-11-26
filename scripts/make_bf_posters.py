@@ -461,7 +461,7 @@ if __name__ == "__main__":
     )
     deal_poster(
         "UNDER R400.",
-        "LOAD-SHEDDING READY.",
+        "LIGHT ANYWHERE.",
         "Magneto 2.0 · 900-lumen rechargeable LED lantern · across 7 stores",
         "prod-magneto-900l-lantern.png",
         "R349", "R389", "SAVE\nR40",
