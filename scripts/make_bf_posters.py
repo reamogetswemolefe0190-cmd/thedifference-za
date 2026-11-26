@@ -342,5 +342,59 @@ if __name__ == "__main__":
         ("AMAZON SA", "DELIVERED"),
         "poster-bf-bluetti.png",
     )
+    deal_poster(
+        "STAY CHARGED.",
+        "R170 CHEAPER.",
+        "Romoss Sense 8+ · 30000mAh power bank · compared across 7 stores",
+        "prod-romoss-sense-8-plus.png",
+        "R549", "R719", "SAVE\nR170",
+        ("AMAZON SA", "DELIVERED"),
+        "poster-bf-powerbank.png",
+    )
+    deal_poster(
+        "GAME ON.",
+        "R300 CHEAPER.",
+        "Logitech G502 HERO gaming mouse · compared across 7 stores",
+        "prod-logitech-g502-hero.png",
+        "R1099", "R1399", "SAVE\nR300",
+        ("AMAZON SA", "DELIVERED"),
+        "poster-bf-g502.png",
+    )
+    deal_poster(
+        "RETRO KETTLE.",
+        "R245 CHEAPER.",
+        "Russell Hobbs 1.7L Retro Classic kettle · compared across 7 stores",
+        "prod-russell-hobbs-retro-kettle.png",
+        "R949", "R1194", "SAVE\nR245",
+        ("AMAZON SA", "DELIVERED"),
+        "poster-bf-kettle.png",
+    )
+    deal_poster(
+        "REHEAT, SAVE.",
+        "R295 CHEAPER.",
+        "Russell Hobbs 20L mirror-door microwave · compared across 7 stores",
+        "prod-russell-hobbs-microwave.png",
+        "R1199", "R1494", "SAVE\nR295",
+        ("AMAZON SA", "DELIVERED"),
+        "poster-bf-microwave.png",
+    )
+    deal_poster(
+        "WI-FI STAYS ON.",
+        "R170 CHEAPER.",
+        "Gizzu 30W Mini UPS · router & fibre backup · compared across 7 stores",
+        "prod-gizzu-30w-mini-ups.png",
+        "R749", "R919", "SAVE\nR170",
+        ("AMAZON SA", "DELIVERED"),
+        "poster-bf-gizzu.png",
+    )
+    deal_poster(
+        "SAME CONTROLLER.",
+        "R220 CHEAPER.",
+        "Xbox Wireless Controller · Robot White · compared across 7 stores",
+        "prod-xbox-controller.png",
+        "R1199", "R1419", "SAVE\nR220",
+        ("AMAZON SA", "DELIVERED"),
+        "poster-bf-xbox.png",
+    )
     main_poster()
     print("Poster pack v2 written to", OUT)
