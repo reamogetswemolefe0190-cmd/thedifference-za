@@ -143,6 +143,9 @@ def product_hero(path, max_w, max_h):
     """Packshot with acid glow, floor shadow and reflection."""
     im = Image.open(path).convert("RGBA")
     im.thumbnail((max_w, max_h), Image.LANCZOS)
+    MAX_STAGE_H = 470
+    if im.size[1] + 260 > MAX_STAGE_H:
+        im.thumbnail((max_w, MAX_STAGE_H - 260), Image.LANCZOS)
     w, h = im.size
 
     stage = Image.new("RGBA", (w + 320, h + 260), (0, 0, 0, 0))
@@ -284,6 +287,60 @@ if __name__ == "__main__":
         "R48 999", "R52 999", "SAVE\nR4 000",
         ("AMAZON SA", "DELIVERED"),
         "poster-bf-ecoflow.png",
+    )
+    deal_poster(
+        "CINEMA SOUND.",
+        "R2 650 CHEAPER.",
+        "Samsung HW-Q990D · 11.1.4ch Atmos soundbar · compared across 7 stores",
+        "prod-samsung-hw-q990d.png",
+        "R19 499", "R22 149", "SAVE\nR2 650",
+        ("AMAZON SA", "DELIVERED"),
+        "poster-bf-soundbar.png",
+    )
+    deal_poster(
+        "SAME OLED TV.",
+        "R2 350 CHEAPER.",
+        "LG 55\" 4K OLED evo C4 · compared across 7 stores",
+        "prod-lg-55-c4-oled.png",
+        "R23 649", "R25 999", "SAVE\nR2 350",
+        ("AMAZON SA", "DELIVERED"),
+        "poster-bf-lg-oled.png",
+    )
+    deal_poster(
+        "POWER, DONE RIGHT.",
+        "R2 150 CHEAPER.",
+        "EcoFlow Delta 2 · 1024Wh power station · compared across 7 stores",
+        "prod-ecoflow-delta-2.png",
+        "R14 499", "R16 499", "SAVE\nR2 150",
+        ("AMAZON SA", "DELIVERED"),
+        "poster-bf-ecoflow-delta2.png",
+    )
+    deal_poster(
+        "BIG SOUND.",
+        "R2 150 CHEAPER.",
+        "JBL Bar 800 · 5.1.2ch Atmos with detachable speakers · across 7 stores",
+        "prod-jbl-bar-800.png",
+        "R16 499", "R18 649", "SAVE\nR2 150",
+        ("AMAZON SA", "DELIVERED"),
+        "poster-bf-jbl.png",
+    )
+    deal_poster(
+        "CLEAN FOR LESS.",
+        "R2 000 CHEAPER.",
+        "Dyson V12 Detect Slim · cordless vacuum · compared across 7 stores",
+        "prod-dyson-v12-detect-slim.png",
+        "R12 499", "R14 499", "SAVE\nR2 000",
+        ("AMAZON SA", "DELIVERED"),
+        "poster-bf-dyson.png",
+    )
+    deal_poster(
+        "STAY POWERED.",
+        "R2 000 CHEAPER.",
+        "Bluetti AC200P · 2000Wh power station · compared across 7 stores",
+        "prod-bluetti-ac200p.png",
+        "R22 999", "R24 999", "SAVE\nR2 000",
+        ("AMAZON SA", "DELIVERED"),
+        "poster-bf-bluetti.png",
     )
     main_poster()
     print("Poster pack v2 written to", OUT)
