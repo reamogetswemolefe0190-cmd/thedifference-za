@@ -13,6 +13,7 @@ Design system — modern Black Friday retail creative:
 import os
 import random
 import math
+import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -139,9 +140,20 @@ def starburst(save="SAVE\nR4 095", size=340):
     return img.rotate(-12, expand=True, resample=Image.BICUBIC)
 
 
+def defringe(im):
+    """Remove the white fringe left by background removal on dark posters."""
+    arr = np.asarray(im).astype(np.float32)
+    rgb, a = arr[..., :3], arr[..., 3:] / 255.0
+    un = (rgb - (1.0 - a) * 255.0) / np.clip(a, 0.02, 1.0)
+    un = np.clip(un, 0, 255)
+    alpha = np.where(a < 0.55, 0.0, np.clip((a - 0.55) / 0.35, 0, 1))
+    out = np.dstack([un, alpha * 255]).astype(np.uint8)
+    return Image.fromarray(out, "RGBA")
+
+
 def product_hero(path, max_w, max_h):
     """Packshot with acid glow, floor shadow and reflection."""
-    im = Image.open(path).convert("RGBA")
+    im = defringe(Image.open(path).convert("RGBA"))
     bbox = im.getbbox()
     if bbox:
         im = im.crop(bbox)
