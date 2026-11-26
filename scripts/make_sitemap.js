@@ -15,7 +15,7 @@ const BASE = 'https://thedifference-za.pages.dev';
 const urls = [
   { loc: `${BASE}/`, priority: '1.0', changefreq: 'daily' },
   ...products.map(p => ({
-    loc: `${BASE}/?product=${p.id}`,
+    loc: `${BASE}/product/${p.id}`,
     priority: '0.8',
     changefreq: 'daily',
   })),

@@ -8301,7 +8301,7 @@
 
           position: i + 1,
 
-          url: `${SCHEMA_BASE}/?product=${p.id}`,
+          url: `${SCHEMA_BASE}/product/${p.id}`,
 
           name: p.title
 
@@ -8358,6 +8358,16 @@
       currentDetailProduct = prod;
 
       injectProductSchema(prod);
+
+      const canonical = document.querySelector('link[rel="canonical"]');
+
+      if (canonical) canonical.setAttribute('href', `${SCHEMA_BASE}/product/${prod.id}`);
+
+      document.title = `${prod.title} — Price & Delivery Compared | The Difference`;
+
+      const desc = document.querySelector('meta[name="description"]');
+
+      if (desc) desc.setAttribute('content', `Compare ${prod.title} prices across ${prod.stores.length} South African stores with delivery fees included. Landed prices from ${(prod.stores[0] || {}).name || 'Takealot'}, Amazon SA, Makro and more.`);
 
       if (typeof setAiProductContext === 'function') {
         setAiProductContext(prod);
@@ -8838,6 +8848,8 @@
       });
 
       currentDetailProduct = null;
+
+      document.title = 'Price Comparison South Africa | The Difference — 7 Stores, Delivery Fees Included';
 
       if (typeof clearAiProductContext === 'function') {
         clearAiProductContext();
@@ -9830,9 +9842,11 @@
 
       loadLiveProducts();
 
+      const pathMatch = window.location.pathname.match(/\/product\/([^/?#]+)/);
+
       const urlParams = new URLSearchParams(window.location.search);
 
-      const prodParam = urlParams.get('product');
+      const prodParam = pathMatch ? decodeURIComponent(pathMatch[1]) : urlParams.get('product');
 
       if (prodParam) {
 
