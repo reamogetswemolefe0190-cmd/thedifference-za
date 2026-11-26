@@ -1,2 +1,2 @@
 /pricepulse.html / 301
-/product/* /?product=:id 200
+/product/* /?product=:splat 200
