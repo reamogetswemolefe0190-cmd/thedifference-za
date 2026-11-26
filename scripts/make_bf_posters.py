@@ -459,5 +459,32 @@ if __name__ == "__main__":
         ("AMAZON SA", "DELIVERED"),
         "poster-bf-airpods4.png",
     )
+    deal_poster(
+        "UNDER R400.",
+        "LOAD-SHEDDING READY.",
+        "Magneto 2.0 · 900-lumen rechargeable LED lantern · across 7 stores",
+        "prod-magneto-900l-lantern.png",
+        "R349", "R389", "SAVE\nR40",
+        ("AMAZON SA", "DELIVERED"),
+        "poster-bf-lantern.png",
+    )
+    deal_poster(
+        "POCKET POWER.",
+        "R349 LANDED.",
+        "Magneto 10000mAh slim power bank · built-in cables · across 7 stores",
+        "prod-magneto-10000-powerbank.png",
+        "R349", "R389", "SAVE\nR40",
+        ("AMAZON SA", "DELIVERED"),
+        "poster-bf-magneto-powerbank.png",
+    )
+    deal_poster(
+        "BRIGHT BARGAIN.",
+        "R399 LANDED.",
+        "Magneto 1200-lumen emergency LED lantern · solar input · across 7 stores",
+        "prod-magneto-rechargeable-led.png",
+        "R399", "R494", "SAVE\nR95",
+        ("AMAZON SA", "DELIVERED"),
+        "poster-bf-magneto-lantern.png",
+    )
     main_poster()
     print("Poster pack v2 written to", OUT)
