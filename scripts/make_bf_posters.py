@@ -142,13 +142,13 @@ def starburst(save="SAVE\nR4 095", size=340):
 def product_hero(path, max_w, max_h):
     """Packshot with acid glow, floor shadow and reflection."""
     im = Image.open(path).convert("RGBA")
+    bbox = im.getbbox()
+    if bbox:
+        im = im.crop(bbox)
     im.thumbnail((max_w, max_h), Image.LANCZOS)
-    MAX_STAGE_H = 470
-    if im.size[1] + 260 > MAX_STAGE_H:
-        im.thumbnail((max_w, MAX_STAGE_H - 260), Image.LANCZOS)
     w, h = im.size
 
-    stage = Image.new("RGBA", (w + 320, h + 260), (0, 0, 0, 0))
+    stage = Image.new("RGBA", (w + 160, h + 200), (0, 0, 0, 0))
 
     glow = Image.new("RGBA", stage.size, (0, 0, 0, 0))
     gd = ImageDraw.Draw(glow)
@@ -158,7 +158,7 @@ def product_hero(path, max_w, max_h):
     glow = glow.filter(ImageFilter.GaussianBlur(40))
     stage = Image.alpha_composite(stage, glow)
 
-    px, py = (stage.width - w) // 2, (stage.height - h) // 2 - 30
+    px, py = (stage.width - w) // 2, (stage.height - h) // 2 - 36
     stage.alpha_composite(im, (px, py))
 
     shadow = Image.new("RGBA", stage.size, (0, 0, 0, 0))
@@ -189,33 +189,33 @@ def deal_poster(line1, line2, sub, product_file, price, was, save, store_note, o
     band = hazard_band(d, 0, 96, "BLACK FRIDAY  ·  28 NOVEMBER")
     img.paste(band, (0, 60), band)
 
-    tracked(d, (72, 236), line1, black(86), WHITE, tracking=-3)
-    tracked(d, (72, 336), line2, black(102), ACID, tracking=-3)
+    tracked(d, (72, 206), line1, black(82), WHITE, tracking=-3)
+    tracked(d, (72, 296), line2, black(98), ACID, tracking=-3)
     if sub:
-        d.text((74, 452), sub, font=medium(30), fill=(196, 204, 216))
+        d.text((74, 408), sub, font=medium(30), fill=(196, 204, 216))
 
-    hero = product_hero(os.path.join(PRODUCTS, product_file), 640, 380)
-    img.paste(hero, (int(W / 2 - hero.width / 2), 500), hero)
+    hero = product_hero(os.path.join(PRODUCTS, product_file), 760, 340)
+    img.paste(hero, (int(W / 2 - hero.width / 2), 440), hero)
 
     store, note = store_note
     f_chip = bold(26)
     ct = f"{store} · {note}"
     ctw = f_chip.getlength(ct) + 56
-    d.rounded_rectangle((74, 986, 74 + ctw, 986 + 52), radius=12, outline=ACID, width=2)
-    d.text((74 + 28, 986 + 26), ct, font=f_chip, fill=ACID, anchor="lm")
+    d.rounded_rectangle((74, 994, 74 + ctw, 994 + 52), radius=12, outline=ACID, width=2)
+    d.text((74 + 28, 994 + 26), ct, font=f_chip, fill=ACID, anchor="lm")
 
-    f_price = black(148)
-    px, py = 74, 1058
+    f_price = black(140)
+    px, py = 74, 1064
     x_end = tracked(d, (px, py), price, f_price, WHITE, tracking=-6)
-    f_was = bold(48)
+    f_was = bold(46)
     wx = x_end + 36
-    d.text((wx, py + 88), was, font=f_was, fill=(120, 128, 140))
-    d.line([(wx, py + 116), (wx + f_was.getlength(was), py + 116)], fill=(140, 148, 160), width=5)
+    d.text((wx, py + 84), was, font=f_was, fill=(120, 128, 140))
+    d.line([(wx, py + 110), (wx + f_was.getlength(was), py + 110)], fill=(140, 148, 160), width=5)
 
-    burst = starburst(save, size=290)
-    img.paste(burst, (W - burst.width + 14, 1020), burst)
+    burst = starburst(save, size=280)
+    img.paste(burst, (W - burst.width + 14, 1010), burst)
 
-    footer(d, 1226)
+    footer(d, 1234)
     img.save(os.path.join(OUT, out))
     print("wrote", out)
 
