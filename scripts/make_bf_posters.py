@@ -13,7 +13,6 @@ Design system — modern Black Friday retail creative:
 import os
 import random
 import math
-import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -140,53 +139,36 @@ def starburst(save="SAVE\nR4 095", size=340):
     return img.rotate(-12, expand=True, resample=Image.BICUBIC)
 
 
-def defringe(im):
-    """Remove the white fringe left by background removal on dark posters."""
-    arr = np.asarray(im).astype(np.float32)
-    rgb, a = arr[..., :3], arr[..., 3:] / 255.0
-    un = (rgb - (1.0 - a) * 255.0) / np.clip(a, 0.02, 1.0)
-    un = np.clip(un, 0, 255)
-    alpha = np.where(a < 0.55, 0.0, np.clip((a - 0.55) / 0.35, 0, 1))
-    out = np.dstack([un, alpha * 255]).astype(np.uint8)
-    return Image.fromarray(out, "RGBA")
-
-
 def product_hero(path, max_w, max_h):
-    """Packshot with acid glow, floor shadow and reflection."""
-    im = defringe(Image.open(path).convert("RGBA"))
+    """Packshot on a white product card, the retail-ad treatment.
+
+    The packshots carry a soft white cut-out fringe that is invisible on a
+    white card (but glows on dark stages), so every product sits on a white
+    rounded card with a soft floor shadow inside it.
+    """
+    im = Image.open(path).convert("RGBA")
     bbox = im.getbbox()
     if bbox:
         im = im.crop(bbox)
     im.thumbnail((max_w, max_h), Image.LANCZOS)
     w, h = im.size
 
-    stage = Image.new("RGBA", (w + 160, h + 200), (0, 0, 0, 0))
+    pad_x, pad_t, pad_b = 64, 56, 96
+    card = Image.new("RGBA", (w + 2 * pad_x, h + pad_t + pad_b), (0, 0, 0, 0))
+    cd = ImageDraw.Draw(card)
+    cd.rounded_rectangle((0, 0, card.width - 1, card.height - 1), radius=32, fill=(255, 255, 255, 255))
 
-    glow = Image.new("RGBA", stage.size, (0, 0, 0, 0))
-    gd = ImageDraw.Draw(glow)
-    for r in range(int(min(w, h) * 0.85), 0, -10):
-        a = int(90 * (1 - r / (min(w, h) * 0.85)))
-        gd.ellipse((stage.width / 2 - r, stage.height / 2 - r * 0.6, stage.width / 2 + r, stage.height / 2 + r * 0.6), fill=(90, 140, 40, a))
-    glow = glow.filter(ImageFilter.GaussianBlur(40))
-    stage = Image.alpha_composite(stage, glow)
+    inner_shadow = Image.new("RGBA", card.size, (0, 0, 0, 0))
+    sd = ImageDraw.Draw(inner_shadow)
+    sd.ellipse((card.width / 2 - w / 2, pad_t + h - 18, card.width / 2 + w / 2, pad_t + h + 42), fill=(15, 23, 42, 60))
+    inner_shadow = inner_shadow.filter(ImageFilter.GaussianBlur(16))
+    mask = Image.new("L", card.size, 0)
+    md = ImageDraw.Draw(mask)
+    md.rounded_rectangle((0, 0, card.width - 1, card.height - 1), radius=32, fill=255)
+    card = Image.composite(Image.alpha_composite(card, inner_shadow), card, mask)
 
-    px, py = (stage.width - w) // 2, (stage.height - h) // 2 - 36
-    stage.alpha_composite(im, (px, py))
-
-    shadow = Image.new("RGBA", stage.size, (0, 0, 0, 0))
-    sd = ImageDraw.Draw(shadow)
-    sd.ellipse((stage.width / 2 - w / 2, py + h + 6, stage.width / 2 + w / 2, py + h + 64), fill=(0, 0, 0, 140))
-    shadow = shadow.filter(ImageFilter.GaussianBlur(18))
-    stage = Image.alpha_composite(shadow, stage)
-
-    refl = im.transpose(Image.FLIP_TOP_BOTTOM).resize((w, int(h * 0.30)))
-    fade = Image.new("L", refl.size, 0)
-    fd = ImageDraw.Draw(fade)
-    for i in range(refl.size[1]):
-        fd.line([(0, i), (refl.size[0], i)], fill=int(52 * (1 - i / refl.size[1])))
-    refl.putalpha(fade)
-    stage.alpha_composite(refl, (px, py + h + 8))
-    return stage
+    card.alpha_composite(im, ((card.width - w) // 2, pad_t))
+    return card
 
 
 def footer(draw, y=1226):
