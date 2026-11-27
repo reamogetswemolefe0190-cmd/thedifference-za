@@ -8,6 +8,9 @@ on:
       - 'images/**'
       - 'shared/**'
       - '_redirects'
+      - 'sitemap*.xml'
+      - 'robots.txt'
+      - 'google*.html'
       - '.github/workflows/deploy-frontend.yml'
   workflow_dispatch:
 
@@ -35,6 +38,8 @@ jobs:
           mkdir -p dist
           cp index.html _redirects dist/
           cp -r images shared dist/
+          cp sitemap.xml sitemap-za.xml robots.txt dist/ 2>/dev/null || cp sitemap*.xml robots.txt dist/
+          cp google*.html dist/ 2>/dev/null || true
           echo "Bundle contents:"
           find dist -maxdepth 1 -exec du -sh {} \;
 
